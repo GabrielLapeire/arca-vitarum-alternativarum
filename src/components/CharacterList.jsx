@@ -1,6 +1,6 @@
 import CharacterCard from './CharacterCard'
 
-function CharacterList({ characters, deleteCharacter }) {
+function CharacterList({ characters, updateCharacter, deleteCharacter }) {
   return (
     <div>
       CharacterList
@@ -9,6 +9,7 @@ function CharacterList({ characters, deleteCharacter }) {
           key={index}
           character={character}
           index={index}
+          updateCharacter={updateCharacter}
           deleteCharacter={deleteCharacter}
         />
       ))}

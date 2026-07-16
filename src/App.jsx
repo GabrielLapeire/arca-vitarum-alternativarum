@@ -10,8 +10,9 @@ function App() {
     className: '',
     level: 1
   })
+  const [editingIndex, setEditingIndex] = useState(null)
 
-  function addCharacter() {
+  function saveCharacter() {
     if (
       newCharacter.name.trim() === '' ||
       newCharacter.race.trim() === '' ||
@@ -19,10 +20,22 @@ function App() {
     ) {
       return
     }
-    setCharacters([
-      ...characters,
-      newCharacter
-    ])
+
+    if (editingIndex !== null) {
+      setCharacters(characters.map((character, characterIndex) => {
+        if (characterIndex === editingIndex) {
+          return newCharacter
+        }
+        setEditingIndex(null)
+        return { ...newCharacter }
+      }))
+    } else {
+      setCharacters([
+        ...characters,
+        newCharacter
+      ])
+    }
+
     setNewCharacter({
       name: '',
       race: '',
@@ -31,8 +44,15 @@ function App() {
     })
   }
 
-  function deleteCharacter() {
-    return
+  function updateCharacter(index) {
+    setEditingIndex(index)
+    setNewCharacter({
+      ...characters[index]
+    })
+  }
+
+  function deleteCharacter(index) {
+    setCharacters(characters.filter((character, characterIndex) => characterIndex !== index))
   }
 
   return (
@@ -40,10 +60,11 @@ function App() {
       <CharacterForm
         newCharacter={newCharacter}
         setNewCharacter={setNewCharacter}
-        addCharacter={addCharacter}
+        saveCharacter={saveCharacter}
       />
       <CharacterList
         characters={characters}
+        updateCharacter={updateCharacter}
         deleteCharacter={deleteCharacter}
       />
     </div>

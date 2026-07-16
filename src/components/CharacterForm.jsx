@@ -1,4 +1,4 @@
-function CharacterForm({ newCharacter, setNewCharacter, addCharacter }) {
+function CharacterForm({ newCharacter, setNewCharacter, saveCharacter }) {
   return (
     <div>
       CharacterForm
@@ -49,7 +49,7 @@ function CharacterForm({ newCharacter, setNewCharacter, addCharacter }) {
         />
       </div>
       <button
-        onClick={addCharacter}
+        onClick={saveCharacter}
         className="btn btn-primary"
       >
         Guardar Personaje
