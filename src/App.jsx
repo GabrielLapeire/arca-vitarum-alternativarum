@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import CharacterForm from './components/CharacterForm'
 import CharacterList from './components/CharacterList'
 
@@ -11,6 +11,21 @@ function App() {
     level: 1
   })
   const [editingIndex, setEditingIndex] = useState(null)
+
+  const firstRender = useRef(true)
+  useEffect(() => {
+    const savedCharacters = JSON.parse(localStorage.getItem("characters"))
+    if (savedCharacters !== null) {
+      setCharacters(savedCharacters)
+    }
+  }, [])
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false
+      return
+    }
+    localStorage.setItem("characters", JSON.stringify(characters))
+  }, [characters])
 
   function saveCharacter() {
     if (
@@ -26,9 +41,9 @@ function App() {
         if (characterIndex === editingIndex) {
           return newCharacter
         }
-        setEditingIndex(null)
-        return { ...newCharacter }
+        return character
       }))
+      setEditingIndex(null)
     } else {
       setCharacters([
         ...characters,

@@ -43,7 +43,7 @@ function CharacterForm({ newCharacter, setNewCharacter, saveCharacter }) {
           onChange={(e) =>
             setNewCharacter({
               ...newCharacter,
-              level: e.target.value
+              level: Number(e.target.value)
             })
           }
         />
