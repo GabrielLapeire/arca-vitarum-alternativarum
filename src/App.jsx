@@ -35,7 +35,7 @@ function App() {
       newCharacter.name.trim() === '' ||
       newCharacter.race.trim() === '' ||
       newCharacter.className.trim() === '' ||
-      newCharacter.level.trim() === ''
+      newCharacter.level === ''
     ) {
       return
     }
