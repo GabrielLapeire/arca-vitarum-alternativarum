@@ -2,15 +2,18 @@ import { useState, useEffect, useRef } from 'react'
 import CharacterForm from './components/CharacterForm'
 import CharacterList from './components/CharacterList'
 
+const emptyCharacter = {
+  id: null,
+  name: '',
+  race: '',
+  className: '',
+  level: ''
+}
+
 function App() {
   const [characters, setCharacters] = useState([])
-  const [newCharacter, setNewCharacter] = useState({
-    name: '',
-    race: '',
-    className: '',
-    level: 1
-  })
-  const [editingIndex, setEditingIndex] = useState(null)
+  const [newCharacter, setNewCharacter] = useState(emptyCharacter)
+  const [editingId, setEditingId] = useState(null)
 
   const firstRender = useRef(true)
   useEffect(() => {
@@ -31,51 +34,70 @@ function App() {
     if (
       newCharacter.name.trim() === '' ||
       newCharacter.race.trim() === '' ||
-      newCharacter.className.trim() === ''
+      newCharacter.className.trim() === '' ||
+      newCharacter.level.trim() === ''
     ) {
       return
     }
 
-    if (editingIndex !== null) {
-      setCharacters(characters.map((character, characterIndex) => {
-        if (characterIndex === editingIndex) {
-          return newCharacter
-        }
-        return character
-      }))
-      setEditingIndex(null)
+    if (editingId !== null) {
+      setCharacters(
+        characters.map(character =>
+          character.id === editingId
+            ? newCharacter : character
+        )
+      )
+      setEditingId(null)
     } else {
       setCharacters([
         ...characters,
-        newCharacter
+        {
+          ...newCharacter,
+          id: crypto.randomUUID()
+        }
       ])
     }
 
     setNewCharacter({
-      name: '',
-      race: '',
-      className: '',
-      level: 1
+      ...emptyCharacter
     })
   }
 
-  function updateCharacter(index) {
-    setEditingIndex(index)
+  function updateCharacter(id) {
+    setEditingId(id)
+
+    const character = characters.find(
+      character => character.id === id
+    )
+
     setNewCharacter({
-      ...characters[index]
+      ...character
     })
   }
 
-  function deleteCharacter(index) {
-    setCharacters(characters.filter((character, characterIndex) => characterIndex !== index))
+  function deleteCharacter(id) {
+    setCharacters(
+      characters.filter(character => character.id !== id)
+    )
+
+    if (editingId === id) {
+      setEditingId(null)
+      setNewCharacter({
+        ...emptyCharacter
+      })
+    }
   }
 
   return (
-    <div>
+    <div className="container py-5">
+      <h1 className="text-center mb-4">
+        Arca Vitarum Alternativarum
+      </h1>
       <CharacterForm
         newCharacter={newCharacter}
         setNewCharacter={setNewCharacter}
         saveCharacter={saveCharacter}
+        editingId={editingId}
       />
       <CharacterList
         characters={characters}
