@@ -16,11 +16,14 @@ function CharacterForm({
               type="text"
               className="form-control"
               placeholder="Nombre"
-              value={newCharacter.name}
+              value={newCharacter.data.name}
               onChange={(e) =>
                 setNewCharacter({
                   ...newCharacter,
-                  name: e.target.value
+                  data: {
+                    ...newCharacter.data,
+                    name: e.target.value
+                  }
                 })
               }
             />
@@ -31,11 +34,14 @@ function CharacterForm({
               type="text"
               className="form-control"
               placeholder="Raza"
-              value={newCharacter.race}
+              value={newCharacter.data.race}
               onChange={(e) =>
                 setNewCharacter({
                   ...newCharacter,
-                  race: e.target.value
+                  data: {
+                    ...newCharacter.data,
+                    race: e.target.value
+                  }
                 })
               }
             />
@@ -46,11 +52,14 @@ function CharacterForm({
               type="text"
               className="form-control"
               placeholder="Clase"
-              value={newCharacter.className}
+              value={newCharacter.data.className}
               onChange={(e) =>
                 setNewCharacter({
                   ...newCharacter,
-                  className: e.target.value
+                  data: {
+                    ...newCharacter.data,
+                    className: e.target.value
+                  }
                 })
               }
             />
@@ -61,11 +70,14 @@ function CharacterForm({
               type="number"
               className="form-control"
               placeholder="Nivel"
-              value={newCharacter.level}
+              value={newCharacter.data.level}
               onChange={(e) =>
                 setNewCharacter({
                   ...newCharacter,
-                  level: Number(e.target.value)
+                  data: {
+                    ...newCharacter.data,
+                    level: Number(e.target.value)
+                  }
                 })
               }
             />

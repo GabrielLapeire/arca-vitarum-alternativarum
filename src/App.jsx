@@ -1,19 +1,30 @@
 import { useState, useEffect, useRef } from 'react'
+import CharacterFilters from './components/CharacterFilters'
 import CharacterForm from './components/CharacterForm'
 import CharacterList from './components/CharacterList'
 
 const emptyCharacter = {
   id: null,
-  name: '',
-  race: '',
-  className: '',
-  level: ''
+  system: "dnd5e",
+  data: {
+    name: '',
+    race: '',
+    className: '',
+    level: ''
+  }
 }
 
 function App() {
   const [characters, setCharacters] = useState([])
   const [newCharacter, setNewCharacter] = useState(emptyCharacter)
   const [editingId, setEditingId] = useState(null)
+  const [search, setSearch] = useState("")
+
+  const filteredCharacters = characters.filter(character =>
+    character.data.name
+      .toLowerCase()
+      .includes(search.trim().toLowerCase())
+  )
 
   const firstRender = useRef(true)
   useEffect(() => {
@@ -32,10 +43,10 @@ function App() {
 
   function saveCharacter() {
     if (
-      newCharacter.name.trim() === '' ||
-      newCharacter.race.trim() === '' ||
-      newCharacter.className.trim() === '' ||
-      newCharacter.level === ''
+      newCharacter.data.name.trim() === '' ||
+      newCharacter.data.race.trim() === '' ||
+      newCharacter.data.className.trim() === '' ||
+      newCharacter.data.level === ''
     ) {
       return
     }
@@ -93,6 +104,10 @@ function App() {
       <h1 className="text-center mb-4">
         Arca Vitarum Alternativarum
       </h1>
+      <CharacterFilters
+        search={search}
+        setSearch={setSearch}
+      />
       <CharacterForm
         newCharacter={newCharacter}
         setNewCharacter={setNewCharacter}
@@ -100,7 +115,7 @@ function App() {
         editingId={editingId}
       />
       <CharacterList
-        characters={characters}
+        characters={filteredCharacters}
         updateCharacter={updateCharacter}
         deleteCharacter={deleteCharacter}
       />
