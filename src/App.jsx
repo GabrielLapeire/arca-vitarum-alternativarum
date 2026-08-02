@@ -18,13 +18,59 @@ function App() {
   const [characters, setCharacters] = useState([])
   const [newCharacter, setNewCharacter] = useState(emptyCharacter)
   const [editingId, setEditingId] = useState(null)
-  const [search, setSearch] = useState("")
 
-  const filteredCharacters = characters.filter(character =>
-    character.data.name
-      .toLowerCase()
-      .includes(search.trim().toLowerCase())
-  )
+  const [search, setSearch] = useState("")
+  const [raceFilter, setRaceFilter] = useState("all")
+  const raceFilterOptions = [
+    ...new Set(
+      characters.map(character =>
+        character.data.race
+      )
+    )
+  ]
+  const [classFilter, setClassFilter] = useState("all")
+  const classFilterOptions = [
+    ...new Set(
+      characters.map(character =>
+        character.data.className
+      )
+    )
+  ]
+  const [sortBy, setSortBy] = useState("nameAsc")
+
+  const normalizedSearch = search.trim().toLowerCase()
+  const filteredCharacters = characters.filter(character => {
+    const searchableText = [
+      character.data.name,
+      character.data.race,
+      character.data.className
+    ].join(" ").toLowerCase()
+    const matchesSearch =
+      searchableText.includes(normalizedSearch)
+    const matchesRace =
+      raceFilter === "all" ||
+      character.data.race === raceFilter
+    const matchesClass =
+      classFilter === "all" ||
+      character.data.className === classFilter
+    return (
+      matchesSearch &&
+      matchesRace &&
+      matchesClass
+    )
+  })
+  const sortedCharacters = [...filteredCharacters].sort((a, b) => {
+    if (sortBy === "nameAsc") {
+      return a.data.name.localeCompare(b.data.name)
+    }
+    if (sortBy === "nameDesc") {
+      return b.data.name.localeCompare(a.data.name)
+    }
+    if (sortBy === "levelDesc") {
+      return Number(b.data.level) - Number(a.data.level)
+    }
+    return 0
+  })
 
   const firstRender = useRef(true)
   useEffect(() => {
@@ -107,6 +153,14 @@ function App() {
       <CharacterFilters
         search={search}
         setSearch={setSearch}
+        raceFilter={raceFilter}
+        setRaceFilter={setRaceFilter}
+        raceFilterOptions={raceFilterOptions}
+        classFilter={classFilter}
+        setClassFilter={setClassFilter}
+        classFilterOptions={classFilterOptions}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
       />
       <CharacterForm
         newCharacter={newCharacter}
@@ -115,7 +169,7 @@ function App() {
         editingId={editingId}
       />
       <CharacterList
-        characters={filteredCharacters}
+        characters={sortedCharacters}
         updateCharacter={updateCharacter}
         deleteCharacter={deleteCharacter}
       />
