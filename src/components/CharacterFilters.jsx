@@ -97,6 +97,10 @@ function CharacterFilters({
               <option value="levelDesc">
                 Nivel mayor a menor
               </option>
+
+              <option value="levelAsc">
+                Nivel menor a mayor
+              </option>
             </select>
           </div>
 

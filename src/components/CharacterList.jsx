@@ -9,13 +9,16 @@ function CharacterList({
   if (characters.length === 0) {
     return (
       <div className="alert alert-secondary text-center">
-        No hay personajes creados todavía.
+        No se encontraron personajes.
       </div>
     )
   }
 
   return (
     <div className="row g-4">
+      <h5 className="mb-3">
+        Se encontraron {characters.length} personajes
+      </h5>
       {characters.map((character) => (
         <div
           className="col-md-4"
