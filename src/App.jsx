@@ -1,7 +1,9 @@
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useMemo } from 'react'
 import CharacterFilters from './components/CharacterFilters'
 import CharacterForm from './components/CharacterForm'
 import CharacterList from './components/CharacterList'
+import { getRaceOptions, getClassOptions, filterCharacters, sortCharacters } from './utils/characterUtils'
+import { useLocalStorage } from './hooks/useLocalStorage'
 
 const emptyCharacter = {
   id: null,
@@ -15,8 +17,11 @@ const emptyCharacter = {
 }
 
 function App() {
-  /* Estados */
-  const [characters, setCharacters] = useState([])
+  /* Estados y localStorage con useEffect */
+  const [characters, setCharacters] = useLocalStorage(
+    "characters",
+    []
+  )
   const [newCharacter, setNewCharacter] = useState(emptyCharacter)
   const [editingId, setEditingId] = useState(null)
   const [search, setSearch] = useState("")
@@ -25,81 +30,22 @@ function App() {
   const [sortBy, setSortBy] = useState("nameAsc")
 
   /* Datos derivados*/
-  const raceFilterOptions = useMemo(() => {
-    return [
-      ...new Set(
-        characters.map(character =>
-          character.data.race
-        )
-      )
-    ]
-  }, [characters])
-  const classFilterOptions = useMemo(() => {
-    return [
-      ...new Set(
-        characters.map(character =>
-          character.data.className
-        )
-      )
-    ]
-  }, [characters])
-  /* muy simple, no conviene useMemo */
-  const normalizedSearch = search.trim().toLowerCase()
-  const filteredCharacters = useMemo(() => {
-    return characters.filter(character => {
-      const searchableText = [
-        character.data.name,
-        character.data.race,
-        character.data.className
-      ].join(" ").toLowerCase()
-      const matchesSearch =
-        searchableText.includes(normalizedSearch)
-      const matchesRace =
-        raceFilter === "all" ||
-        character.data.race === raceFilter
-      const matchesClass =
-        classFilter === "all" ||
-        character.data.className === classFilter
-      return (
-        matchesSearch &&
-        matchesRace &&
-        matchesClass
-      )
-    })
-  }, [characters, search, raceFilter, classFilter])
-  const sortedCharacters = useMemo(() => {
-    return [...filteredCharacters].sort((a, b) => {
-      if (sortBy === "nameAsc") {
-        return a.data.name.localeCompare(b.data.name)
-      }
-      if (sortBy === "nameDesc") {
-        return b.data.name.localeCompare(a.data.name)
-      }
-      if (sortBy === "levelDesc") {
-        return Number(b.data.level) - Number(a.data.level)
-      }
-      if (sortBy === "levelAsc") {
-        return Number(a.data.level) - Number(b.data.level)
-      }
-      return 0
-    })
-  }, [filteredCharacters, sortBy])
-
-  /* Efectos */
-  const firstRender = useRef(true)
-  useEffect(() => {
-    const savedCharacters = JSON.parse(localStorage.getItem("characters"))
-    if (savedCharacters !== null) {
-      setCharacters(savedCharacters)
-    }
-  }, [])
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false
-      return
-    }
-    localStorage.setItem("characters", JSON.stringify(characters))
-  }, [characters])
+  const raceFilterOptions = useMemo(() =>
+    getRaceOptions(characters),
+    [characters]
+  )
+  const classFilterOptions = useMemo(() =>
+    getClassOptions(characters),
+    [characters]
+  )
+  const filteredCharacters = useMemo(() =>
+    filterCharacters(characters, search, raceFilter, classFilter),
+    [characters, search, raceFilter, classFilter]
+  )
+  const sortedCharacters = useMemo(() =>
+    sortCharacters(filteredCharacters, sortBy),
+    [filteredCharacters, sortBy]
+  )
 
   function saveCharacter() {
     if (
@@ -112,16 +58,19 @@ function App() {
     }
 
     if (editingId !== null) {
-      setCharacters(
-        characters.map(character =>
+      setCharacters(previousCharacters =>
+        previousCharacters.map(character =>
           character.id === editingId
-            ? newCharacter : character
+            ? {
+              ...newCharacter,
+              id: editingId
+            } : character
         )
       )
       setEditingId(null)
     } else {
-      setCharacters([
-        ...characters,
+      setCharacters(previousCharacters => [
+        ...previousCharacters,
         {
           ...newCharacter,
           id: crypto.randomUUID()
@@ -147,8 +96,10 @@ function App() {
   }
 
   function deleteCharacter(id) {
-    setCharacters(
-      characters.filter(character => character.id !== id)
+    setCharacters(previousCharacters =>
+      previousCharacters.filter(
+        character => character.id !== id
+      )
     )
 
     if (editingId === id) {
