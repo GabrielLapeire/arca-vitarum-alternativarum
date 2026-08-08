@@ -1,3 +1,4 @@
+/* Yo muestro interfaz. */
 function CharacterCard({
   character,
   updateCharacter,

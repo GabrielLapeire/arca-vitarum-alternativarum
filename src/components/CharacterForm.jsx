@@ -1,3 +1,4 @@
+/* Yo muestro interfaz. */
 function CharacterForm({
   newCharacter,
   setNewCharacter,

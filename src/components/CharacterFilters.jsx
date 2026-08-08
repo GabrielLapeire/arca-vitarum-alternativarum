@@ -1,3 +1,4 @@
+/* Yo muestro interfaz. */
 function CharacterFilters({
   search,
   setSearch,

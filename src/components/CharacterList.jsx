@@ -1,3 +1,4 @@
+/* Yo muestro interfaz. */
 import CharacterCard from './CharacterCard'
 
 function CharacterList({

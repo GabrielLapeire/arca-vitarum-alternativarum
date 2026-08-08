@@ -1,3 +1,4 @@
+/* Yo hago cálculos sobre los personajes. */
 export function getRaceOptions(characters) {
   return [
     ...new Set(

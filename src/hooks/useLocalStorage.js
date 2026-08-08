@@ -1,3 +1,4 @@
+/* Yo me encargo de persistir cualquier estado en localStorage. */
 import { useState, useEffect } from "react"
 
 export function useLocalStorage(key, initialValue) {
