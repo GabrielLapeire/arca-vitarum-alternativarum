@@ -12,8 +12,10 @@ function App() {
     characters,
     newCharacter,
     editingId,
+    errors,
     saveCharacter,
     updateCharacter,
+    cancelUpdateCharacter,
     deleteCharacter,
     setNewCharacter
   } = useCharacters()
@@ -62,6 +64,8 @@ function App() {
         setNewCharacter={setNewCharacter}
         saveCharacter={saveCharacter}
         editingId={editingId}
+        cancelUpdateCharacter={cancelUpdateCharacter}
+        errors={errors}
       />
       <CharacterList
         characters={sortedCharacters}

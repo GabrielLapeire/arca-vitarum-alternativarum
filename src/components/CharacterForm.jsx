@@ -3,7 +3,9 @@ function CharacterForm({
   newCharacter,
   setNewCharacter,
   saveCharacter,
-  editingId
+  editingId,
+  cancelUpdateCharacter,
+  errors
 }) {
   return (
     <div className="card shadow mb-4">
@@ -28,6 +30,12 @@ function CharacterForm({
                 })
               }
             />
+
+            {errors.name && (
+              <div className="text-danger">
+                {errors.name}
+              </div>
+            )}
           </div>
 
           <div className="col-md-6">
@@ -46,6 +54,12 @@ function CharacterForm({
                 })
               }
             />
+
+            {errors.race && (
+              <div className="text-danger">
+                {errors.race}
+              </div>
+            )}
           </div>
 
           <div className="col-md-6">
@@ -64,6 +78,12 @@ function CharacterForm({
                 })
               }
             />
+
+            {errors.className && (
+              <div className="text-danger">
+                {errors.className}
+              </div>
+            )}
           </div>
 
           <div className="col-md-6">
@@ -82,15 +102,31 @@ function CharacterForm({
                 })
               }
             />
+
+            {errors.level && (
+              <div className="text-danger">
+                {errors.level}
+              </div>
+            )}
           </div>
         </div>
-        <button
-          onClick={saveCharacter}
-          className="btn btn-primary mt-4"
-        >
-          {editingId ? "Actualizar personaje" : "Guardar personaje"}
-        </button>
+        <div className="d-flex gap-2 mt-4">
+          <button
+            onClick={saveCharacter}
+            className="btn btn-primary"
+          >
+            {editingId ? "Actualizar personaje" : "Guardar personaje"}
+          </button>
 
+          {editingId !== null && (
+            <button
+              onClick={cancelUpdateCharacter}
+              className="btn btn-secondary"
+            >
+              Cancelar
+            </button>
+          )}
+        </div>
       </div>
     </div>
   )

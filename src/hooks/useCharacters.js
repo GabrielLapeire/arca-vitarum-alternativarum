@@ -21,14 +21,27 @@ export function useCharacters() {
   )
   const [newCharacter, setNewCharacter] = useState(emptyCharacter)
   const [editingId, setEditingId] = useState(null)
+  const [errors, setErrors] = useState({})
 
   function saveCharacter() {
-    if (
-      newCharacter.data.name.trim() === '' ||
-      newCharacter.data.race.trim() === '' ||
-      newCharacter.data.className.trim() === '' ||
-      newCharacter.data.level === ''
-    ) {
+    const newErrors = {}
+    if (newCharacter.data.name.trim() === '') {
+      newErrors.name = "El nombre es un campo obligatorio"
+    }
+    if (newCharacter.data.race.trim() === '') {
+      newErrors.race = "La raza es un campo obligatorio"
+    }
+    if (newCharacter.data.className.trim() === '') {
+      newErrors.className = "La clase es un campo obligatorio"
+    }
+    if (newCharacter.data.level === '') {
+      newErrors.level = "El nivel es un campo obligatorio"
+    }
+    if (newCharacter.data.level < 1 || newCharacter.data.level > 20) {
+      newErrors.level = "El nivel debe estar entre 1 y 20"
+    }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
       return
     }
 
@@ -56,6 +69,7 @@ export function useCharacters() {
     setNewCharacter({
       ...emptyCharacter
     })
+    setErrors({})
   }
 
   function updateCharacter(id) {
@@ -68,6 +82,16 @@ export function useCharacters() {
     setNewCharacter({
       ...character
     })
+
+    setErrors({})
+  }
+
+  function cancelUpdateCharacter() {
+    setEditingId(null)
+    setNewCharacter({
+      ...emptyCharacter
+    })
+    setErrors({})
   }
 
   function deleteCharacter(id) {
@@ -82,6 +106,7 @@ export function useCharacters() {
       setNewCharacter({
         ...emptyCharacter
       })
+      setErrors({})
     }
   }
 
@@ -89,8 +114,10 @@ export function useCharacters() {
     characters,
     newCharacter,
     editingId,
+    errors,
     saveCharacter,
     updateCharacter,
+    cancelUpdateCharacter,
     deleteCharacter,
     setNewCharacter
   }
