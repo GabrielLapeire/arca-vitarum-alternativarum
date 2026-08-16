@@ -4,13 +4,14 @@ import { useLocalStorage } from './useLocalStorage'
 
 const emptyCharacter = {
   id: null,
-  system: "dnd5e",
-  data: {
-    name: '',
-    race: '',
-    className: '',
-    level: ''
-  }
+  name: '',
+  adaptations: []
+}
+
+const emptyAdaptation = {
+  system: '',
+  version: '',
+  data: {}
 }
 
 export function useCharacters() {
@@ -21,24 +22,14 @@ export function useCharacters() {
   )
   const [newCharacter, setNewCharacter] = useState(emptyCharacter)
   const [editingId, setEditingId] = useState(null)
+  const [newAdaptation, setNewAdaptation] = useState(emptyAdaptation)
+  const [editingAdaptationIndex, setEditingAdaptationIndex] = useState(null)
   const [errors, setErrors] = useState({})
 
   function saveCharacter() {
     const newErrors = {}
-    if (newCharacter.data.name.trim() === '') {
+    if (newCharacter.name.trim() === '') {
       newErrors.name = "El nombre es un campo obligatorio"
-    }
-    if (newCharacter.data.race.trim() === '') {
-      newErrors.race = "La raza es un campo obligatorio"
-    }
-    if (newCharacter.data.className.trim() === '') {
-      newErrors.className = "La clase es un campo obligatorio"
-    }
-    if (newCharacter.data.level === '') {
-      newErrors.level = "El nivel es un campo obligatorio"
-    }
-    if (newCharacter.data.level < 1 || newCharacter.data.level > 20) {
-      newErrors.level = "El nivel debe estar entre 1 y 20"
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
@@ -74,15 +65,12 @@ export function useCharacters() {
 
   function updateCharacter(id) {
     setEditingId(id)
-
     const character = characters.find(
       character => character.id === id
     )
-
     setNewCharacter({
       ...character
     })
-
     setErrors({})
   }
 
@@ -110,15 +98,98 @@ export function useCharacters() {
     }
   }
 
+  function saveAdaptation() {
+    const newErrors = {}
+    // Futuras validaciones de la adaptación
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
+
+    if (editingAdaptationIndex !== null) {
+      setNewCharacter(previousCharacter => ({
+        ...previousCharacter,
+        adaptations: previousCharacter.adaptations.map(
+          (adaptation, index) =>
+            index === editingAdaptationIndex
+              ? { ...newAdaptation }
+              : adaptation
+        )
+      }))
+      setEditingAdaptationIndex(null)
+    } else {
+      setNewCharacter(previousCharacter => ({
+        ...previousCharacter,
+        adaptations: [
+          ...previousCharacter.adaptations,
+          { ...newAdaptation }
+        ]
+      }))
+    }
+
+    setNewAdaptation({
+      ...emptyAdaptation
+    })
+
+    setEditingAdaptationIndex(null)
+    setErrors({})
+  }
+
+  function updateAdaptation(index) {
+    setEditingAdaptationIndex(index)
+    const adaptation = newCharacter.adaptations[index]
+    setNewAdaptation({
+      ...adaptation
+    })
+    setErrors({})
+  }
+
+  function cancelUpdateAdaptation() {
+    setEditingAdaptationIndex(null)
+    setNewAdaptation({
+      ...emptyAdaptation
+    })
+    setErrors({})
+  }
+
+  function deleteAdaptation(index) {
+    setNewCharacter(previousCharacter => ({
+      ...previousCharacter,
+      adaptations: previousCharacter.adaptations.filter(
+        (adaptation, AdaptationIndex) =>
+          AdaptationIndex !== index
+      )
+    }))
+
+    if (editingAdaptationIndex === index) {
+      setEditingAdaptationIndex(null)
+      setNewAdaptation({
+        ...emptyAdaptation
+      })
+      setErrors({})
+    }
+  }
+
   return {
     characters,
     newCharacter,
     editingId,
     errors,
+
+    newAdaptation,
+    editingAdaptationIndex,
+
     saveCharacter,
     updateCharacter,
     cancelUpdateCharacter,
     deleteCharacter,
-    setNewCharacter
+
+    saveAdaptation,
+    updateAdaptation,
+    cancelUpdateAdaptation,
+    deleteAdaptation,
+
+    setNewCharacter,
+    setNewAdaptation
   }
 }
