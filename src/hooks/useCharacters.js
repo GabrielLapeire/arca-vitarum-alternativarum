@@ -100,7 +100,10 @@ export function useCharacters() {
 
   function saveAdaptation() {
     const newErrors = {}
-    // Futuras validaciones de la adaptación
+    // Validaciones
+    if (newAdaptation.system === '') {
+      newErrors.system = "Debes seleccionar un sistema"
+    }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return

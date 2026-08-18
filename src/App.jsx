@@ -4,7 +4,7 @@ import CharacterFilters from './components/CharacterFilters'
 import CharacterForm from './components/CharacterForm'
 import CharacterList from './components/CharacterList'
 import { useCharacters } from './hooks/useCharacters'
-import { getRaceOptions, getClassOptions, filterCharacters, sortCharacters } from './utils/characterUtils'
+import { filterCharacters, sortCharacters } from './utils/characterUtils'
 
 function App() {
   /* Estados y hook personalizado para gestion de pj*/
@@ -13,29 +13,30 @@ function App() {
     newCharacter,
     editingId,
     errors,
+
+    newAdaptation,
+    editingAdaptationIndex,
+
     saveCharacter,
     updateCharacter,
     cancelUpdateCharacter,
     deleteCharacter,
-    setNewCharacter
+
+    saveAdaptation,
+    updateAdaptation,
+    cancelUpdateAdaptation,
+    deleteAdaptation,
+
+    setNewCharacter,
+    setNewAdaptation
   } = useCharacters()
   const [search, setSearch] = useState("")
-  const [raceFilter, setRaceFilter] = useState("all")
-  const [classFilter, setClassFilter] = useState("all")
   const [sortBy, setSortBy] = useState("nameAsc")
 
   /* Datos derivados*/
-  const raceFilterOptions = useMemo(() =>
-    getRaceOptions(characters),
-    [characters]
-  )
-  const classFilterOptions = useMemo(() =>
-    getClassOptions(characters),
-    [characters]
-  )
   const filteredCharacters = useMemo(() =>
-    filterCharacters(characters, search, raceFilter, classFilter),
-    [characters, search, raceFilter, classFilter]
+    filterCharacters(characters, search),
+    [characters, search]
   )
   const sortedCharacters = useMemo(() =>
     sortCharacters(filteredCharacters, sortBy),
@@ -50,12 +51,6 @@ function App() {
       <CharacterFilters
         search={search}
         setSearch={setSearch}
-        raceFilter={raceFilter}
-        setRaceFilter={setRaceFilter}
-        raceFilterOptions={raceFilterOptions}
-        classFilter={classFilter}
-        setClassFilter={setClassFilter}
-        classFilterOptions={classFilterOptions}
         sortBy={sortBy}
         setSortBy={setSortBy}
       />
@@ -66,6 +61,13 @@ function App() {
         editingId={editingId}
         cancelUpdateCharacter={cancelUpdateCharacter}
         errors={errors}
+        newAdaptation={newAdaptation}
+        setNewAdaptation={setNewAdaptation}
+        editingAdaptationIndex={editingAdaptationIndex}
+        saveAdaptation={saveAdaptation}
+        updateAdaptation={updateAdaptation}
+        cancelUpdateAdaptation={cancelUpdateAdaptation}
+        deleteAdaptation={deleteAdaptation}
       />
       <CharacterList
         characters={sortedCharacters}

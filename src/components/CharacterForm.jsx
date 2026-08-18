@@ -5,7 +5,14 @@ function CharacterForm({
   saveCharacter,
   editingId,
   cancelUpdateCharacter,
-  errors
+  errors,
+  newAdaptation,
+  setNewAdaptation,
+  editingAdaptationIndex,
+  saveAdaptation,
+  updateAdaptation,
+  cancelUpdateAdaptation,
+  deleteAdaptation
 }) {
   return (
     <div className="card shadow mb-4">
@@ -19,14 +26,11 @@ function CharacterForm({
               type="text"
               className="form-control"
               placeholder="Nombre"
-              value={newCharacter.data.name}
+              value={newCharacter.name}
               onChange={(e) =>
                 setNewCharacter({
                   ...newCharacter,
-                  data: {
-                    ...newCharacter.data,
-                    name: e.target.value
-                  }
+                  name: e.target.value
                 })
               }
             />
@@ -39,73 +43,69 @@ function CharacterForm({
           </div>
 
           <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Raza"
-              value={newCharacter.data.race}
+            <select
+              className="form-select"
+              value={newAdaptation.system}
               onChange={(e) =>
-                setNewCharacter({
-                  ...newCharacter,
-                  data: {
-                    ...newCharacter.data,
-                    race: e.target.value
-                  }
+                setNewAdaptation({
+                  ...newAdaptation,
+                  system: e.target.value
                 })
               }
-            />
+            >
+              <option value="">Seleccionar sistema</option>
+              <option value="dnd5e">D&D</option>
+              <option value="daggerheart">DaggerHeart</option>
+              <option value="icons">Icons</option>
+              <option value="vampire">Vampiro: La Mascarada</option>
+              <option value="imperium-maledictum">Imperium Maledictum</option>
+              <option value="wrath-glory">Wrath & Glory</option>
+            </select>
 
-            {errors.race && (
-              <div className="text-danger">
-                {errors.race}
-              </div>
-            )}
-          </div>
+            <button
+              type="button"
+              onClick={saveAdaptation}
+              className="btn btn-success mt-2"
+            >
+              {editingAdaptationIndex !== null
+                ? "Actualizar adaptación"
+                : "Agregar adaptación"}
+            </button>
 
-          <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Clase"
-              value={newCharacter.data.className}
-              onChange={(e) =>
-                setNewCharacter({
-                  ...newCharacter,
-                  data: {
-                    ...newCharacter.data,
-                    className: e.target.value
-                  }
-                })
-              }
-            />
+            {newCharacter.adaptations.length > 0 && (
+              <div className="col-12">
+                <h5>Adaptaciones</h5>
 
-            {errors.className && (
-              <div className="text-danger">
-                {errors.className}
-              </div>
-            )}
-          </div>
+                <ul className="list-group">
+                  {newCharacter.adaptations.map((adaptation, index) => (
+                    <li
+                      key={index}
+                      className="list-group-item d-flex justify-content-between align-items-center"
+                    >
+                      <span>
+                        {adaptation.system}
+                      </span>
 
-          <div className="col-md-6">
-            <input
-              type="number"
-              className="form-control"
-              placeholder="Nivel"
-              value={newCharacter.data.level}
-              onChange={(e) =>
-                setNewCharacter({
-                  ...newCharacter,
-                  data: {
-                    ...newCharacter.data,
-                    level: Number(e.target.value)
-                  }
-                })
-              }
-            />
+                      <div className="d-flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => updateAdaptation(index)}
+                          className="btn btn-sm btn-warning"
+                        >
+                          Editar
+                        </button>
 
-            {errors.level && (
-              <div className="text-danger">
-                {errors.level}
+                        <button
+                          type="button"
+                          onClick={() => deleteAdaptation(index)}
+                          className="btn btn-sm btn-danger"
+                        >
+                          Eliminar
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
           </div>

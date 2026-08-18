@@ -2,12 +2,6 @@
 function CharacterFilters({
   search,
   setSearch,
-  raceFilter,
-  setRaceFilter,
-  raceFilterOptions,
-  classFilter,
-  setClassFilter,
-  classFilterOptions,
   sortBy,
   setSortBy
 }) {
@@ -27,56 +21,11 @@ function CharacterFilters({
             <input
               type="text"
               className="form-control"
-              placeholder="Nombre, raza o clase..."
+              placeholder="Nombre..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-
-
-          <div className="col-md-4">
-            <label className="form-label">
-              Raza
-            </label>
-            <select
-              className="form-select"
-              value={raceFilter}
-              onChange={(e) => setRaceFilter(e.target.value)}
-            >
-              <option value="all">
-                Todas las razas
-              </option>
-
-              {raceFilterOptions.map(race => (
-                <option key={race} value={race}>
-                  {race}
-                </option>
-              ))}
-            </select>
-          </div>
-
-
-          <div className="col-md-4">
-            <label className="form-label">
-              Clase
-            </label>
-            <select
-              className="form-select"
-              value={classFilter}
-              onChange={(e) => setClassFilter(e.target.value)}
-            >
-              <option value="all">
-                Todas las clases
-              </option>
-
-              {classFilterOptions.map(className => (
-                <option key={className} value={className}>
-                  {className}
-                </option>
-              ))}
-            </select>
-          </div>
-
 
           <div className="col-md-4">
             <label className="form-label">
@@ -93,14 +42,6 @@ function CharacterFilters({
 
               <option value="nameDesc">
                 Nombre Z-A
-              </option>
-
-              <option value="levelDesc">
-                Nivel mayor a menor
-              </option>
-
-              <option value="levelAsc">
-                Nivel menor a mayor
               </option>
             </select>
           </div>
