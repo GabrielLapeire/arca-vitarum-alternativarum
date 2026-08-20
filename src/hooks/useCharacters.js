@@ -9,13 +9,13 @@ const emptyCharacter = {
 }
 
 const emptyAdaptation = {
+  id: null,
   system: '',
   version: '',
   data: {}
 }
 
 export function useCharacters() {
-  /* Estados y localStorage con useEffect */
   const [characters, setCharacters] = useLocalStorage(
     "characters",
     []
@@ -23,13 +23,16 @@ export function useCharacters() {
   const [newCharacter, setNewCharacter] = useState(emptyCharacter)
   const [editingId, setEditingId] = useState(null)
   const [newAdaptation, setNewAdaptation] = useState(emptyAdaptation)
-  const [editingAdaptationIndex, setEditingAdaptationIndex] = useState(null)
+  const [editingAdaptationId, setEditingAdaptationId] = useState(null)
   const [errors, setErrors] = useState({})
 
   function saveCharacter() {
     const newErrors = {}
     if (newCharacter.name.trim() === '') {
       newErrors.name = "El nombre es un campo obligatorio"
+    }
+    if (newCharacter.adaptations.length === 0) {
+      newErrors.adaptations = "Debe incluir al menos un sistema"
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
@@ -100,32 +103,38 @@ export function useCharacters() {
 
   function saveAdaptation() {
     const newErrors = {}
-    // Validaciones
+
     if (newAdaptation.system === '') {
       newErrors.system = "Debes seleccionar un sistema"
     }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
 
-    if (editingAdaptationIndex !== null) {
+    if (editingAdaptationId !== null) {
       setNewCharacter(previousCharacter => ({
         ...previousCharacter,
         adaptations: previousCharacter.adaptations.map(
           (adaptation, index) =>
-            index === editingAdaptationIndex
-              ? { ...newAdaptation }
+            index === editingAdaptationId
+              ? {
+                ...newAdaptation,
+                id: adaptation.id
+              }
               : adaptation
         )
       }))
-      setEditingAdaptationIndex(null)
     } else {
       setNewCharacter(previousCharacter => ({
         ...previousCharacter,
         adaptations: [
           ...previousCharacter.adaptations,
-          { ...newAdaptation }
+          {
+            ...newAdaptation,
+            id: crypto.randomUUID()
+          }
         ]
       }))
     }
@@ -134,12 +143,12 @@ export function useCharacters() {
       ...emptyAdaptation
     })
 
-    setEditingAdaptationIndex(null)
+    setEditingAdaptationId(null)
     setErrors({})
   }
 
   function updateAdaptation(index) {
-    setEditingAdaptationIndex(index)
+    setEditingAdaptationId(index)
     const adaptation = newCharacter.adaptations[index]
     setNewAdaptation({
       ...adaptation
@@ -148,7 +157,7 @@ export function useCharacters() {
   }
 
   function cancelUpdateAdaptation() {
-    setEditingAdaptationIndex(null)
+    setEditingAdaptationId(null)
     setNewAdaptation({
       ...emptyAdaptation
     })
@@ -164,8 +173,8 @@ export function useCharacters() {
       )
     }))
 
-    if (editingAdaptationIndex === index) {
-      setEditingAdaptationIndex(null)
+    if (editingAdaptationId === index) {
+      setEditingAdaptationId(null)
       setNewAdaptation({
         ...emptyAdaptation
       })
@@ -180,7 +189,7 @@ export function useCharacters() {
     errors,
 
     newAdaptation,
-    editingAdaptationIndex,
+    editingAdaptationId,
 
     saveCharacter,
     updateCharacter,

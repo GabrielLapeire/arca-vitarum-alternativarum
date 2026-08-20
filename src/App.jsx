@@ -15,7 +15,7 @@ function App() {
     errors,
 
     newAdaptation,
-    editingAdaptationIndex,
+    editingAdaptationId,
 
     saveCharacter,
     updateCharacter,
@@ -63,7 +63,7 @@ function App() {
         errors={errors}
         newAdaptation={newAdaptation}
         setNewAdaptation={setNewAdaptation}
-        editingAdaptationIndex={editingAdaptationIndex}
+        editingAdaptationId={editingAdaptationId}
         saveAdaptation={saveAdaptation}
         updateAdaptation={updateAdaptation}
         cancelUpdateAdaptation={cancelUpdateAdaptation}

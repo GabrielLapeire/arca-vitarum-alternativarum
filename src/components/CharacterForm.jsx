@@ -8,7 +8,7 @@ function CharacterForm({
   errors,
   newAdaptation,
   setNewAdaptation,
-  editingAdaptationIndex,
+  editingAdaptationId,
   saveAdaptation,
   updateAdaptation,
   cancelUpdateAdaptation,
@@ -54,7 +54,7 @@ function CharacterForm({
               }
             >
               <option value="">Seleccionar sistema</option>
-              <option value="dnd5e">D&D</option>
+              <option value="dnd">D&D</option>
               <option value="daggerheart">DaggerHeart</option>
               <option value="icons">Icons</option>
               <option value="vampire">Vampiro: La Mascarada</option>
@@ -67,7 +67,7 @@ function CharacterForm({
               onClick={saveAdaptation}
               className="btn btn-success mt-2"
             >
-              {editingAdaptationIndex !== null
+              {editingAdaptationId !== null
                 ? "Actualizar adaptación"
                 : "Agregar adaptación"}
             </button>
@@ -77,9 +77,9 @@ function CharacterForm({
                 <h5>Adaptaciones</h5>
 
                 <ul className="list-group">
-                  {newCharacter.adaptations.map((adaptation, index) => (
+                  {newCharacter.adaptations.map((adaptation) => (
                     <li
-                      key={index}
+                      key={adaptation.id}
                       className="list-group-item d-flex justify-content-between align-items-center"
                     >
                       <span>
@@ -89,7 +89,7 @@ function CharacterForm({
                       <div className="d-flex gap-2">
                         <button
                           type="button"
-                          onClick={() => updateAdaptation(index)}
+                          onClick={() => updateAdaptation(adaptation.id)}
                           className="btn btn-sm btn-warning"
                         >
                           Editar
@@ -97,7 +97,7 @@ function CharacterForm({
 
                         <button
                           type="button"
-                          onClick={() => deleteAdaptation(index)}
+                          onClick={() => deleteAdaptation(adaptation.id)}
                           className="btn btn-sm btn-danger"
                         >
                           Eliminar
@@ -106,6 +106,17 @@ function CharacterForm({
                     </li>
                   ))}
                 </ul>
+              </div>
+            )}
+
+            {errors.system && (
+              <div className="text-danger">
+                {errors.system}
+              </div>
+            )}
+            {errors.adaptations && (
+              <div className="text-danger">
+                {errors.adaptations}
               </div>
             )}
           </div>
