@@ -26,6 +26,7 @@ function App() {
     updateAdaptation,
     cancelUpdateAdaptation,
     deleteAdaptation,
+    changeAdaptationSystem,
 
     setNewCharacter,
     setNewAdaptation
@@ -68,6 +69,7 @@ function App() {
         updateAdaptation={updateAdaptation}
         cancelUpdateAdaptation={cancelUpdateAdaptation}
         deleteAdaptation={deleteAdaptation}
+        changeAdaptationSystem={changeAdaptationSystem}
       />
       <CharacterList
         characters={sortedCharacters}

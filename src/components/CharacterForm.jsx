@@ -1,4 +1,5 @@
 /* Yo muestro interfaz. */
+import DndCharacterForm from './adaptations/dnd/DndCharacterForm'
 function CharacterForm({
   newCharacter,
   setNewCharacter,
@@ -12,8 +13,18 @@ function CharacterForm({
   saveAdaptation,
   updateAdaptation,
   cancelUpdateAdaptation,
-  deleteAdaptation
+  deleteAdaptation,
+  changeAdaptationSystem
 }) {
+  function updateAdaptationData(updater) {
+    setNewAdaptation(previousAdaptation => ({
+      ...previousAdaptation,
+      data: typeof updater === 'function'
+        ? updater(previousAdaptation.data || {})
+        : updater
+    }))
+  }
+
   return (
     <div className="card shadow mb-4">
       <div className="card-body">
@@ -46,21 +57,19 @@ function CharacterForm({
             <select
               className="form-select"
               value={newAdaptation.system}
-              onChange={(e) =>
-                setNewAdaptation({
-                  ...newAdaptation,
-                  system: e.target.value
-                })
-              }
+              onChange={(e) => changeAdaptationSystem(e.target.value)}
             >
               <option value="">Seleccionar sistema</option>
               <option value="dnd">D&D</option>
               <option value="daggerheart">DaggerHeart</option>
-              <option value="icons">Icons</option>
-              <option value="vampire">Vampiro: La Mascarada</option>
-              <option value="imperium-maledictum">Imperium Maledictum</option>
-              <option value="wrath-glory">Wrath & Glory</option>
             </select>
+
+            {newAdaptation.system === 'dnd' && (
+              <DndCharacterForm
+                data={newAdaptation.data}
+                setData={updateAdaptationData}
+              />
+            )}
 
             <button
               type="button"

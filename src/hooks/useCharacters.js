@@ -8,6 +8,91 @@ const emptyCharacter = {
   adaptations: []
 }
 
+const emptyDndData = {
+  playerName: '',
+  className: '',
+  subclass: '',
+  level: '',
+  experience: '',
+
+  background: '',
+  species: '',
+  alignment: '',
+  languages: '',
+
+  abilities: {
+    strength: '',
+    dexterity: '',
+    constitution: '',
+    intelligence: '',
+    wisdom: '',
+    charisma: ''
+  },
+
+  savingThrows: {
+    strength: false,
+    dexterity: false,
+    constitution: false,
+    intelligence: false,
+    wisdom: false,
+    charisma: false
+  },
+
+  skills: {
+    acrobatics: false,
+    animalHandling: false,
+    arcana: false,
+    athletics: false,
+    deception: false,
+    history: false,
+    insight: false,
+    intimidation: false,
+    investigation: false,
+    medicine: false,
+    nature: false,
+    perception: false,
+    performance: false,
+    persuasion: false,
+    religion: false,
+    sleightOfHand: false,
+    stealth: false,
+    survival: false
+  },
+
+  combat: {
+    armorClass: '',
+    currentHitPoints: '',
+    maxHitPoints: '',
+    temporaryHitPoints: '',
+    hitDice: '',
+    hitDiceSpent: '',
+    initiative: '',
+    speed: '',
+    size: '',
+    passivePerception: '',
+    deathSavesSuccesses: 0,
+    deathSavesFailures: 0
+  },
+
+  heroicInspiration: false,
+
+  classFeatures: '',
+  speciesTraits: '',
+  feats: '',
+
+  armorTraining: '',
+  weaponProficiencies: '',
+  toolProficiencies: '',
+
+  equipment: '',
+  coins: '',
+
+  appearance: '',
+  personality: '',
+  backstory: '',
+  notes: ''
+}
+
 const emptyAdaptation = {
   id: null,
   system: '',
@@ -63,6 +148,10 @@ export function useCharacters() {
     setNewCharacter({
       ...emptyCharacter
     })
+    setNewAdaptation({
+      ...emptyAdaptation
+    })
+    setEditingAdaptationId(null)
     setErrors({})
   }
 
@@ -74,6 +163,10 @@ export function useCharacters() {
     setNewCharacter({
       ...character
     })
+    setEditingAdaptationId(null)
+    setNewAdaptation({
+      ...emptyAdaptation
+    })
     setErrors({})
   }
 
@@ -82,6 +175,12 @@ export function useCharacters() {
     setNewCharacter({
       ...emptyCharacter
     })
+
+    setEditingAdaptationId(null)
+    setNewAdaptation({
+      ...emptyAdaptation
+    })
+
     setErrors({})
   }
 
@@ -96,6 +195,10 @@ export function useCharacters() {
       setEditingId(null)
       setNewCharacter({
         ...emptyCharacter
+      })
+      setEditingAdaptationId(null)
+      setNewAdaptation({
+        ...emptyAdaptation
       })
       setErrors({})
     }
@@ -117,12 +220,9 @@ export function useCharacters() {
       setNewCharacter(previousCharacter => ({
         ...previousCharacter,
         adaptations: previousCharacter.adaptations.map(
-          (adaptation, index) =>
-            index === editingAdaptationId
-              ? {
-                ...newAdaptation,
-                id: adaptation.id
-              }
+          adaptation =>
+            adaptation.id === editingAdaptationId
+              ? { ...newAdaptation, id: editingAdaptationId }
               : adaptation
         )
       }))
@@ -147,12 +247,22 @@ export function useCharacters() {
     setErrors({})
   }
 
-  function updateAdaptation(index) {
-    setEditingAdaptationId(index)
-    const adaptation = newCharacter.adaptations[index]
+  function updateAdaptation(id) {
+    const adaptation = newCharacter.adaptations.find(
+      adaptation => adaptation.id === id
+    )
+    if (!adaptation) {
+      return
+    }
+
+    setEditingAdaptationId(id)
     setNewAdaptation({
-      ...adaptation
+      ...adaptation,
+      data: adaptation.data
+        ? { ...adaptation.data }
+        : {}
     })
+
     setErrors({})
   }
 
@@ -164,22 +274,36 @@ export function useCharacters() {
     setErrors({})
   }
 
-  function deleteAdaptation(index) {
+  function deleteAdaptation(id) {
     setNewCharacter(previousCharacter => ({
       ...previousCharacter,
       adaptations: previousCharacter.adaptations.filter(
-        (adaptation, AdaptationIndex) =>
-          AdaptationIndex !== index
+        adaptation => adaptation.id !== id
       )
     }))
 
-    if (editingAdaptationId === index) {
+    if (editingAdaptationId === id) {
       setEditingAdaptationId(null)
       setNewAdaptation({
         ...emptyAdaptation
       })
       setErrors({})
     }
+  }
+
+  function changeAdaptationSystem(system) {
+    setNewAdaptation(previousAdaptation => ({
+      ...previousAdaptation,
+      system,
+      version: system === 'dnd'
+        ? '2024'
+        : '',
+      data: system === 'dnd'
+        ? { ...emptyDndData }
+        : {}
+    }))
+
+    setErrors({})
   }
 
   return {
@@ -195,6 +319,7 @@ export function useCharacters() {
     updateCharacter,
     cancelUpdateCharacter,
     deleteCharacter,
+    changeAdaptationSystem,
 
     saveAdaptation,
     updateAdaptation,
