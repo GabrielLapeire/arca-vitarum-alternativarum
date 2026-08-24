@@ -64,13 +64,6 @@ function CharacterForm({
               <option value="daggerheart">DaggerHeart</option>
             </select>
 
-            {newAdaptation.system === 'dnd' && (
-              <DndCharacterForm
-                data={newAdaptation.data}
-                setData={updateAdaptationData}
-              />
-            )}
-
             <button
               type="button"
               onClick={saveAdaptation}
@@ -80,43 +73,6 @@ function CharacterForm({
                 ? "Actualizar adaptación"
                 : "Agregar adaptación"}
             </button>
-
-            {newCharacter.adaptations.length > 0 && (
-              <div className="col-12">
-                <h5>Adaptaciones</h5>
-
-                <ul className="list-group">
-                  {newCharacter.adaptations.map((adaptation) => (
-                    <li
-                      key={adaptation.id}
-                      className="list-group-item d-flex justify-content-between align-items-center"
-                    >
-                      <span>
-                        {adaptation.system}
-                      </span>
-
-                      <div className="d-flex gap-2">
-                        <button
-                          type="button"
-                          onClick={() => updateAdaptation(adaptation.id)}
-                          className="btn btn-sm btn-warning"
-                        >
-                          Editar
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => deleteAdaptation(adaptation.id)}
-                          className="btn btn-sm btn-danger"
-                        >
-                          Eliminar
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
 
             {errors.system && (
               <div className="text-danger">
@@ -130,6 +86,51 @@ function CharacterForm({
             )}
           </div>
         </div>
+
+        {newCharacter.adaptations.length > 0 && (
+          <div className="col-12">
+            <h5>Adaptaciones</h5>
+
+            <ul className="list-group">
+              {newCharacter.adaptations.map((adaptation) => (
+                <li
+                  key={adaptation.id}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <span>
+                    {adaptation.system}
+                  </span>
+
+                  <div className="d-flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => updateAdaptation(adaptation.id)}
+                      className="btn btn-sm btn-warning"
+                    >
+                      Editar
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => deleteAdaptation(adaptation.id)}
+                      className="btn btn-sm btn-danger"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {newAdaptation.system === 'dnd' && (
+          <DndCharacterForm
+            data={newAdaptation.data}
+            setData={updateAdaptationData}
+          />
+        )}
+        
         <div className="d-flex gap-2 mt-4">
           <button
             onClick={saveCharacter}
