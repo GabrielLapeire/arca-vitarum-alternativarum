@@ -130,7 +130,7 @@ function CharacterForm({
             setData={updateAdaptationData}
           />
         )}
-        
+
         <div className="d-flex gap-2 mt-4">
           <button
             onClick={saveCharacter}

@@ -17,12 +17,15 @@ function CharacterList({
 
   return (
     <div className="row g-4">
-      <h5 className="mb-3">
-        Se encontraron {characters.length} personajes
-      </h5>
+      <div className="col-12">
+        <h5 className="mb-0">
+          Se encontraron {characters.length} personajes
+        </h5>
+      </div>
+
       {characters.map((character) => (
         <div
-          className="col-md-4"
+          className="col-12 col-md-6 col-xl-4"
           key={character.id}
         >
           <CharacterCard
