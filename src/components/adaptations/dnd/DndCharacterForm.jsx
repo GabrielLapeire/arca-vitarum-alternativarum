@@ -1,172 +1,15 @@
 /* Yo muestro y gestiono los datos específicos de una ficha de D&D 2024. */
-
-const ABILITIES = [
-  {
-    id: 'strength',
-    name: 'Fuerza',
-    shortName: 'Fue'
-  },
-  {
-    id: 'dexterity',
-    name: 'Destreza',
-    shortName: 'Des'
-  },
-  {
-    id: 'constitution',
-    name: 'Constitución',
-    shortName: 'Con'
-  },
-  {
-    id: 'intelligence',
-    name: 'Inteligencia',
-    shortName: 'Int'
-  },
-  {
-    id: 'wisdom',
-    name: 'Sabiduría',
-    shortName: 'Sab'
-  },
-  {
-    id: 'charisma',
-    name: 'Carisma',
-    shortName: 'Car'
-  }
-]
-
-const SKILLS = [
-  {
-    id: 'acrobatics',
-    name: 'Acrobacias',
-    ability: 'dexterity'
-  },
-  {
-    id: 'animalHandling',
-    name: 'Trato con animales',
-    ability: 'wisdom'
-  },
-  {
-    id: 'arcana',
-    name: 'Arcanos',
-    ability: 'intelligence'
-  },
-  {
-    id: 'athletics',
-    name: 'Atletismo',
-    ability: 'strength'
-  },
-  {
-    id: 'deception',
-    name: 'Engaño',
-    ability: 'charisma'
-  },
-  {
-    id: 'history',
-    name: 'Historia',
-    ability: 'intelligence'
-  },
-  {
-    id: 'insight',
-    name: 'Perspicacia',
-    ability: 'wisdom'
-  },
-  {
-    id: 'intimidation',
-    name: 'Intimidación',
-    ability: 'charisma'
-  },
-  {
-    id: 'investigation',
-    name: 'Investigación',
-    ability: 'intelligence'
-  },
-  {
-    id: 'medicine',
-    name: 'Medicina',
-    ability: 'wisdom'
-  },
-  {
-    id: 'nature',
-    name: 'Naturaleza',
-    ability: 'intelligence'
-  },
-  {
-    id: 'perception',
-    name: 'Percepción',
-    ability: 'wisdom'
-  },
-  {
-    id: 'performance',
-    name: 'Interpretación',
-    ability: 'charisma'
-  },
-  {
-    id: 'persuasion',
-    name: 'Persuasión',
-    ability: 'charisma'
-  },
-  {
-    id: 'religion',
-    name: 'Religión',
-    ability: 'intelligence'
-  },
-  {
-    id: 'sleightOfHand',
-    name: 'Juego de manos',
-    ability: 'dexterity'
-  },
-  {
-    id: 'stealth',
-    name: 'Sigilo',
-    ability: 'dexterity'
-  },
-  {
-    id: 'survival',
-    name: 'Supervivencia',
-    ability: 'wisdom'
-  }
-]
-
-function getAbilityModifier(score) {
-  if (score === '' || score === null || score === undefined) {
-    return ''
-  }
-
-  const numericScore = Number(score)
-
-  if (Number.isNaN(numericScore)) {
-    return ''
-  }
-
-  return Math.floor((numericScore - 10) / 2)
-}
-
-function formatModifier(modifier) {
-  if (modifier === '') {
-    return ''
-  }
-
-  return modifier >= 0
-    ? `+${modifier}`
-    : modifier
-}
-
-function getProficiencyBonus(level) {
-  if (level === '' || level === null || level === undefined) {
-    return ''
-  }
-
-  const numericLevel = Number(level)
-
-  if (Number.isNaN(numericLevel)) {
-    return ''
-  }
-
-  if (numericLevel <= 4) return 2
-  if (numericLevel <= 8) return 3
-  if (numericLevel <= 12) return 4
-  if (numericLevel <= 16) return 5
-  return 6
-}
+import {
+  ABILITIES,
+  SKILLS
+} from './dndConstants'
+import {
+  getAbilityModifier,
+  formatModifier,
+  getProficiencyBonus,
+  getSavingThrowModifier,
+  getSkillModifier
+} from './dndUtils'
 
 function DndCharacterForm({
   data = {},
@@ -259,44 +102,6 @@ function DndCharacterForm({
     }))
   }
 
-  function getSavingThrowModifier(ability) {
-    const modifier = getAbilityModifier(
-      abilities[ability]
-    )
-
-    if (modifier === '') {
-      return ''
-    }
-
-    return modifier +
-      (savingThrows[ability]
-        ? Number(proficiencyBonus || 0)
-        : 0)
-  }
-
-  function getSkillModifier(skill) {
-    const skillData = SKILLS.find(
-      currentSkill => currentSkill.id === skill
-    )
-
-    if (!skillData) {
-      return ''
-    }
-
-    const modifier = getAbilityModifier(
-      abilities[skillData.ability]
-    )
-
-    if (modifier === '') {
-      return ''
-    }
-
-    return modifier +
-      (skills[skill]
-        ? Number(proficiencyBonus || 0)
-        : 0)
-  }
-
   const passivePerception =
     getSkillModifier('perception') === ''
       ? ''
@@ -330,7 +135,6 @@ function DndCharacterForm({
 
           <div className="card-body">
             <div className="row g-3">
-
               <div className="col-md-6">
                 <label className="form-label">
                   Nombre del jugador
@@ -498,7 +302,6 @@ function DndCharacterForm({
                   }
                 />
               </div>
-
             </div>
           </div>
         </div>
@@ -512,7 +315,6 @@ function DndCharacterForm({
 
           <div className="card-body">
             <div className="row g-3">
-
               {ABILITIES.map(ability => {
                 const modifier = getAbilityModifier(
                   abilities[ability.id]
@@ -555,7 +357,6 @@ function DndCharacterForm({
                   </div>
                 )
               })}
-
             </div>
           </div>
         </div>
@@ -570,7 +371,6 @@ function DndCharacterForm({
           </div>
 
           <div className="card-body">
-
             <div className="row mb-4">
               <div className="col-md-4">
                 <label className="form-label">
@@ -626,7 +426,10 @@ function DndCharacterForm({
                     <span className="fw-bold">
                       {formatModifier(
                         getSavingThrowModifier(
-                          ability.id
+                          ability.id,
+                          abilities,
+                          savingThrows,
+                          proficiencyBonus
                         )
                       )}
                     </span>
@@ -676,7 +479,10 @@ function DndCharacterForm({
                     <span className="fw-bold">
                       {formatModifier(
                         getSkillModifier(
-                          skill.id
+                          skill,
+                          abilities,
+                          skills,
+                          proficiencyBonus
                         )
                       )}
                     </span>
@@ -684,7 +490,6 @@ function DndCharacterForm({
                 </div>
               ))}
             </div>
-
           </div>
         </div>
 
@@ -696,9 +501,7 @@ function DndCharacterForm({
           </div>
 
           <div className="card-body">
-
             <div className="row g-3">
-
               <div className="col-md-3">
                 <label className="form-label">
                   Clase de armadura
@@ -909,7 +712,6 @@ function DndCharacterForm({
                 </h6>
 
                 <div className="d-flex gap-4">
-
                   <div>
                     <label className="form-label">
                       Éxitos
@@ -953,7 +755,6 @@ function DndCharacterForm({
                       }
                     />
                   </div>
-
                 </div>
               </div>
 
@@ -985,7 +786,6 @@ function DndCharacterForm({
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -998,7 +798,6 @@ function DndCharacterForm({
 
           <div className="card-body">
             <div className="row g-3">
-
               <div className="col-md-6">
                 <label className="form-label">
                   Rasgos de clase
@@ -1106,7 +905,6 @@ function DndCharacterForm({
                   }
                 />
               </div>
-
             </div>
           </div>
         </div>
@@ -1120,7 +918,6 @@ function DndCharacterForm({
 
           <div className="card-body">
             <div className="row g-3">
-
               <div className="col-md-6">
                 <label className="form-label">
                   Apariencia
@@ -1174,7 +971,6 @@ function DndCharacterForm({
                   }
                 />
               </div>
-
             </div>
           </div>
         </div>
@@ -1187,7 +983,6 @@ function DndCharacterForm({
           </div>
 
           <div className="card-body">
-
             <div className="mb-3">
               <label className="form-label">
                 Equipo
@@ -1225,7 +1020,6 @@ function DndCharacterForm({
                 }
               />
             </div>
-
           </div>
         </div>
 
