@@ -1,96 +1,12 @@
 /* Yo me encargo de crear, editar, eliminar y mantener los personajes. */
 import { useState } from "react"
 import { useLocalStorage } from './useLocalStorage'
+import { createEmptyDndData } from '../components/adaptations/dnd/dndData'
 
 const emptyCharacter = {
   id: null,
   name: '',
   adaptations: []
-}
-
-const emptyDndData = {
-  playerName: '',
-  className: '',
-  subclass: '',
-  level: '',
-  experience: '',
-
-  background: '',
-  species: '',
-  alignment: '',
-  languages: '',
-
-  abilities: {
-    strength: '',
-    dexterity: '',
-    constitution: '',
-    intelligence: '',
-    wisdom: '',
-    charisma: ''
-  },
-
-  savingThrows: {
-    strength: false,
-    dexterity: false,
-    constitution: false,
-    intelligence: false,
-    wisdom: false,
-    charisma: false
-  },
-
-  skills: {
-    acrobatics: false,
-    animalHandling: false,
-    arcana: false,
-    athletics: false,
-    deception: false,
-    history: false,
-    insight: false,
-    intimidation: false,
-    investigation: false,
-    medicine: false,
-    nature: false,
-    perception: false,
-    performance: false,
-    persuasion: false,
-    religion: false,
-    sleightOfHand: false,
-    stealth: false,
-    survival: false
-  },
-
-  combat: {
-    armorClass: '',
-    currentHitPoints: '',
-    maxHitPoints: '',
-    temporaryHitPoints: '',
-    hitDice: '',
-    hitDiceSpent: '',
-    initiative: '',
-    speed: '',
-    size: '',
-    passivePerception: '',
-    deathSavesSuccesses: 0,
-    deathSavesFailures: 0
-  },
-
-  heroicInspiration: false,
-
-  classFeatures: '',
-  speciesTraits: '',
-  feats: '',
-
-  armorTraining: '',
-  weaponProficiencies: '',
-  toolProficiencies: '',
-
-  equipment: '',
-  coins: '',
-
-  appearance: '',
-  personality: '',
-  backstory: '',
-  notes: ''
 }
 
 const emptyAdaptation = {
@@ -299,7 +215,7 @@ export function useCharacters() {
         ? '2024'
         : '',
       data: system === 'dnd'
-        ? { ...emptyDndData }
+        ? createEmptyDndData()
         : {}
     }))
 

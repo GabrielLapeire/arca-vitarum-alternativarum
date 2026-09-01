@@ -64,15 +64,27 @@ function CharacterForm({
               <option value="daggerheart">DaggerHeart</option>
             </select>
 
-            <button
-              type="button"
-              onClick={saveAdaptation}
-              className="btn btn-success mt-2"
-            >
-              {editingAdaptationId !== null
-                ? "Actualizar adaptación"
-                : "Agregar adaptación"}
-            </button>
+            <div className="d-flex gap-2 mt-2">
+              <button
+                type="button"
+                onClick={saveAdaptation}
+                className="btn btn-success"
+              >
+                {editingAdaptationId !== null
+                  ? "Actualizar adaptación"
+                  : "Agregar adaptación"}
+              </button>
+
+              {editingAdaptationId !== null && (
+                <button
+                  type="button"
+                  onClick={cancelUpdateAdaptation}
+                  className="btn btn-secondary"
+                >
+                  Cancelar edición
+                </button>
+              )}
+            </div>
 
             {errors.system && (
               <div className="text-danger">
@@ -98,7 +110,12 @@ function CharacterForm({
                   className="list-group-item d-flex justify-content-between align-items-center"
                 >
                   <span>
-                    {adaptation.system}
+                    {adaptation.system === 'dnd'
+                      ? 'D&D'
+                      : adaptation.system}
+
+                    {adaptation.version &&
+                      ` - ${adaptation.version}`}
                   </span>
 
                   <div className="d-flex gap-2">

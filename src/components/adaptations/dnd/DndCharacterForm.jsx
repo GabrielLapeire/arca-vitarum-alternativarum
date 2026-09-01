@@ -8,7 +8,8 @@ import {
   formatModifier,
   getProficiencyBonus,
   getSavingThrowModifier,
-  getSkillModifier
+  getSkillModifier,
+  getPassivePerception
 } from './dndUtils'
 
 function DndCharacterForm({
@@ -102,10 +103,104 @@ function DndCharacterForm({
     }))
   }
 
-  const passivePerception =
-    getSkillModifier('perception') === ''
-      ? ''
-      : 10 + getSkillModifier('perception')
+  function updateListItem(field, id, changes) {
+    setData(previousData => ({
+      ...previousData,
+      [field]: (previousData[field] || []).map(item =>
+        item.id === id
+          ? { ...item, ...changes }
+          : item
+      )
+    }))
+  }
+
+  function addListItem(field) {
+    setData(previousData => ({
+      ...previousData,
+      [field]: [
+        ...(previousData[field] || []),
+        {
+          id: crypto.randomUUID(),
+          name: '',
+          description: ''
+        }
+      ]
+    }))
+  }
+
+  function deleteListItem(field, id) {
+    setData(previousData => ({
+      ...previousData,
+      [field]: (previousData[field] || []).filter(
+        item => item.id !== id
+      )
+    }))
+  }
+
+  function updateEquipmentItem(id, changes) {
+    setData(previousData => ({
+      ...previousData,
+      equipment: {
+        ...(previousData.equipment || {}),
+        items: (previousData.equipment?.items || []).map(item =>
+          item.id === id
+            ? { ...item, ...changes }
+            : item
+        )
+      }
+    }))
+  }
+
+  function addEquipmentItem() {
+    setData(previousData => ({
+      ...previousData,
+      equipment: {
+        ...(previousData.equipment || {}),
+        items: [
+          ...(previousData.equipment?.items || []),
+          {
+            id: crypto.randomUUID(),
+            name: '',
+            quantity: 1,
+            equipped: false,
+            description: ''
+          }
+        ]
+      }
+    }))
+  }
+
+  function deleteEquipmentItem(id) {
+    setData(previousData => ({
+      ...previousData,
+      equipment: {
+        ...(previousData.equipment || {}),
+        items: (previousData.equipment?.items || []).filter(
+          item => item.id !== id
+        )
+      }
+    }))
+  }
+
+  function updateCurrency(currency, value) {
+    setData(previousData => ({
+      ...previousData,
+      equipment: {
+        ...(previousData.equipment || {}),
+        currency: {
+          ...(previousData.equipment?.currency || {}),
+          [currency]: value
+        }
+      }
+    }))
+  }
+
+  const passivePerception = getPassivePerception(
+    SKILLS,
+    abilities,
+    skills,
+    proficiencyBonus
+  )
 
   return (
     <div className="card border-primary mt-4">
@@ -797,69 +892,267 @@ function DndCharacterForm({
           </div>
 
           <div className="card-body">
-            <div className="row g-3">
-              <div className="col-md-6">
-                <label className="form-label">
+
+            {/* RASGOS DE CLASE */}
+
+            <div className="mb-4">
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h6 className="mb-0">
                   Rasgos de clase
-                </label>
+                </h6>
 
-                <textarea
-                  className="form-control"
-                  rows="5"
-                  value={data.classFeatures || ''}
-                  onChange={(e) =>
-                    updateField(
-                      'classFeatures',
-                      e.target.value
-                    )
-                  }
-                />
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-primary"
+                  onClick={() => addListItem('classFeatures')}
+                >
+                  Agregar rasgo
+                </button>
               </div>
 
-              <div className="col-md-6">
-                <label className="form-label">
-                  Atributos de especie
-                </label>
+              {(!data.classFeatures ||
+                data.classFeatures.length === 0) && (
+                  <p className="text-muted mb-0">
+                    No hay rasgos de clase cargados.
+                  </p>
+                )}
 
-                <textarea
-                  className="form-control"
-                  rows="5"
-                  value={data.speciesTraits || ''}
-                  onChange={(e) =>
-                    updateField(
-                      'speciesTraits',
-                      e.target.value
-                    )
-                  }
-                />
+              <div className="d-flex flex-column gap-3">
+                {(data.classFeatures || []).map(feature => (
+                  <div
+                    key={feature.id}
+                    className="border rounded p-3"
+                  >
+                    <div className="row g-2">
+                      <div className="col-md-4">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Nombre del rasgo"
+                          value={feature.name}
+                          onChange={(e) =>
+                            updateListItem(
+                              'classFeatures',
+                              feature.id,
+                              { name: e.target.value }
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div className="col-md-7">
+                        <textarea
+                          className="form-control"
+                          rows="2"
+                          placeholder="Descripción"
+                          value={feature.description}
+                          onChange={(e) =>
+                            updateListItem(
+                              'classFeatures',
+                              feature.id,
+                              { description: e.target.value }
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div className="col-md-1 d-flex align-items-start">
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() =>
+                            deleteListItem(
+                              'classFeatures',
+                              feature.id
+                            )
+                          }
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* RASGOS DE ESPECIE */}
+
+            <div className="mb-4">
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h6 className="mb-0">
+                  Rasgos de especie
+                </h6>
+
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-primary"
+                  onClick={() => addListItem('speciesTraits')}
+                >
+                  Agregar rasgo
+                </button>
               </div>
 
-              <div className="col-md-6">
-                <label className="form-label">
+              {(!data.speciesTraits ||
+                data.speciesTraits.length === 0) && (
+                  <p className="text-muted mb-0">
+                    No hay rasgos de especie cargados.
+                  </p>
+                )}
+
+              <div className="d-flex flex-column gap-3">
+                {(data.speciesTraits || []).map(trait => (
+                  <div
+                    key={trait.id}
+                    className="border rounded p-3"
+                  >
+                    <div className="row g-2">
+                      <div className="col-md-4">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Nombre del rasgo"
+                          value={trait.name}
+                          onChange={(e) =>
+                            updateListItem(
+                              'speciesTraits',
+                              trait.id,
+                              { name: e.target.value }
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div className="col-md-7">
+                        <textarea
+                          className="form-control"
+                          rows="2"
+                          placeholder="Descripción"
+                          value={trait.description}
+                          onChange={(e) =>
+                            updateListItem(
+                              'speciesTraits',
+                              trait.id,
+                              { description: e.target.value }
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div className="col-md-1 d-flex align-items-start">
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() =>
+                            deleteListItem(
+                              'speciesTraits',
+                              trait.id
+                            )
+                          }
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* DOTES */}
+
+            <div className="mb-4">
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h6 className="mb-0">
                   Dotes
-                </label>
+                </h6>
 
-                <textarea
-                  className="form-control"
-                  rows="4"
-                  value={data.feats || ''}
-                  onChange={(e) =>
-                    updateField(
-                      'feats',
-                      e.target.value
-                    )
-                  }
-                />
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-primary"
+                  onClick={() => addListItem('feats')}
+                >
+                  Agregar dote
+                </button>
               </div>
 
-              <div className="col-md-6">
+              {(!data.feats ||
+                data.feats.length === 0) && (
+                  <p className="text-muted mb-0">
+                    No hay dotes cargados.
+                  </p>
+                )}
+
+              <div className="d-flex flex-column gap-3">
+                {(data.feats || []).map(feat => (
+                  <div
+                    key={feat.id}
+                    className="border rounded p-3"
+                  >
+                    <div className="row g-2">
+                      <div className="col-md-4">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Nombre del dote"
+                          value={feat.name}
+                          onChange={(e) =>
+                            updateListItem(
+                              'feats',
+                              feat.id,
+                              { name: e.target.value }
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div className="col-md-7">
+                        <textarea
+                          className="form-control"
+                          rows="2"
+                          placeholder="Descripción"
+                          value={feat.description}
+                          onChange={(e) =>
+                            updateListItem(
+                              'feats',
+                              feat.id,
+                              { description: e.target.value }
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div className="col-md-1 d-flex align-items-start">
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() =>
+                            deleteListItem(
+                              'feats',
+                              feat.id
+                            )
+                          }
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* COMPETENCIAS */}
+
+            <div className="row g-3">
+              <div className="col-md-4">
                 <label className="form-label">
                   Entrenamiento con armaduras
                 </label>
 
                 <textarea
                   className="form-control"
-                  rows="4"
+                  rows="3"
                   value={data.armorTraining || ''}
                   onChange={(e) =>
                     updateField(
@@ -870,14 +1163,14 @@ function DndCharacterForm({
                 />
               </div>
 
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <label className="form-label">
                   Competencias con armas
                 </label>
 
                 <textarea
                   className="form-control"
-                  rows="4"
+                  rows="3"
                   value={data.weaponProficiencies || ''}
                   onChange={(e) =>
                     updateField(
@@ -888,14 +1181,14 @@ function DndCharacterForm({
                 />
               </div>
 
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <label className="form-label">
                   Competencias con herramientas
                 </label>
 
                 <textarea
                   className="form-control"
-                  rows="4"
+                  rows="3"
                   value={data.toolProficiencies || ''}
                   onChange={(e) =>
                     updateField(
@@ -906,6 +1199,7 @@ function DndCharacterForm({
                 />
               </div>
             </div>
+
           </div>
         </div>
 
@@ -983,43 +1277,180 @@ function DndCharacterForm({
           </div>
 
           <div className="card-body">
-            <div className="mb-3">
-              <label className="form-label">
-                Equipo
-              </label>
 
-              <textarea
-                className="form-control"
-                rows="5"
-                placeholder="Las armas, armaduras y objetos pueden detallarse aquí por ahora."
-                value={data.equipment || ''}
-                onChange={(e) =>
-                  updateField(
-                    'equipment',
-                    e.target.value
-                  )
-                }
-              />
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h6 className="mb-0">
+                Objetos
+              </h6>
+
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-primary"
+                onClick={addEquipmentItem}
+              >
+                Agregar objeto
+              </button>
             </div>
 
-            <div>
-              <label className="form-label">
-                Monedas
-              </label>
+            {(!data.equipment?.items ||
+              data.equipment.items.length === 0) && (
+                <p className="text-muted">
+                  No hay objetos en el inventario.
+                </p>
+              )}
 
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Ej.: 15 po, 4 pp, 8 pc"
-                value={data.coins || ''}
-                onChange={(e) =>
-                  updateField(
-                    'coins',
-                    e.target.value
-                  )
-                }
-              />
+            <div className="d-flex flex-column gap-3">
+              {(data.equipment?.items || []).map(item => (
+                <div
+                  key={item.id}
+                  className="border rounded p-3"
+                >
+                  <div className="row g-2 align-items-start">
+
+                    <div className="col-md-4">
+                      <label className="form-label">
+                        Nombre
+                      </label>
+
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Ej.: Espada larga"
+                        value={item.name}
+                        onChange={(e) =>
+                          updateEquipmentItem(
+                            item.id,
+                            { name: e.target.value }
+                          )
+                        }
+                      />
+                    </div>
+
+                    <div className="col-md-2">
+                      <label className="form-label">
+                        Cantidad
+                      </label>
+
+                      <input
+                        type="number"
+                        min="1"
+                        className="form-control"
+                        value={item.quantity}
+                        onChange={(e) =>
+                          updateEquipmentItem(
+                            item.id,
+                            { quantity: e.target.value }
+                          )
+                        }
+                      />
+                    </div>
+
+                    <div className="col-md-2">
+                      <label className="form-label">
+                        Estado
+                      </label>
+
+                      <div className="form-check mt-2">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={Boolean(item.equipped)}
+                          onChange={(e) =>
+                            updateEquipmentItem(
+                              item.id,
+                              { equipped: e.target.checked }
+                            )
+                          }
+                        />
+
+                        <label className="form-check-label">
+                          Equipado
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="col-md-3">
+                      <label className="form-label">
+                        Descripción
+                      </label>
+
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Detalles"
+                        value={item.description}
+                        onChange={(e) =>
+                          updateEquipmentItem(
+                            item.id,
+                            { description: e.target.value }
+                          )
+                        }
+                      />
+                    </div>
+
+                    <div className="col-md-1">
+                      <label className="form-label d-block">
+                        &nbsp;
+                      </label>
+
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() =>
+                          deleteEquipmentItem(item.id)
+                        }
+                      >
+                        ×
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+              ))}
             </div>
+
+            <hr className="my-4" />
+
+            {/* MONEDAS */}
+
+            <h6 className="mb-3">
+              Monedas
+            </h6>
+
+            <div className="row g-3">
+              {[
+                ['cp', 'Cobre'],
+                ['sp', 'Plata'],
+                ['ep', 'Electro'],
+                ['gp', 'Oro'],
+                ['pp', 'Platino']
+              ].map(([currency, label]) => (
+                <div
+                  className="col-6 col-md"
+                  key={currency}
+                >
+                  <label className="form-label">
+                    {label}
+                  </label>
+
+                  <input
+                    type="number"
+                    min="0"
+                    className="form-control"
+                    value={
+                      data.equipment?.currency?.[currency] ?? 0
+                    }
+                    onChange={(e) =>
+                      updateCurrency(
+                        currency,
+                        e.target.value
+                      )
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+
           </div>
         </div>
 

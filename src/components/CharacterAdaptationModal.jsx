@@ -444,23 +444,57 @@ function CharacterAdaptationModal({
                             Rasgos de clase
                           </strong>
 
-                          <div className="mt-2">
-                            {formatValue(
-                              data.classFeatures
-                            )}
-                          </div>
+                          {data.classFeatures?.length > 0 ? (
+                            <div className="mt-2 d-flex flex-column gap-2">
+                              {data.classFeatures.map(feature => (
+                                <div
+                                  key={feature.id}
+                                  className="border rounded p-2"
+                                >
+                                  <strong>
+                                    {formatValue(feature.name)}
+                                  </strong>
+
+                                  <div className="mt-1">
+                                    {formatValue(feature.description)}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="text-muted mt-2">
+                              —
+                            </div>
+                          )}
                         </div>
 
                         <div className="col-md-6">
                           <strong>
-                            Atributos de especie
+                            Rasgos de especie
                           </strong>
 
-                          <div className="mt-2">
-                            {formatValue(
-                              data.speciesTraits
-                            )}
-                          </div>
+                          {data.speciesTraits?.length > 0 ? (
+                            <div className="mt-2 d-flex flex-column gap-2">
+                              {data.speciesTraits.map(trait => (
+                                <div
+                                  key={trait.id}
+                                  className="border rounded p-2"
+                                >
+                                  <strong>
+                                    {formatValue(trait.name)}
+                                  </strong>
+
+                                  <div className="mt-1">
+                                    {formatValue(trait.description)}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="text-muted mt-2">
+                              —
+                            </div>
+                          )}
                         </div>
 
                         <div className="col-md-6">
@@ -468,9 +502,28 @@ function CharacterAdaptationModal({
                             Dotes
                           </strong>
 
-                          <div className="mt-2">
-                            {formatValue(data.feats)}
-                          </div>
+                          {data.feats?.length > 0 ? (
+                            <div className="mt-2 d-flex flex-column gap-2">
+                              {data.feats.map(feat => (
+                                <div
+                                  key={feat.id}
+                                  className="border rounded p-2"
+                                >
+                                  <strong>
+                                    {formatValue(feat.name)}
+                                  </strong>
+
+                                  <div className="mt-1">
+                                    {formatValue(feat.description)}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="text-muted mt-2">
+                              —
+                            </div>
+                          )}
                         </div>
 
                         <div className="col-md-6">
@@ -573,16 +626,55 @@ function CharacterAdaptationModal({
                     </div>
 
                     <div className="card-body">
-                      <div className="mb-3">
+
+                      <div className="mb-4">
                         <strong>
-                          Equipo
+                          Objetos
                         </strong>
 
-                        <p className="mt-2 mb-0">
-                          {formatValue(
-                            data.equipment
-                          )}
-                        </p>
+                        {data.equipment?.items?.length > 0 ? (
+                          <div className="table-responsive mt-2">
+                            <table className="table table-sm align-middle">
+                              <thead>
+                                <tr>
+                                  <th>Objeto</th>
+                                  <th>Cantidad</th>
+                                  <th>Estado</th>
+                                  <th>Descripción</th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                {data.equipment.items.map(item => (
+                                  <tr key={item.id}>
+                                    <td>
+                                      {formatValue(item.name)}
+                                    </td>
+
+                                    <td>
+                                      {formatValue(item.quantity)}
+                                    </td>
+
+                                    <td>
+                                      {item.equipped
+                                        ? 'Equipado'
+                                        : '—'
+                                      }
+                                    </td>
+
+                                    <td>
+                                      {formatValue(item.description)}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        ) : (
+                          <div className="text-muted mt-2">
+                            No hay objetos.
+                          </div>
+                        )}
                       </div>
 
                       <div>
@@ -590,10 +682,44 @@ function CharacterAdaptationModal({
                           Monedas
                         </strong>
 
-                        <div className="mt-2">
-                          {formatValue(data.coins)}
+                        <div className="row g-2 mt-1">
+                          <div className="col">
+                            <span className="text-muted">PC</span>
+                            <div>
+                              {data.equipment?.currency?.cp ?? 0}
+                            </div>
+                          </div>
+
+                          <div className="col">
+                            <span className="text-muted">PP</span>
+                            <div>
+                              {data.equipment?.currency?.sp ?? 0}
+                            </div>
+                          </div>
+
+                          <div className="col">
+                            <span className="text-muted">PE</span>
+                            <div>
+                              {data.equipment?.currency?.ep ?? 0}
+                            </div>
+                          </div>
+
+                          <div className="col">
+                            <span className="text-muted">PO</span>
+                            <div>
+                              {data.equipment?.currency?.gp ?? 0}
+                            </div>
+                          </div>
+
+                          <div className="col">
+                            <span className="text-muted">PPt</span>
+                            <div>
+                              {data.equipment?.currency?.pp ?? 0}
+                            </div>
+                          </div>
                         </div>
                       </div>
+
                     </div>
                   </div>
 

@@ -93,3 +93,31 @@ export function getSkillModifier(
       ? Number(proficiencyBonus || 0)
       : 0)
 }
+
+export function getPassivePerception(
+  skillsList,
+  abilities,
+  skills,
+  proficiencyBonus
+) {
+  const perception = skillsList.find(
+    skill => skill.id === 'perception'
+  )
+
+  if (!perception) {
+    return ''
+  }
+
+  const modifier = getSkillModifier(
+    perception,
+    abilities,
+    skills,
+    proficiencyBonus
+  )
+
+  if (modifier === '') {
+    return ''
+  }
+
+  return 10 + modifier
+}
