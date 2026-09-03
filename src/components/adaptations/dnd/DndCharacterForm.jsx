@@ -195,6 +195,41 @@ function DndCharacterForm({
     }))
   }
 
+  function updateAttack(id, changes) {
+    setData(previousData => ({
+      ...previousData,
+      attacks: (previousData.attacks || []).map(attack =>
+        attack.id === id
+          ? { ...attack, ...changes }
+          : attack
+      )
+    }))
+  }
+
+  function addAttack() {
+    setData(previousData => ({
+      ...previousData,
+      attacks: [
+        ...(previousData.attacks || []),
+        {
+          id: crypto.randomUUID(),
+          name: '',
+          attackBonus: '',
+          damage: ''
+        }
+      ]
+    }))
+  }
+
+  function deleteAttack(id) {
+    setData(previousData => ({
+      ...previousData,
+      attacks: (previousData.attacks || []).filter(
+        attack => attack.id !== id
+      )
+    }))
+  }
+
   const passivePerception = getPassivePerception(
     SKILLS,
     abilities,
@@ -852,34 +887,147 @@ function DndCharacterForm({
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="col-md-6 d-flex align-items-end">
-                <div className="form-check">
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id="heroicInspiration"
-                    checked={
-                      Boolean(
-                        data.heroicInspiration
-                      )
-                    }
-                    onChange={(e) =>
-                      updateField(
-                        'heroicInspiration',
-                        e.target.checked
-                      )
-                    }
-                  />
+            <hr className="my-4" />
 
-                  <label
-                    className="form-check-label"
-                    htmlFor="heroicInspiration"
-                  >
-                    Inspiración heroica
-                  </label>
-                </div>
+            {/* ATAQUES */}
+
+            <div>
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <h6 className="mb-0">
+                  Ataques
+                </h6>
+
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-primary"
+                  onClick={addAttack}
+                >
+                  Agregar ataque
+                </button>
               </div>
+
+              {(!data.attacks ||
+                data.attacks.length === 0) && (
+                  <p className="text-muted mb-0">
+                    No hay ataques cargados.
+                  </p>
+                )}
+
+              <div className="d-flex flex-column gap-3">
+                {(data.attacks || []).map(attack => (
+                  <div
+                    key={attack.id}
+                    className="border rounded p-3"
+                  >
+                    <div className="row g-2 align-items-end">
+
+                      <div className="col-md-4">
+                        <label className="form-label">
+                          Nombre
+                        </label>
+
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Ej.: Espada larga"
+                          value={attack.name}
+                          onChange={(e) =>
+                            updateAttack(
+                              attack.id,
+                              { name: e.target.value }
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div className="col-md-3">
+                        <label className="form-label">
+                          Bonificador de ataque / CD
+                        </label>
+
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Ej.: +5"
+                          value={attack.attackBonus}
+                          onChange={(e) =>
+                            updateAttack(
+                              attack.id,
+                              { attackBonus: e.target.value }
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div className="col-md-4">
+                        <label className="form-label">
+                          Daño y tipo
+                        </label>
+
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Ej.: 1d8 + 3 cortante"
+                          value={attack.damage}
+                          onChange={(e) =>
+                            updateAttack(
+                              attack.id,
+                              { damage: e.target.value }
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div className="col-md-1">
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() =>
+                            deleteAttack(attack.id)
+                          }
+                        >
+                          ×
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* RECURSOS */}
+
+        <div className="card mb-4">
+          <div className="card-header">
+            <strong>Recursos</strong>
+          </div>
+
+          <div className="card-body">
+            <div className="form-check">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                id="heroicInspiration"
+                checked={Boolean(data.heroicInspiration)}
+                onChange={(e) =>
+                  updateField(
+                    'heroicInspiration',
+                    e.target.checked
+                  )
+                }
+              />
+
+              <label
+                className="form-check-label"
+                htmlFor="heroicInspiration"
+              >
+                Inspiración heroica
+              </label>
             </div>
           </div>
         </div>
