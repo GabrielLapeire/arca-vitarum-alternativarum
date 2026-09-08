@@ -8,8 +8,12 @@ import {
   formatModifier,
   getProficiencyBonus,
   getSavingThrowModifier,
-  getSkillModifier
+  getSkillModifier,
+  getPassivePerception
 } from './adaptations/dnd/dndUtils'
+import {
+  getSpeciesData
+} from './adaptations/dnd/dndSpecies'
 
 function formatValue(value) {
   if (
@@ -36,6 +40,81 @@ function CharacterAdaptationModal({
 
   const proficiencyBonus =
     getProficiencyBonus(data.level)
+
+  const abilities = {
+    ...Object.fromEntries(
+      ABILITIES.map(ability => [
+        ability.id,
+        ''
+      ])
+    ),
+    ...(data.abilities || {})
+  }
+
+  const savingThrows = {
+    ...Object.fromEntries(
+      ABILITIES.map(ability => [
+        ability.id,
+        false
+      ])
+    ),
+    ...(data.savingThrows || {})
+  }
+
+  const skills = {
+    ...Object.fromEntries(
+      SKILLS.map(skill => [
+        skill.id,
+        false
+      ])
+    ),
+    ...(data.skills || {})
+  }
+
+  const speciesData =
+    getSpeciesData(data.species)
+
+  const calculatedInitiative =
+    getAbilityModifier(
+      abilities.dexterity
+    )
+
+  const calculatedPassivePerception =
+    getPassivePerception(
+      SKILLS,
+      abilities,
+      skills,
+      proficiencyBonus
+    )
+
+  const effectiveInitiative =
+    data.combat?.initiative ||
+    (
+      calculatedInitiative === ''
+        ? ''
+        : formatModifier(calculatedInitiative)
+    )
+
+  const effectiveSpeed =
+    data.combat?.speed ||
+    (
+      speciesData?.speed
+        ? `${speciesData.speed} pies`
+        : ''
+    )
+
+  const effectiveSize =
+    data.combat?.size ||
+    speciesData?.size ||
+    ''
+
+  const effectivePassivePerception =
+    data.combat?.passivePerception ||
+    (
+      calculatedPassivePerception === ''
+        ? ''
+        : calculatedPassivePerception
+    )
 
   return (
     <>
@@ -148,6 +227,22 @@ function CharacterAdaptationModal({
                             {formatValue(data.languages)}
                           </div>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* RECURSOS */}
+
+                  <div className="card mb-3">
+                    <div className="card-header">
+                      <strong>Recursos</strong>
+                    </div>
+
+                    <div className="card-body">
+                      <strong>Inspiración heroica</strong>
+
+                      <div>
+                        {data.heroicInspiration ? 'Sí' : 'No'}
                       </div>
                     </div>
                   </div>
@@ -318,6 +413,15 @@ function CharacterAdaptationModal({
                         </div>
 
                         <div className="col-6 col-md-3">
+                          <strong>Escudo</strong>
+                          <div>
+                            {formatValue(
+                              data.combat?.shield
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="col-6 col-md-3">
                           <strong>Puntos de golpe</strong>
                           <div>
                             {formatValue(
@@ -343,7 +447,7 @@ function CharacterAdaptationModal({
                           <strong>Iniciativa</strong>
                           <div>
                             {formatValue(
-                              data.combat?.initiative
+                              effectiveInitiative
                             )}
                           </div>
                         </div>
@@ -352,7 +456,7 @@ function CharacterAdaptationModal({
                           <strong>Velocidad</strong>
                           <div>
                             {formatValue(
-                              data.combat?.speed
+                              effectiveSpeed
                             )}
                           </div>
                         </div>
@@ -361,7 +465,7 @@ function CharacterAdaptationModal({
                           <strong>Tamaño</strong>
                           <div>
                             {formatValue(
-                              data.combat?.size
+                              effectiveSize
                             )}
                           </div>
                         </div>
@@ -370,7 +474,7 @@ function CharacterAdaptationModal({
                           <strong>Percepción pasiva</strong>
                           <div>
                             {formatValue(
-                              data.combat?.passivePerception
+                              effectivePassivePerception
                             )}
                           </div>
                         </div>
@@ -410,20 +514,45 @@ function CharacterAdaptationModal({
                             )}
                           </div>
                         </div>
-
-                        <div className="col-md-6">
-                          <strong>
-                            Inspiración heroica
-                          </strong>
-
-                          <div>
-                            {data.heroicInspiration
-                              ? 'Sí'
-                              : 'No'
-                            }
-                          </div>
-                        </div>
                       </div>
+                    </div>
+                  </div>
+
+                  {/* ATAQUES */}
+
+                  <div className="card mb-3">
+                    <div className="card-header">
+                      <strong>Armas y trucos de daño</strong>
+                    </div>
+
+                    <div className="card-body">
+                      {data.attacks?.length > 0 ? (
+                        <div className="table-responsive">
+                          <table className="table table-sm align-middle">
+                            <thead>
+                              <tr>
+                                <th>Nombre</th>
+                                <th>Bonif. atq./CD</th>
+                                <th>Daño y tipo</th>
+                              </tr>
+                            </thead>
+
+                            <tbody>
+                              {data.attacks.map(attack => (
+                                <tr key={attack.id}>
+                                  <td>{formatValue(attack.name)}</td>
+                                  <td>{formatValue(attack.attackBonus)}</td>
+                                  <td>{formatValue(attack.damage)}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      ) : (
+                        <div className="text-muted">
+                          No hay ataques cargados.
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -673,6 +802,37 @@ function CharacterAdaptationModal({
                         ) : (
                           <div className="text-muted mt-2">
                             No hay objetos.
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="mb-4">
+                        <strong>
+                          Objetos sintonizados
+                        </strong>
+
+                        {data.equipment?.attunedItems?.length > 0 ? (
+                          <div className="mt-2 d-flex flex-column gap-2">
+                            {data.equipment.attunedItems.map(itemId => {
+                              const item =
+                                data.equipment?.items?.find(
+                                  equipmentItem =>
+                                    equipmentItem.id === itemId
+                                )
+
+                              return (
+                                <div
+                                  key={itemId}
+                                  className="border rounded p-2"
+                                >
+                                  {formatValue(item?.name)}
+                                </div>
+                              )
+                            })}
+                          </div>
+                        ) : (
+                          <div className="text-muted mt-2">
+                            No hay objetos sintonizados.
                           </div>
                         )}
                       </div>

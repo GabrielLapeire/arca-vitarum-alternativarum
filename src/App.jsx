@@ -1,5 +1,5 @@
 /* Tengo personajes y quiero mostrarlos según determinados filtros. */
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import CharacterFilters from './components/CharacterFilters'
 import CharacterForm from './components/CharacterForm'
 import CharacterList from './components/CharacterList'
@@ -31,6 +31,15 @@ function App() {
     setNewCharacter,
     setNewAdaptation
   } = useCharacters()
+
+  //log
+  useEffect(() => {
+    console.log(
+      'Personajes:',
+      JSON.stringify(characters, null, 2)
+    )
+  }, [characters])
+
   const [search, setSearch] = useState("")
   const [sortBy, setSortBy] = useState("nameAsc")
 

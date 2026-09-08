@@ -11,6 +11,9 @@ import {
   getSkillModifier,
   getPassivePerception
 } from './dndUtils'
+import {
+  getSpeciesData
+} from './dndSpecies'
 
 function DndCharacterForm({
   data = {},
@@ -39,6 +42,7 @@ function DndCharacterForm({
 
   const combat = {
     armorClass: '',
+    shield: '',
     currentHitPoints: '',
     maxHitPoints: '',
     temporaryHitPoints: '',
@@ -55,6 +59,13 @@ function DndCharacterForm({
 
   const level = data.level
   const proficiencyBonus = getProficiencyBonus(level)
+  const speciesData = getSpeciesData(
+    data.species
+  )
+  const calculatedSpeed =
+    speciesData?.speed ?? ''
+  const calculatedSize =
+    speciesData?.size ?? ''
 
   function updateField(field, value) {
     setData(previousData => ({
@@ -177,9 +188,52 @@ function DndCharacterForm({
         ...(previousData.equipment || {}),
         items: (previousData.equipment?.items || []).filter(
           item => item.id !== id
+        ),
+        attunedItems: (
+          previousData.equipment?.attunedItems || []
+        ).filter(
+          itemId => itemId !== id
         )
       }
     }))
+  }
+
+  function toggleAttunement(id) {
+    setData(previousData => {
+      const currentAttunedItems =
+        previousData.equipment?.attunedItems || []
+
+      const isAttuned =
+        currentAttunedItems.includes(id)
+
+      if (isAttuned) {
+        return {
+          ...previousData,
+          equipment: {
+            ...(previousData.equipment || {}),
+            attunedItems:
+              currentAttunedItems.filter(
+                itemId => itemId !== id
+              )
+          }
+        }
+      }
+
+      if (currentAttunedItems.length >= 3) {
+        return previousData
+      }
+
+      return {
+        ...previousData,
+        equipment: {
+          ...(previousData.equipment || {}),
+          attunedItems: [
+            ...currentAttunedItems,
+            id
+          ]
+        }
+      }
+    })
   }
 
   function updateCurrency(currency, value) {
@@ -652,6 +706,25 @@ function DndCharacterForm({
 
               <div className="col-md-3">
                 <label className="form-label">
+                  Escudo
+                </label>
+
+                <input
+                  type="number"
+                  min="0"
+                  className="form-control"
+                  value={combat.shield}
+                  onChange={(e) =>
+                    updateCombat(
+                      'shield',
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+
+              <div className="col-md-3">
+                <label className="form-label">
                   PG actuales
                 </label>
 
@@ -731,6 +804,10 @@ function DndCharacterForm({
                     )
                   }
                 />
+
+                <small className="text-muted">
+                  Calculada según Destreza si se deja vacío.
+                </small>
               </div>
 
               <div className="col-md-3">
@@ -742,7 +819,11 @@ function DndCharacterForm({
                   type="text"
                   className="form-control"
                   value={combat.speed}
-                  placeholder="Ej.: 30 pies"
+                  placeholder={
+                    calculatedSpeed === ''
+                      ? 'Ej.: 30 pies'
+                      : `${calculatedSpeed} pies`
+                  }
                   onChange={(e) =>
                     updateCombat(
                       'speed',
@@ -750,6 +831,10 @@ function DndCharacterForm({
                     )
                   }
                 />
+
+                <small className="text-muted">
+                  Calculada según la especie si se deja vacío.
+                </small>
               </div>
 
               <div className="col-md-3">
@@ -761,6 +846,11 @@ function DndCharacterForm({
                   type="text"
                   className="form-control"
                   value={combat.size}
+                  placeholder={
+                    calculatedSize === ''
+                      ? 'Ej.: Mediano'
+                      : calculatedSize
+                  }
                   onChange={(e) =>
                     updateCombat(
                       'size',
@@ -768,6 +858,10 @@ function DndCharacterForm({
                     )
                   }
                 />
+
+                <small className="text-muted">
+                  Calculado según la especie si se deja vacío.
+                </small>
               </div>
 
               <div className="col-md-3">
@@ -791,6 +885,10 @@ function DndCharacterForm({
                     )
                   }
                 />
+
+                <small className="text-muted">
+                  Calculada según Percepción si se deja vacío.
+                </small>
               </div>
 
               <div className="col-md-6">
@@ -1427,9 +1525,16 @@ function DndCharacterForm({
           <div className="card-body">
 
             <div className="d-flex justify-content-between align-items-center mb-3">
-              <h6 className="mb-0">
-                Objetos
-              </h6>
+              <div>
+                <h6 className="mb-1">
+                  Objetos
+                </h6>
+
+                <span className="badge text-bg-secondary">
+                  Sintonización:{' '}
+                  {data.equipment?.attunedItems?.length || 0}/3
+                </span>
+              </div>
 
               <button
                 type="button"
@@ -1513,6 +1618,31 @@ function DndCharacterForm({
 
                         <label className="form-check-label">
                           Equipado
+                        </label>
+                      </div>
+
+                      <div className="form-check mt-2">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={
+                            data.equipment?.attunedItems?.includes(
+                              item.id
+                            ) || false
+                          }
+                          disabled={
+                            !data.equipment?.attunedItems?.includes(
+                              item.id
+                            ) &&
+                            (data.equipment?.attunedItems?.length || 0) >= 3
+                          }
+                          onChange={() =>
+                            toggleAttunement(item.id)
+                          }
+                        />
+
+                        <label className="form-check-label">
+                          Sintonizado
                         </label>
                       </div>
                     </div>

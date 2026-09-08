@@ -41,6 +41,7 @@ export function createEmptyDndData() {
 
     combat: {
       armorClass: '',
+      shield: '',
       currentHitPoints: '',
       maxHitPoints: '',
       temporaryHitPoints: '',
@@ -68,6 +69,7 @@ export function createEmptyDndData() {
 
     equipment: {
       items: [],
+      attunedItems: [],
       currency: {
         cp: 0,
         sp: 0,
