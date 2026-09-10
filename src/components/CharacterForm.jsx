@@ -1,5 +1,6 @@
 /* Yo muestro interfaz. */
 import DndCharacterForm from './adaptations/dnd/DndCharacterForm'
+
 function CharacterForm({
   newCharacter,
   setNewCharacter,
@@ -16,6 +17,10 @@ function CharacterForm({
   deleteAdaptation,
   changeAdaptationSystem
 }) {
+  const isAdaptationActive =
+    editingAdaptationId !== null ||
+    newAdaptation.system !== ''
+
   function updateAdaptationData(updater) {
     setNewAdaptation(previousAdaptation => ({
       ...previousAdaptation,
@@ -29,8 +34,11 @@ function CharacterForm({
     <div className="card shadow mb-4">
       <div className="card-body">
         <h3 className="card-title mb-3">
-          {editingId ? "Editar personaje" : "Crear personaje"}
+          {editingId
+            ? "Editar personaje"
+            : "Crear personaje"}
         </h3>
+
         <div className="row g-3">
           <div className="col-md-6">
             <input
@@ -57,40 +65,29 @@ function CharacterForm({
             <select
               className="form-select"
               value={newAdaptation.system}
-              onChange={(e) => changeAdaptationSystem(e.target.value)}
+              onChange={(e) =>
+                changeAdaptationSystem(e.target.value)
+              }
             >
-              <option value="">Seleccionar sistema</option>
-              <option value="dnd">D&D</option>
-              <option value="daggerheart">DaggerHeart</option>
+              <option value="">
+                Seleccionar sistema
+              </option>
+
+              <option value="dnd">
+                D&D
+              </option>
+
+              <option value="daggerheart">
+                DaggerHeart
+              </option>
             </select>
-
-            <div className="d-flex gap-2 mt-2">
-              <button
-                type="button"
-                onClick={saveAdaptation}
-                className="btn btn-success"
-              >
-                {editingAdaptationId !== null
-                  ? "Actualizar adaptación"
-                  : "Agregar adaptación"}
-              </button>
-
-              {editingAdaptationId !== null && (
-                <button
-                  type="button"
-                  onClick={cancelUpdateAdaptation}
-                  className="btn btn-secondary"
-                >
-                  Cancelar edición
-                </button>
-              )}
-            </div>
 
             {errors.system && (
               <div className="text-danger">
                 {errors.system}
               </div>
             )}
+
             {errors.adaptations && (
               <div className="text-danger">
                 {errors.adaptations}
@@ -100,43 +97,73 @@ function CharacterForm({
         </div>
 
         {newCharacter.adaptations.length > 0 && (
-          <div className="col-12">
+          <div className="col-12 mt-4">
             <h5>Adaptaciones</h5>
 
             <ul className="list-group">
-              {newCharacter.adaptations.map((adaptation) => (
-                <li
-                  key={adaptation.id}
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                >
-                  <span>
-                    {adaptation.system === 'dnd'
-                      ? 'D&D'
-                      : adaptation.system}
+              {newCharacter.adaptations.map(
+                (adaptation) => {
+                  const isEditing =
+                    editingAdaptationId === adaptation.id
 
-                    {adaptation.version &&
-                      ` - ${adaptation.version}`}
-                  </span>
-
-                  <div className="d-flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => updateAdaptation(adaptation.id)}
-                      className="btn btn-sm btn-warning"
+                  return (
+                    <li
+                      key={adaptation.id}
+                      className={
+                        `list-group-item d-flex ` +
+                        `justify-content-between ` +
+                        `align-items-center ` +
+                        `${isEditing
+                          ? 'list-group-item-warning'
+                          : ''}`
+                      }
                     >
-                      Editar
-                    </button>
+                      <span>
+                        {adaptation.system === 'dnd'
+                          ? 'D&D'
+                          : adaptation.system}
 
-                    <button
-                      type="button"
-                      onClick={() => deleteAdaptation(adaptation.id)}
-                      className="btn btn-sm btn-danger"
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                </li>
-              ))}
+                        {adaptation.version &&
+                          ` - ${adaptation.version}`}
+
+                        {isEditing && (
+                          <span className="badge text-bg-warning ms-2">
+                            Editando
+                          </span>
+                        )}
+                      </span>
+
+                      {!isAdaptationActive && (
+                        <div className="d-flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              updateAdaptation(
+                                adaptation.id
+                              )
+                            }
+                            className="btn btn-sm btn-warning"
+                          >
+                            Editar
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              deleteAdaptation(
+                                adaptation.id
+                              )
+                            }
+                            className="btn btn-sm btn-danger"
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      )}
+                    </li>
+                  )
+                }
+              )}
             </ul>
           </div>
         )}
@@ -148,22 +175,63 @@ function CharacterForm({
           />
         )}
 
-        <div className="d-flex gap-2 mt-4">
-          <button
-            onClick={saveCharacter}
-            className="btn btn-primary"
-          >
-            {editingId ? "Actualizar personaje" : "Guardar personaje"}
-          </button>
+        <div
+          className="
+            sticky-bottom
+            bg-body
+            border-top
+            mt-4
+            pt-3
+            pb-2
+          "
+        >
+          <div className="d-flex justify-content-end gap-2">
+            {isAdaptationActive ? (
+              <>
+                <button
+                  type="button"
+                  onClick={cancelUpdateAdaptation}
+                  className="btn btn-secondary"
+                >
+                  {editingAdaptationId !== null
+                    ? "Cancelar edición"
+                    : "Cancelar adaptación"}
+                </button>
 
-          {editingId !== null && (
-            <button
-              onClick={cancelUpdateCharacter}
-              className="btn btn-secondary"
-            >
-              Cancelar
-            </button>
-          )}
+                <button
+                  type="button"
+                  onClick={saveAdaptation}
+                  className="btn btn-success"
+                >
+                  {editingAdaptationId !== null
+                    ? "Actualizar adaptación"
+                    : "Agregar adaptación"}
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={saveCharacter}
+                  className="btn btn-primary"
+                >
+                  {editingId
+                    ? "Actualizar personaje"
+                    : "Guardar personaje"}
+                </button>
+
+                {editingId !== null && (
+                  <button
+                    type="button"
+                    onClick={cancelUpdateCharacter}
+                    className="btn btn-secondary"
+                  >
+                    Cancelar
+                  </button>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

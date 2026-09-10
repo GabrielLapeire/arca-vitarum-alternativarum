@@ -33,12 +33,12 @@ function App() {
   } = useCharacters()
 
   //log
-  useEffect(() => {
-    console.log(
-      'Personajes:',
-      JSON.stringify(characters, null, 2)
-    )
-  }, [characters])
+  // useEffect(() => {
+  //   console.log(
+  //     'Personajes:',
+  //     JSON.stringify(characters, null, 2)
+  //   )
+  // }, [characters])
 
   const [search, setSearch] = useState("")
   const [sortBy, setSortBy] = useState("nameAsc")
