@@ -1,10 +1,8 @@
 /* Yo creo la estructura de datos inicial de una ficha de D&D 2024. */
-
 import {
   ABILITIES,
   SKILLS
 } from './dndConstants'
-
 export function createEmptyDndData() {
   return {
     playerName: '',

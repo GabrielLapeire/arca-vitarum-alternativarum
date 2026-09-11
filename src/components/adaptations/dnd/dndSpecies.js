@@ -1,5 +1,4 @@
 /* Yo guardo las posibles razas de un personaje de D&D 2024. */
-
 const SPECIES_DATA = {
   dragonborn: {
     speed: 30,
