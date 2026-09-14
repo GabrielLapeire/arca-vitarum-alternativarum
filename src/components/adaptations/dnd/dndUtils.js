@@ -1,4 +1,16 @@
 /* Yo hago cálculos sobre los D&D. */
+export function formatValue(value) {
+  if (
+    value === '' ||
+    value === null ||
+    value === undefined
+  ) {
+    return '—'
+  }
+
+  return value
+}
+
 export function getAbilityModifier(score) {
   if (
     score === '' ||
@@ -42,7 +54,11 @@ export function getProficiencyBonus(level) {
 
   const numericLevel = Number(level)
 
-  if (Number.isNaN(numericLevel)) {
+  if (
+    Number.isNaN(numericLevel) ||
+    numericLevel < 1 ||
+    numericLevel > 20
+  ) {
     return ''
   }
 

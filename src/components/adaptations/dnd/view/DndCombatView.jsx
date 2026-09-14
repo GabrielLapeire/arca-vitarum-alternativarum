@@ -1,11 +1,11 @@
 /* COMBATE Y ATAQUES */
+import { formatValue } from '../dndUtils'
 function DndCombatView({
   data,
   effectiveInitiative,
   effectiveSpeed,
   effectiveSize,
-  effectivePassivePerception,
-  formatValue
+  effectivePassivePerception
 }) {
   return (
 

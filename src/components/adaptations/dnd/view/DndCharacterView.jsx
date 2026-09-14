@@ -1,3 +1,4 @@
+/* vista de adaptacion de DnD */
 import {
   ABILITIES,
   SKILLS
@@ -6,7 +7,8 @@ import {
   getAbilityModifier,
   formatModifier,
   getProficiencyBonus,
-  getPassivePerception
+  getPassivePerception,
+  formatValue
 } from '../dndUtils'
 import {
   getSpeciesData
@@ -18,18 +20,6 @@ import DndCombatView from './DndCombatView'
 import DndFeaturesView from './DndFeaturesView'
 import DndCharacterInfoView from './DndCharacterInfoView'
 import DndEquipmentView from './DndEquipmentView'
-
-function formatValue(value) {
-  if (
-    value === '' ||
-    value === null ||
-    value === undefined
-  ) {
-    return '—'
-  }
-
-  return value
-}
 
 function DndCharacterView({
   data = {}
@@ -117,7 +107,6 @@ function DndCharacterView({
     <>
       <DndBasicInfoView
         data={data}
-        formatValue={formatValue}
       />
 
       {/* RECURSOS */}
@@ -138,9 +127,6 @@ function DndCharacterView({
 
       <DndAbilitiesView
         abilities={abilities}
-        getAbilityModifier={getAbilityModifier}
-        formatValue={formatValue}
-        formatModifier={formatModifier}
       />
 
       <DndProficienciesView
@@ -148,7 +134,6 @@ function DndCharacterView({
         savingThrows={savingThrows}
         skills={skills}
         proficiencyBonus={proficiencyBonus}
-        formatModifier={formatModifier}
       />
 
       <DndCombatView
@@ -157,22 +142,18 @@ function DndCharacterView({
         effectiveSpeed={effectiveSpeed}
         effectiveSize={effectiveSize}
         effectivePassivePerception={effectivePassivePerception}
-        formatValue={formatValue}
       />
 
       <DndFeaturesView
         data={data}
-        formatValue={formatValue}
       />
 
       <DndCharacterInfoView
         data={data}
-        formatValue={formatValue}
       />
 
       <DndEquipmentView
         data={data}
-        formatValue={formatValue}
       />
 
       {/* NOTAS */}

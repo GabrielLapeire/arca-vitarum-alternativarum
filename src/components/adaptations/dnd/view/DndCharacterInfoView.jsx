@@ -1,7 +1,7 @@
 /* HISTORIA Y PERSONALIDAD */
+import { formatValue } from '../dndUtils'
 function DndCharacterInfoView({
-  data,
-  formatValue
+  data
 }) {
   return (
     <div className="card mb-3">

@@ -1,7 +1,7 @@
 /* EQUIPO */
+import { formatValue } from '../dndUtils'
 function DndEquipmentView({
-  data,
-  formatValue
+  data
 }) {
   return (
     <div className="card mb-3">

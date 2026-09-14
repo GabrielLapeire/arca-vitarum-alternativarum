@@ -1,15 +1,18 @@
 /* COMPETENCIAS */
-import { ABILITIES, SKILLS } from "../dndConstants"
-import { getSavingThrowModifier, getSkillModifier } from "../dndUtils"
+import { ABILITIES, SKILLS } from '../dndConstants'
+import {
+  getSavingThrowModifier,
+  getSkillModifier,
+  formatModifier
+} from '../dndUtils'
 function DndProficienciesView({
   abilities,
   savingThrows,
   skills,
-  proficiencyBonus,
-  formatModifier
+  proficiencyBonus
 }) {
   return (
-    < div className="card mb-3" >
+    <div className="card mb-3">
       <div className="card-header">
         <strong>
           Competencias y tiradas de salvación

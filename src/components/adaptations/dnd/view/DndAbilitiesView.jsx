@@ -1,10 +1,12 @@
 /* CARACTERÍSTICAS */
-import { ABILITIES } from "../dndConstants"
-function DndAbilitiesView({
-  abilities,
+import { ABILITIES } from '../dndConstants'
+import {
   getAbilityModifier,
-  formatValue,
-  formatModifier
+  formatModifier,
+  formatValue
+} from '../dndUtils'
+function DndAbilitiesView({
+  abilities
 }) {
   return (
     <div className="card mb-3">

@@ -1,7 +1,7 @@
 /* RASGOS Y COMPETENCIAS */
+import { formatValue } from '../dndUtils'
 function DndFeaturesView({
-  data,
-  formatValue
+  data
 }) {
   return (
     <div className="card mb-3">
