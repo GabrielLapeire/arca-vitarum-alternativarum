@@ -1,4 +1,5 @@
 /* vista de adaptacion de DnD */
+import { useState } from 'react'
 import {
   ABILITIES,
   SKILLS
@@ -8,7 +9,8 @@ import {
   formatModifier,
   getProficiencyBonus,
   getPassivePerception,
-  formatValue
+  formatValue,
+  hasMagicData
 } from '../dndUtils'
 import {
   getSpeciesData
@@ -22,8 +24,11 @@ import DndCharacterInfoView from './DndCharacterInfoView'
 import DndEquipmentView from './DndEquipmentView'
 
 function DndCharacterView({
+  characterName,
   data = {}
 }) {
+
+  const [currentPage, setCurrentPage] = useState('character')
 
   const proficiencyBonus =
     getProficiencyBonus(data.level)
@@ -103,9 +108,12 @@ function DndCharacterView({
         : calculatedPassivePerception
     )
 
+    const hasMagic = hasMagicData(data)
+
   return (
     <>
       <DndBasicInfoView
+        characterName={characterName}
         data={data}
       />
 

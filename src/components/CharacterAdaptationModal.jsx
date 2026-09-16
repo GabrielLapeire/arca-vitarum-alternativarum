@@ -2,6 +2,7 @@
 import DndCharacterView from './adaptations/dnd/view/DndCharacterView'
 
 function CharacterAdaptationModal({
+  characterName,
   adaptation,
   onClose
 }) {
@@ -48,6 +49,7 @@ function CharacterAdaptationModal({
             <div className="modal-body">
               {isDnd ? (
                 <DndCharacterView
+                  characterName={characterName}
                   data={adaptation.data}
                 />
               ) : (

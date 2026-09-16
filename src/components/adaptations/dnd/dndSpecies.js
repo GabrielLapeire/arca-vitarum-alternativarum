@@ -1,5 +1,10 @@
 /* Yo guardo las posibles razas de un personaje de D&D 2024. */
 const SPECIES_DATA = {
+  aasimar: {
+    speed: 30,
+    size: 'Mediano'
+  },
+  
   dragonborn: {
     speed: 30,
     size: 'Mediano'

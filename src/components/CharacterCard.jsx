@@ -78,6 +78,7 @@ function CharacterCard({
 
       {selectedAdaptation && (
         <CharacterAdaptationModal
+          characterName={character.name}
           adaptation={selectedAdaptation}
           onClose={() =>
             setSelectedAdaptation(null)

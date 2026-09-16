@@ -101,35 +101,35 @@ function DndEquipmentView({
 
           <div className="row g-2 mt-1">
             <div className="col">
-              <span className="text-muted">PC</span>
+              <span className="text-muted">Cobre</span>
               <div>
                 {data.equipment?.currency?.cp ?? 0}
               </div>
             </div>
 
             <div className="col">
-              <span className="text-muted">PP</span>
+              <span className="text-muted">Plata</span>
               <div>
                 {data.equipment?.currency?.sp ?? 0}
               </div>
             </div>
 
             <div className="col">
-              <span className="text-muted">PE</span>
+              <span className="text-muted">Electro</span>
               <div>
                 {data.equipment?.currency?.ep ?? 0}
               </div>
             </div>
 
             <div className="col">
-              <span className="text-muted">PO</span>
+              <span className="text-muted">Oro</span>
               <div>
                 {data.equipment?.currency?.gp ?? 0}
               </div>
             </div>
 
             <div className="col">
-              <span className="text-muted">PPt</span>
+              <span className="text-muted">Platino</span>
               <div>
                 {data.equipment?.currency?.pp ?? 0}
               </div>

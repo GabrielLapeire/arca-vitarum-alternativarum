@@ -1,4 +1,5 @@
 /* Yo muestro y gestiono los datos específicos de una ficha de D&D 2024. */
+import { useState } from 'react'
 import {
   ABILITIES,
   SKILLS
@@ -24,6 +25,9 @@ function DndCharacterForm({
   data = {},
   setData
 }) {
+
+  const [currentPage, setCurrentPage] = useState('character')
+
   const abilities = {
     ...Object.fromEntries(
       ABILITIES.map(ability => [ability.id, ''])
@@ -274,7 +278,8 @@ function DndCharacterForm({
           id: crypto.randomUUID(),
           name: '',
           attackBonus: '',
-          damage: ''
+          damage: '',
+          notes: ''
         }
       ]
     }))

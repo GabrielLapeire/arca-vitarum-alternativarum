@@ -137,3 +137,23 @@ export function getPassivePerception(
 
   return 10 + modifier
 }
+
+export function hasMagicData(data) {
+  if (data?.spellcasting?.ability) {
+    return true
+  }
+
+  if (data?.spells?.length > 0) {
+    return true
+  }
+
+  if (data?.spellSlots) {
+    return Object.values(data.spellSlots).some(
+      slot =>
+        slot.total !== '' ||
+        slot.expended !== ''
+    )
+  }
+
+  return false
+}

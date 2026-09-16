@@ -1,6 +1,6 @@
 /* CARACTERÍSTICAS */
-import { ABILITIES } from "../dndConstants"
-import { getAbilityModifier, formatModifier } from "../dndUtils"
+import { ABILITIES } from '../dndConstants'
+import { getAbilityModifier, formatModifier } from '../dndUtils'
 function DndAbilitiesSection({
   abilities,
   updateAbility

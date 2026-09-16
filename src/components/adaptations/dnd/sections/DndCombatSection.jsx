@@ -1,5 +1,5 @@
 /* COMBATE */
-import { getAbilityModifier, formatModifier } from "../dndUtils"
+import { getAbilityModifier, formatModifier } from '../dndUtils'
 function DndCombatSection({
   combat,
   abilities,
@@ -420,6 +420,25 @@ function DndCombatSection({
                     >
                       ×
                     </button>
+                  </div>
+
+                  <div className="col-md-11">
+                    <label className="form-label">
+                      Notas
+                    </label>
+
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Ej.: Alcance 6/18 m"
+                      value={attack.notes || ''}
+                      onChange={(e) =>
+                        updateAttack(
+                          attack.id,
+                          { notes: e.target.value }
+                        )
+                      }
+                    />
                   </div>
                 </div>
               </div>

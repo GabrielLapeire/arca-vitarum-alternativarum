@@ -1,6 +1,7 @@
 /* INFORMACIÓN BÁSICA */
 import { formatValue } from '../dndUtils'
 function DndBasicInfoView({
+  characterName,
   data
 }) {
   return (
@@ -13,9 +14,9 @@ function DndBasicInfoView({
         <div className="row g-3">
 
           <div className="col-md-6">
-            <strong>Jugador</strong>
+            <strong>Nombre</strong>
             <div>
-              {formatValue(data.playerName)}
+              {formatValue(characterName)}
             </div>
           </div>
 

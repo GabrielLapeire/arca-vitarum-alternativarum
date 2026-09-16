@@ -5,7 +5,6 @@ import {
 } from './dndConstants'
 export function createEmptyDndData() {
   return {
-    playerName: '',
     className: '',
     subclass: '',
     level: '',
@@ -80,6 +79,27 @@ export function createEmptyDndData() {
     appearance: '',
     personality: '',
     backstory: '',
-    notes: ''
+    notes: '',
+
+    spellcasting: {
+      ability: '',
+      modifier: '',
+      saveDC: '',
+      attackBonus: ''
+    },
+
+    spells: [],
+
+    spellSlots: {
+      1: { total: 0, expended: 0 },
+      2: { total: 0, expended: 0 },
+      3: { total: 0, expended: 0 },
+      4: { total: 0, expended: 0 },
+      5: { total: 0, expended: 0 },
+      6: { total: 0, expended: 0 },
+      7: { total: 0, expended: 0 },
+      8: { total: 0, expended: 0 },
+      9: { total: 0, expended: 0 }
+    }
   }
 }

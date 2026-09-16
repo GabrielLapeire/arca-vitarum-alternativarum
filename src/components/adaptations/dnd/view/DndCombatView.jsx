@@ -146,6 +146,7 @@ function DndCombatView({
                     <th>Nombre</th>
                     <th>Bonif. atq./CD</th>
                     <th>Daño y tipo</th>
+                    <th>Notas</th>
                   </tr>
                 </thead>
 
@@ -155,6 +156,7 @@ function DndCombatView({
                       <td>{formatValue(attack.name)}</td>
                       <td>{formatValue(attack.attackBonus)}</td>
                       <td>{formatValue(attack.damage)}</td>
+                      <td>{formatValue(attack.notes)}</td>
                     </tr>
                   ))}
                 </tbody>
