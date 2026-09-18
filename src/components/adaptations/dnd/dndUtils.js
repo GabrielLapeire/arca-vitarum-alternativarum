@@ -150,8 +150,8 @@ export function hasMagicData(data) {
   if (data?.spellSlots) {
     return Object.values(data.spellSlots).some(
       slot =>
-        slot.total !== '' ||
-        slot.expended !== ''
+        Number(slot.total) > 0 ||
+        Number(slot.expended) > 0
     )
   }
 

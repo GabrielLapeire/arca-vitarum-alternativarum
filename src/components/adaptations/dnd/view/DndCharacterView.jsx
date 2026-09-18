@@ -22,6 +22,8 @@ import DndCombatView from './DndCombatView'
 import DndFeaturesView from './DndFeaturesView'
 import DndCharacterInfoView from './DndCharacterInfoView'
 import DndEquipmentView from './DndEquipmentView'
+import DndNavigationSheet from '../DndNavigationSheet'
+import DndSpellView from '../spells/DndSpellView'
 
 function DndCharacterView({
   characterName,
@@ -108,75 +110,99 @@ function DndCharacterView({
         : calculatedPassivePerception
     )
 
-    const hasMagic = hasMagicData(data)
+  const hasMagic = hasMagicData(data)
 
   return (
     <>
-      <DndBasicInfoView
-        characterName={characterName}
-        data={data}
-      />
+      {currentPage === 'character' && (
+        <>
+          <DndBasicInfoView
+            characterName={characterName}
+            data={data}
+          />
 
-      {/* RECURSOS */}
+          {/* RECURSOS */}
 
-      <div className="card mb-3">
-        <div className="card-header">
-          <strong>Recursos</strong>
-        </div>
+          <div className="card mb-3">
+            <div className="card-header">
+              <strong>Recursos</strong>
+            </div>
 
-        <div className="card-body">
-          <strong>Inspiración heroica</strong>
+            <div className="card-body">
+              <strong>Inspiración heroica</strong>
 
-          <div>
-            {data.heroicInspiration ? 'Sí' : 'No'}
+              <div>
+                {data.heroicInspiration ? 'Sí' : 'No'}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <DndAbilitiesView
-        abilities={abilities}
-      />
+          <DndAbilitiesView
+            abilities={abilities}
+          />
 
-      <DndProficienciesView
-        abilities={abilities}
-        savingThrows={savingThrows}
-        skills={skills}
-        proficiencyBonus={proficiencyBonus}
-      />
+          <DndProficienciesView
+            abilities={abilities}
+            savingThrows={savingThrows}
+            skills={skills}
+            proficiencyBonus={proficiencyBonus}
+          />
 
-      <DndCombatView
-        data={data}
-        effectiveInitiative={effectiveInitiative}
-        effectiveSpeed={effectiveSpeed}
-        effectiveSize={effectiveSize}
-        effectivePassivePerception={effectivePassivePerception}
-      />
+          <DndCombatView
+            data={data}
+            effectiveInitiative={effectiveInitiative}
+            effectiveSpeed={effectiveSpeed}
+            effectiveSize={effectiveSize}
+            effectivePassivePerception={effectivePassivePerception}
+          />
 
-      <DndFeaturesView
-        data={data}
-      />
+          <DndFeaturesView
+            data={data}
+          />
 
-      <DndCharacterInfoView
-        data={data}
-      />
+          <DndCharacterInfoView
+            data={data}
+          />
 
-      <DndEquipmentView
-        data={data}
-      />
+          <DndEquipmentView
+            data={data}
+          />
 
-      {/* NOTAS */}
+          {/* NOTAS */}
 
-      <div className="card">
-        <div className="card-header">
-          <strong>Notas</strong>
-        </div>
+          <div className="card">
+            <div className="card-header">
+              <strong>Notas</strong>
+            </div>
 
-        <div className="card-body">
-          <p className="mb-0">
-            {formatValue(data.notes)}
-          </p>
-        </div>
-      </div>
+            <div className="card-body">
+              <p className="mb-0">
+                {formatValue(data.notes)}
+              </p>
+            </div>
+          </div>
+
+          {hasMagic && (
+            <DndNavigationSheet
+              currentPage={currentPage}
+              onChangePage={setCurrentPage}
+            />
+          )}
+        </>
+      )}
+
+      {currentPage === 'spells' && (
+        <>
+          <DndSpellView
+            data={data}
+          />
+
+          <DndNavigationSheet
+            currentPage={currentPage}
+            onChangePage={setCurrentPage}
+          />
+        </>
+      )}
     </>
   )
 }

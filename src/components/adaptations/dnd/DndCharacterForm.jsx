@@ -20,6 +20,8 @@ import DndFeaturesSection from './sections/DndFeaturesSection'
 import DndCharacterInfoSection from './sections/DndCharacterInfoSection'
 import DndEquipmentSection from './sections/DndEquipmentSection'
 import DndNotesSection from './sections/DndNotesSection'
+import DndNavigationSheet from './DndNavigationSheet'
+import DndSpellForm from './spells/DndSpellForm'
 
 function DndCharacterForm({
   data = {},
@@ -319,70 +321,95 @@ function DndCharacterForm({
             D&D 2024
           </span>
         </div>
+        <>
+          {currentPage === 'character' && (
+            <>
+              <DndBasicInfoSection
+                data={data}
+                updateField={updateField}
+              />
 
-        <DndBasicInfoSection
-          data={data}
-          updateField={updateField}
-        />
+              <DndAbilitiesSection
+                abilities={abilities}
+                updateAbility={updateAbility}
+              />
 
-        <DndAbilitiesSection
-          abilities={abilities}
-          updateAbility={updateAbility}
-        />
+              <DndProficienciesSection
+                abilities={abilities}
+                savingThrows={savingThrows}
+                skills={skills}
+                proficiencyBonus={proficiencyBonus}
+                updateSavingThrow={updateSavingThrow}
+                updateSkill={updateSkill}
+              />
 
-        <DndProficienciesSection
-          abilities={abilities}
-          savingThrows={savingThrows}
-          skills={skills}
-          proficiencyBonus={proficiencyBonus}
-          updateSavingThrow={updateSavingThrow}
-          updateSkill={updateSkill}
-        />
+              <DndCombatSection
+                combat={combat}
+                abilities={abilities}
+                calculatedSpeed={calculatedSpeed}
+                calculatedSize={calculatedSize}
+                passivePerception={passivePerception}
+                attacks={data.attacks || []}
+                updateCombat={updateCombat}
+                updateAttack={updateAttack}
+                addAttack={addAttack}
+                deleteAttack={deleteAttack}
+              />
 
-        <DndCombatSection
-          combat={combat}
-          abilities={abilities}
-          calculatedSpeed={calculatedSpeed}
-          calculatedSize={calculatedSize}
-          passivePerception={passivePerception}
-          attacks={data.attacks || []}
-          updateCombat={updateCombat}
-          updateAttack={updateAttack}
-          addAttack={addAttack}
-          deleteAttack={deleteAttack}
-        />
+              <DndResourcesSection
+                heroicInspiration={data.heroicInspiration}
+                updateField={updateField}
+              />
 
-        <DndResourcesSection
-          heroicInspiration={data.heroicInspiration}
-          updateField={updateField}
-        />
+              <DndFeaturesSection
+                data={data}
+                updateField={updateField}
+                updateListItem={updateListItem}
+                addListItem={addListItem}
+                deleteListItem={deleteListItem}
+              />
 
-        <DndFeaturesSection
-          data={data}
-          updateField={updateField}
-          updateListItem={updateListItem}
-          addListItem={addListItem}
-          deleteListItem={deleteListItem}
-        />
+              <DndCharacterInfoSection
+                data={data}
+                updateField={updateField}
+              />
 
-        <DndCharacterInfoSection
-          data={data}
-          updateField={updateField}
-        />
+              <DndEquipmentSection
+                equipment={data.equipment}
+                addEquipmentItem={addEquipmentItem}
+                updateEquipmentItem={updateEquipmentItem}
+                deleteEquipmentItem={deleteEquipmentItem}
+                toggleAttunement={toggleAttunement}
+                updateCurrency={updateCurrency}
+              />
 
-        <DndEquipmentSection
-          equipment={data.equipment}
-          addEquipmentItem={addEquipmentItem}
-          updateEquipmentItem={updateEquipmentItem}
-          deleteEquipmentItem={deleteEquipmentItem}
-          toggleAttunement={toggleAttunement}
-          updateCurrency={updateCurrency}
-        />
+              <DndNotesSection
+                notes={data.notes}
+                updateField={updateField}
+              />
 
-        <DndNotesSection
-          notes={data.notes}
-          updateField={updateField}
-        />
+              <DndNavigationSheet
+                currentPage={currentPage}
+                onChangePage={setCurrentPage}
+              />
+            </>
+          )}
+
+          {currentPage === 'spells' && (
+            <>
+              <DndSpellForm
+                data={data}
+                setData={setData}
+                updateField={updateField}
+              />
+
+              <DndNavigationSheet
+                currentPage={currentPage}
+                onChangePage={setCurrentPage}
+              />
+            </>
+          )}
+        </>
       </div>
     </div>
   )

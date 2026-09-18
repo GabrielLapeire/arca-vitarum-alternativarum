@@ -91,15 +91,15 @@ export function createEmptyDndData() {
     spells: [],
 
     spellSlots: {
-      1: { total: 0, expended: 0 },
-      2: { total: 0, expended: 0 },
-      3: { total: 0, expended: 0 },
-      4: { total: 0, expended: 0 },
-      5: { total: 0, expended: 0 },
-      6: { total: 0, expended: 0 },
-      7: { total: 0, expended: 0 },
-      8: { total: 0, expended: 0 },
-      9: { total: 0, expended: 0 }
+      1: { total: '', expended: '' },
+      2: { total: '', expended: '' },
+      3: { total: '', expended: '' },
+      4: { total: '', expended: '' },
+      5: { total: '', expended: '' },
+      6: { total: '', expended: '' },
+      7: { total: '', expended: '' },
+      8: { total: '', expended: '' },
+      9: { total: '', expended: '' }
     }
   }
 }

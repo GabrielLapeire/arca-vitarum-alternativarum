@@ -1,6 +1,15 @@
-function DndSpellView({ }) {
+function DndSpellView({
+  data
+}) {
   return (
-    'hola mundo spellView'
+    <div className="card mb-3">
+      <div className="card-body">
+        <h4>Magia</h4>
+        <p className="mb-0">
+          Página de hechizos en construcción.
+        </p>
+      </div>
+    </div>
   )
 }
 
