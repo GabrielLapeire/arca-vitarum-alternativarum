@@ -5,6 +5,7 @@ import CharacterForm from './components/CharacterForm'
 import CharacterList from './components/CharacterList'
 import { useCharacters } from './hooks/useCharacters'
 import { filterCharacters, sortCharacters } from './utils/characterUtils'
+import { getDndSpells } from './api/dndApi'
 
 function App() {
   /* Estados y hook personalizado para gestion de pj*/
@@ -39,6 +40,16 @@ function App() {
   //     JSON.stringify(characters, null, 2)
   //   )
   // }, [characters])
+
+  useEffect(() => {
+    getDndSpells()
+      .then(data => {
+        console.log('Datos recibidos de Open5e:', data)
+      })
+      .catch(error => {
+        console.error('Error al consultar Open5e:', error)
+      })
+  }, [])
 
   const [search, setSearch] = useState("")
   const [sortBy, setSortBy] = useState("nameAsc")
