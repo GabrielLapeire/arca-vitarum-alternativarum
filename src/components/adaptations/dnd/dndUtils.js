@@ -1,4 +1,4 @@
-/* Yo hago cálculos sobre los D&D. */
+/* Yo hago cálculos sobre de D&D. */
 export function formatValue(value) {
   if (
     value === '' ||

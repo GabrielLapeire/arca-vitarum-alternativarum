@@ -6,6 +6,7 @@ import CharacterList from './components/CharacterList'
 import { useCharacters } from './hooks/useCharacters'
 import { filterCharacters, sortCharacters } from './utils/characterUtils'
 import { getDndSpells } from './api/dndApi'
+import { normalizeDndSpells } from './components/adaptations/dnd/dndSpellUtils'
 
 function App() {
   /* Estados y hook personalizado para gestion de pj*/
@@ -43,11 +44,43 @@ function App() {
 
   useEffect(() => {
     getDndSpells()
-      .then(data => {
-        console.log('Datos recibidos de Open5e:', data)
+      .then(rawSpells => {
+        const spells = normalizeDndSpells(rawSpells)
+
+        console.log(
+          'Cantidad de hechizos:',
+          spells.length
+        )
+
+        console.log(
+          'Acid Arrow:',
+          spells.find(
+            spell =>
+              spell.key === 'srd-2024_acid-arrow'
+          )
+        )
+
+        console.log(
+          'Alarm:',
+          spells.find(
+            spell =>
+              spell.key === 'srd-2024_alarm'
+          )
+        )
+
+        console.log(
+          'Acid Splash:',
+          spells.find(
+            spell =>
+              spell.key === 'srd-2024_acid-splash'
+          )
+        )
       })
       .catch(error => {
-        console.error('Error al consultar Open5e:', error)
+        console.error(
+          'Error al consultar Open5e:',
+          error
+        )
       })
   }, [])
 
