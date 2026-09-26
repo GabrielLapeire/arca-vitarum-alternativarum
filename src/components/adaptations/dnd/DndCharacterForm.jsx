@@ -11,6 +11,9 @@ import {
 import {
   getSpeciesData
 } from './dndSpecies'
+import {
+  useDndSpellCatalog
+} from '../../../hooks/useDndSpellCatalog'
 import DndBasicInfoSection from './sections/DndBasicInfoSection'
 import DndAbilitiesSection from './sections/DndAbilitiesSection'
 import DndProficienciesSection from './sections/DndProficienciesSection'
@@ -29,6 +32,12 @@ function DndCharacterForm({
 }) {
 
   const [currentPage, setCurrentPage] = useState('character')
+
+  const {
+    spells: spellCatalog,
+    loading: spellsLoading,
+    error: spellsError
+  } = useDndSpellCatalog()
 
   const abilities = {
     ...Object.fromEntries(
@@ -77,6 +86,13 @@ function DndCharacterForm({
     speciesData?.speed ?? ''
   const calculatedSize =
     speciesData?.size ?? ''
+
+  const passivePerception = getPassivePerception(
+    SKILLS,
+    abilities,
+    skills,
+    proficiencyBonus
+  )
 
   function updateField(field, value) {
     setData(previousData => ({
@@ -296,12 +312,55 @@ function DndCharacterForm({
     }))
   }
 
-  const passivePerception = getPassivePerception(
-    SKILLS,
-    abilities,
-    skills,
-    proficiencyBonus
-  )
+  function addSpell(spellKey) {
+    setData(previousData => {
+      const currentSpells =
+        previousData.spells || []
+
+      const alreadyExists =
+        currentSpells.some(
+          spell => spell.spellKey === spellKey
+        )
+
+      if (alreadyExists) {
+        return previousData
+      }
+
+      return {
+        ...previousData,
+        spells: [
+          ...currentSpells,
+          {
+            spellKey,
+            prepared: false,
+            alwaysPrepared: false,
+            notes: ''
+          }
+        ]
+      }
+    })
+  }
+
+  function updateSpell(spellKey, changes) {
+    setData(previousData => ({
+      ...previousData,
+      spells: (previousData.spells || []).map(
+        spell =>
+          spell.spellKey === spellKey
+            ? { ...spell, ...changes }
+            : spell
+      )
+    }))
+  }
+
+  function deleteSpell(spellKey) {
+    setData(previousData => ({
+      ...previousData,
+      spells: (previousData.spells || []).filter(
+        spell => spell.spellKey !== spellKey
+      )
+    }))
+  }
 
   return (
     <div className="card border-primary mt-4">
@@ -399,8 +458,12 @@ function DndCharacterForm({
             <>
               <DndSpellForm
                 data={data}
-                setData={setData}
-                updateField={updateField}
+                spellCatalog={spellCatalog}
+                spellsLoading={spellsLoading}
+                spellsError={spellsError}
+                addSpell={addSpell}
+                updateSpell={updateSpell}
+                deleteSpell={deleteSpell}
               />
 
               <DndNavigationSheet
