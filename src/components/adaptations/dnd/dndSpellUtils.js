@@ -7,16 +7,16 @@ export function normalizeDndSpell(spell) {
 
     school: spell.school
       ? {
-          key: spell.school.key,
-          name: spell.school.name
-        }
+        key: spell.school.key,
+        name: spell.school.name
+      }
       : null,
 
     classes: Array.isArray(spell.classes)
       ? spell.classes.map(classInfo => ({
-          key: classInfo.key,
-          name: classInfo.name
-        }))
+        key: classInfo.key,
+        name: classInfo.name
+      }))
       : [],
 
     castingTime: spell.casting_time ?? '',
@@ -72,22 +72,22 @@ export function normalizeDndSpell(spell) {
     castingOptions:
       Array.isArray(spell.casting_options)
         ? spell.casting_options.map(option => ({
-            type: option.type ?? '',
-            damageRoll:
-              option.damage_roll ?? '',
-            targetCount:
-              option.target_count ?? null,
-            duration:
-              option.duration ?? null,
-            range:
-              option.range ?? null,
-            concentration:
-              option.concentration ?? null,
-            shapeSize:
-              option.shape_size ?? null,
-            description:
-              option.desc ?? ''
-          }))
+          type: option.type ?? '',
+          damageRoll:
+            option.damage_roll ?? '',
+          targetCount:
+            option.target_count ?? null,
+          duration:
+            option.duration ?? null,
+          range:
+            option.range ?? null,
+          concentration:
+            option.concentration ?? null,
+          shapeSize:
+            option.shape_size ?? null,
+          description:
+            option.desc ?? ''
+        }))
         : []
   }
 }
@@ -98,4 +98,52 @@ export function normalizeDndSpells(spells) {
   }
 
   return spells.map(normalizeDndSpell)
+}
+
+export function searchDndSpells(
+  spells,
+  search
+) {
+  const normalizedSearch =
+    search.trim().toLowerCase()
+
+  if (!normalizedSearch) {
+    return spells
+  }
+
+  return spells.filter(spell => {
+    return (
+      spell.name
+        .toLowerCase()
+        .includes(normalizedSearch) ||
+      spell.key
+        .toLowerCase()
+        .includes(normalizedSearch)
+    )
+  })
+}
+
+export function sortDndCharacterSpells(spells, spellCatalog) {
+  return [...spells].sort((a, b) => {
+    const spellA = spellCatalog.find(
+      spell => spell.key === a.spellKey
+    )
+
+    const spellB = spellCatalog.find(
+      spell => spell.key === b.spellKey
+    )
+
+    if (!spellA && !spellB) return 0
+    if (!spellA) return 1
+    if (!spellB) return -1
+
+    if (spellA.level !== spellB.level) {
+      return spellA.level - spellB.level
+    }
+
+    return spellA.name.localeCompare(
+      spellB.name,
+      'en'
+    )
+  })
 }

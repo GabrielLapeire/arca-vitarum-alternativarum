@@ -362,6 +362,32 @@ function DndCharacterForm({
     }))
   }
 
+  function updateSpellcasting(field, value) {
+    setData(previousData => ({
+      ...previousData,
+      spellcasting: {
+        ...(previousData.spellcasting || {}),
+        [field]: value
+      }
+    }))
+  }
+
+  function updateSpellSlot(level, field, value) {
+    setData(previousData => ({
+      ...previousData,
+      spellSlots: {
+        ...(previousData.spellSlots || {}),
+        [level]: {
+          ...(previousData.spellSlots?.[level] || {
+            total: '',
+            expended: ''
+          }),
+          [field]: value
+        }
+      }
+    }))
+  }
+
   return (
     <div className="card border-primary mt-4">
       <div className="card-body">
@@ -464,6 +490,8 @@ function DndCharacterForm({
                 addSpell={addSpell}
                 updateSpell={updateSpell}
                 deleteSpell={deleteSpell}
+                updateSpellcasting={updateSpellcasting}
+                updateSpellSlot={updateSpellSlot}
               />
 
               <DndNavigationSheet
