@@ -4,6 +4,7 @@ import {
   searchDndSpells,
   sortDndCharacterSpells
 } from '../dndSpellUtils'
+import DndSpellCard from './DndSpellCard'
 
 function DndSpellForm({
   data,
@@ -27,7 +28,8 @@ function DndSpellForm({
 
     if (levelFilter !== '') {
       results = results.filter(
-        spell => spell.level === Number(levelFilter)
+        spell =>
+          spell.level === Number(levelFilter)
       )
     }
 
@@ -37,158 +39,46 @@ function DndSpellForm({
   const characterSpells =
     data?.spells || []
 
-  const preparedSpells = sortDndCharacterSpells(
-    characterSpells.filter(
-      spell => spell.prepared || spell.alwaysPrepared
-    ),
-    spellCatalog
-  )
+  const preparedSpells =
+    sortDndCharacterSpells(
+      characterSpells.filter(
+        spell =>
+          spell.prepared ||
+          spell.alwaysPrepared
+      ),
+      spellCatalog
+    )
 
-  const unpreparedSpells = sortDndCharacterSpells(
-    characterSpells.filter(
-      spell => !spell.prepared && !spell.alwaysPrepared
-    ),
-    spellCatalog
-  )
+  const unpreparedSpells =
+    sortDndCharacterSpells(
+      characterSpells.filter(
+        spell =>
+          !spell.prepared &&
+          !spell.alwaysPrepared
+      ),
+      spellCatalog
+    )
 
   function renderCharacterSpell(spell) {
-    const catalogSpell = spellCatalog.find(
-      catalogItem =>
-        catalogItem.key === spell.spellKey
-    )
+    const catalogSpell =
+      spellCatalog.find(
+        catalogItem =>
+          catalogItem.key ===
+          spell.spellKey
+      )
 
     return (
       <div
         key={spell.spellKey}
-        className="card mb-2"
+        className="col-12 col-lg-6"
       >
-        <div className="card-body">
-          <div className="d-flex justify-content-between align-items-start">
-            <div>
-              <strong>
-                {catalogSpell?.name || spell.spellKey}
-              </strong>
-
-              {catalogSpell && (
-                <div className="small text-muted">
-                  {catalogSpell.level === 0
-                    ? 'Truco'
-                    : `Nivel ${catalogSpell.level}`}
-                  {' · '}
-                  {catalogSpell.school?.name ||
-                    'Escuela desconocida'}
-                </div>
-              )}
-            </div>
-
-            <button
-              type="button"
-              className="btn btn-sm btn-danger"
-              onClick={() =>
-                deleteSpell(spell.spellKey)
-              }
-            >
-              Eliminar
-            </button>
-          </div>
-
-          {catalogSpell && (
-            <div className="small mt-2">
-              <div>
-                <strong>Tiempo:</strong>{' '}
-                {catalogSpell.castingTime || '—'}
-              </div>
-
-              <div>
-                <strong>Alcance:</strong>{' '}
-                {catalogSpell.range?.text || '—'}
-              </div>
-
-              <div>
-                <strong>Duración:</strong>{' '}
-                {catalogSpell.duration || '—'}
-              </div>
-
-              <div>
-                <strong>Componentes:</strong>{' '}
-                {[
-                  catalogSpell.components?.verbal && 'V',
-                  catalogSpell.components?.somatic && 'S',
-                  catalogSpell.components?.material && 'M'
-                ]
-                  .filter(Boolean)
-                  .join(', ') || '—'}
-              </div>
-            </div>
-          )}
-
-          <div className="mt-3">
-            <label className="form-check">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                checked={
-                  spell.prepared || spell.alwaysPrepared
-                }
-                disabled={spell.alwaysPrepared}
-                onChange={e =>
-                  updateSpell(
-                    spell.spellKey,
-                    {
-                      prepared: e.target.checked
-                    }
-                  )
-                }
-              />
-
-              <span className="form-check-label">
-                Preparado
-              </span>
-            </label>
-          </div>
-
-          <div className="mt-2">
-            <label className="form-check">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                checked={spell.alwaysPrepared}
-                onChange={e =>
-                  updateSpell(
-                    spell.spellKey,
-                    {
-                      alwaysPrepared:
-                        e.target.checked
-                    }
-                  )
-                }
-              />
-
-              <span className="form-check-label">
-                Siempre preparado
-              </span>
-            </label>
-          </div>
-
-          <div className="mt-2">
-            <label className="form-label">
-              Notas
-            </label>
-
-            <textarea
-              className="form-control"
-              value={spell.notes}
-              onChange={e =>
-                updateSpell(
-                  spell.spellKey,
-                  {
-                    notes: e.target.value
-                  }
-                )
-              }
-            />
-          </div>
-        </div>
+        <DndSpellCard
+          spell={spell}
+          catalogSpell={catalogSpell}
+          editable={true}
+          updateSpell={updateSpell}
+          deleteSpell={deleteSpell}
+        />
       </div>
     )
   }
@@ -231,7 +121,10 @@ function DndSpellForm({
 
               <select
                 className="form-select"
-                value={data?.spellcasting?.ability || ''}
+                value={
+                  data?.spellcasting?.ability ||
+                  ''
+                }
                 onChange={e =>
                   updateSpellcasting(
                     'ability',
@@ -239,13 +132,33 @@ function DndSpellForm({
                   )
                 }
               >
-                <option value="">Seleccionar</option>
-                <option value="strength">Fuerza</option>
-                <option value="dexterity">Destreza</option>
-                <option value="constitution">Constitución</option>
-                <option value="intelligence">Inteligencia</option>
-                <option value="wisdom">Sabiduría</option>
-                <option value="charisma">Carisma</option>
+                <option value="">
+                  Seleccionar
+                </option>
+
+                <option value="strength">
+                  Fuerza
+                </option>
+
+                <option value="dexterity">
+                  Destreza
+                </option>
+
+                <option value="constitution">
+                  Constitución
+                </option>
+
+                <option value="intelligence">
+                  Inteligencia
+                </option>
+
+                <option value="wisdom">
+                  Sabiduría
+                </option>
+
+                <option value="charisma">
+                  Carisma
+                </option>
               </select>
             </div>
 
@@ -257,7 +170,10 @@ function DndSpellForm({
               <input
                 type="number"
                 className="form-control"
-                value={data?.spellcasting?.modifier || ''}
+                value={
+                  data?.spellcasting
+                    ?.modifier || ''
+                }
                 onChange={e =>
                   updateSpellcasting(
                     'modifier',
@@ -275,7 +191,10 @@ function DndSpellForm({
               <input
                 type="number"
                 className="form-control"
-                value={data?.spellcasting?.saveDC || ''}
+                value={
+                  data?.spellcasting?.saveDC ||
+                  ''
+                }
                 onChange={e =>
                   updateSpellcasting(
                     'saveDC',
@@ -293,7 +212,10 @@ function DndSpellForm({
               <input
                 type="number"
                 className="form-control"
-                value={data?.spellcasting?.attackBonus || ''}
+                value={
+                  data?.spellcasting
+                    ?.attackBonus || ''
+                }
                 onChange={e =>
                   updateSpellcasting(
                     'attackBonus',
@@ -322,7 +244,10 @@ function DndSpellForm({
             </div>
           </div>
 
-          {Array.from({ length: 9 }, (_, index) => index + 1).map(level => {
+          {Array.from(
+            { length: 9 },
+            (_, index) => index + 1
+          ).map(level => {
             const slot =
               data?.spellSlots?.[level] || {
                 total: '',
@@ -387,7 +312,9 @@ function DndSpellForm({
                 type="text"
                 className="form-control"
                 value={search}
-                onChange={e => setSearch(e.target.value)}
+                onChange={e =>
+                  setSearch(e.target.value)
+                }
                 placeholder="Ej.: Acid Arrow"
               />
             </div>
@@ -400,70 +327,116 @@ function DndSpellForm({
               <select
                 className="form-select"
                 value={levelFilter}
-                onChange={e => setLevelFilter(e.target.value)}
+                onChange={e =>
+                  setLevelFilter(
+                    e.target.value
+                  )
+                }
               >
-                <option value="">Todos</option>
-                <option value="0">Trucos</option>
-                <option value="1">Nivel 1</option>
-                <option value="2">Nivel 2</option>
-                <option value="3">Nivel 3</option>
-                <option value="4">Nivel 4</option>
-                <option value="5">Nivel 5</option>
-                <option value="6">Nivel 6</option>
-                <option value="7">Nivel 7</option>
-                <option value="8">Nivel 8</option>
-                <option value="9">Nivel 9</option>
+                <option value="">
+                  Todos
+                </option>
+
+                <option value="0">
+                  Trucos
+                </option>
+
+                <option value="1">
+                  Nivel 1
+                </option>
+
+                <option value="2">
+                  Nivel 2
+                </option>
+
+                <option value="3">
+                  Nivel 3
+                </option>
+
+                <option value="4">
+                  Nivel 4
+                </option>
+
+                <option value="5">
+                  Nivel 5
+                </option>
+
+                <option value="6">
+                  Nivel 6
+                </option>
+
+                <option value="7">
+                  Nivel 7
+                </option>
+
+                <option value="8">
+                  Nivel 8
+                </option>
+
+                <option value="9">
+                  Nivel 9
+                </option>
               </select>
             </div>
           </div>
         </div>
 
-        {(search.trim() !== '' || levelFilter !== '') && (
-          <div className="mt-4">
-            <h6>Resultados</h6>
+        {(search.trim() !== '' ||
+          levelFilter !== '') && (
+            <div className="mt-4">
+              <h6>Resultados</h6>
 
-            {filteredSpells.length === 0 && (
-              <p className="text-muted">
-                No se encontraron hechizos.
-              </p>
-            )}
+              {filteredSpells.length === 0 && (
+                <p className="text-muted">
+                  No se encontraron hechizos.
+                </p>
+              )}
 
-            {filteredSpells.map(spell => {
-              const alreadyAdded = characterSpells.some(
-                characterSpell =>
-                  characterSpell.spellKey === spell.key
-              )
+              {filteredSpells.map(spell => {
+                const alreadyAdded =
+                  characterSpells.some(
+                    characterSpell =>
+                      characterSpell.spellKey ===
+                      spell.key
+                  )
 
-              return (
-                <div
-                  key={spell.key}
-                  className="d-flex justify-content-between align-items-center border rounded p-2 mb-2"
-                >
-                  <div>
-                    <strong>{spell.name}</strong>
-
-                    <div className="small text-muted">
-                      {spell.level === 0
-                        ? 'Truco'
-                        : `Nivel ${spell.level}`}
-                      {' · '}
-                      {spell.school?.name || 'Escuela desconocida'}
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-primary"
-                    onClick={() => addSpell(spell.key)}
-                    disabled={alreadyAdded}
+                return (
+                  <div
+                    key={spell.key}
+                    className="d-flex justify-content-between align-items-center border rounded p-2 mb-2"
                   >
-                    {alreadyAdded ? 'Agregado' : 'Agregar'}
-                  </button>
-                </div>
-              )
-            })}
-          </div>
-        )}
+                    <div>
+                      <strong>
+                        {spell.name}
+                      </strong>
+
+                      <div className="small text-muted">
+                        {spell.level === 0
+                          ? 'Truco'
+                          : `Nivel ${spell.level}`}
+                        {' · '}
+                        {spell.school?.name ||
+                          'Escuela desconocida'}
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-primary"
+                      onClick={() =>
+                        addSpell(spell.key)
+                      }
+                      disabled={alreadyAdded}
+                    >
+                      {alreadyAdded
+                        ? 'Agregado'
+                        : 'Agregar'}
+                    </button>
+                  </div>
+                )
+              })}
+            </div>
+          )}
 
         {characterSpells.length > 0 && (
           <div className="mt-4">
@@ -473,15 +446,25 @@ function DndSpellForm({
               <div className="mt-3">
                 <h6>Preparados</h6>
 
-                {preparedSpells.map(renderCharacterSpell)}
+                <div className="row g-3">
+                  {preparedSpells.map(
+                    renderCharacterSpell
+                  )}
+                </div>
               </div>
             )}
 
             {unpreparedSpells.length > 0 && (
               <div className="mt-4">
-                <h6>No preparados</h6>
+                <h6>
+                  No preparados
+                </h6>
 
-                {unpreparedSpells.map(renderCharacterSpell)}
+                <div className="row g-3">
+                  {unpreparedSpells.map(
+                    renderCharacterSpell
+                  )}
+                </div>
               </div>
             )}
           </div>
