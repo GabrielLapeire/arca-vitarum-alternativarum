@@ -1,7 +1,10 @@
 /* Vista de hechizos de una adaptación de D&D */
 import {
-  ABILITIES
-} from '../dndConstants'
+  getDndAbilityName
+} from '../dndTranslations'
+import {
+  formatValue
+} from '../dndUtils'
 import {
   sortDndCharacterSpells
 } from '../dndSpellUtils'
@@ -46,13 +49,9 @@ function DndSpellView({
     data.spellcasting || {}
 
   const spellcastingAbility =
-    ABILITIES.find(
-      ability =>
-        ability.id ===
-        spellcasting.ability
-    )?.name ||
-    spellcasting.ability ||
-    '—'
+    getDndAbilityName(
+      spellcasting.ability
+    ) || '—'
 
   return (
     <div className="card mb-3">
@@ -91,8 +90,7 @@ function DndSpellView({
               </div>
 
               <strong>
-                {spellcasting.modifier ||
-                  '—'}
+                {formatValue(spellcasting.modifier)}
               </strong>
             </div>
 
@@ -102,8 +100,7 @@ function DndSpellView({
               </div>
 
               <strong>
-                {spellcasting.saveDC ||
-                  '—'}
+                {formatValue(spellcasting.saveDC)}
               </strong>
             </div>
 
@@ -113,8 +110,7 @@ function DndSpellView({
               </div>
 
               <strong>
-                {spellcasting.attackBonus ||
-                  '—'}
+                {formatValue(spellcasting.attackBonus)}
               </strong>
             </div>
           </div>
@@ -157,11 +153,11 @@ function DndSpellView({
                 </div>
 
                 <div className="col-4">
-                  {slot.total || '—'}
+                  {formatValue(slot.total)}
                 </div>
 
                 <div className="col-4">
-                  {slot.expended || '—'}
+                  {formatValue(slot.expended)}
                 </div>
               </div>
             )

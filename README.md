@@ -1,16 +1,32 @@
-# React + Vite
+# Arca Vitarum Alternativarum
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web desarrollada con React para gestionar personajes
+de distintos sistemas de rol.
 
-Currently, two official plugins are available:
+## Estado
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+🚧 En desarrollo.
 
-## React Compiler
+Actualmente cuenta con soporte para D&D 2024 y permite crear,
+editar y visualizar personajes, incluyendo gestión de hechizos
+mediante datos obtenidos de una API externa.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tecnologías
 
-## Expanding the ESLint configuration
+- React
+- Vite
+- JavaScript
+- Bootstrap
+- LocalStorage
+- Open5e API
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Funcionalidades actuales
+
+- Gestión de personajes
+- Adaptaciones por sistema y versión
+- Fichas de D&D 2024
+- Datos derivados de características
+- Gestión de hechizos
+- Búsqueda y filtrado de hechizos
+- Caché local del catálogo
+- Vista de edición y vista de solo lectura
