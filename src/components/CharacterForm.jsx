@@ -31,13 +31,19 @@ function CharacterForm({
   }
 
   return (
-    <div className="card shadow mb-4">
-      <div className="card-body">
-        <h3 className="card-title mb-3">
-          {editingId
-            ? "Editar personaje"
-            : "Crear personaje"}
-        </h3>
+    <div className="card rpg-card mb-4">
+      <div className="card-body p-4">
+        <div className="mb-4">
+          <h3 className="card-title mb-1">
+            {editingId
+              ? "Editar personaje"
+              : "Crear personaje"}
+          </h3>
+
+          <p className="text-muted small mb-0">
+            Datos básicos del personaje y sus adaptaciones.
+          </p>
+        </div>
 
         <div className="row g-3">
           <div className="col-md-6">
@@ -175,16 +181,7 @@ function CharacterForm({
           />
         )}
 
-        <div
-          className="
-            sticky-bottom
-            bg-body
-            border-top
-            mt-4
-            pt-3
-            pb-2
-          "
-        >
+        <div className="sticky-bottom rpg-form-actions mt-4 pt-3 pb-2">
           <div className="d-flex justify-content-end gap-2">
             {isAdaptationActive ? (
               <>
@@ -201,7 +198,7 @@ function CharacterForm({
                 <button
                   type="button"
                   onClick={saveAdaptation}
-                  className="btn btn-success"
+                  className="btn btn-primary"
                 >
                   {editingAdaptationId !== null
                     ? "Actualizar adaptación"

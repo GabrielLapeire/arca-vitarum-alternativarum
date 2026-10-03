@@ -54,37 +54,49 @@ function App() {
   )
 
   return (
-    <div className="container py-5">
-      <h1 className="text-center mb-4">
-        Arca Vitarum Alternativarum
-      </h1>
-      <CharacterFilters
-        search={search}
-        setSearch={setSearch}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-      />
-      <CharacterForm
-        newCharacter={newCharacter}
-        setNewCharacter={setNewCharacter}
-        saveCharacter={saveCharacter}
-        editingId={editingId}
-        cancelUpdateCharacter={cancelUpdateCharacter}
-        errors={errors}
-        newAdaptation={newAdaptation}
-        setNewAdaptation={setNewAdaptation}
-        editingAdaptationId={editingAdaptationId}
-        saveAdaptation={saveAdaptation}
-        updateAdaptation={updateAdaptation}
-        cancelUpdateAdaptation={cancelUpdateAdaptation}
-        deleteAdaptation={deleteAdaptation}
-        changeAdaptationSystem={changeAdaptationSystem}
-      />
-      <CharacterList
-        characters={sortedCharacters}
-        updateCharacter={updateCharacter}
-        deleteCharacter={deleteCharacter}
-      />
+    <div className="rpg-app">
+      <main className="container py-4 py-lg-5">
+
+        <header className="rpg-header text-center mb-5">
+          <h1 className="display-6 fw-bold mb-2">
+            Arca Vitarum Alternativarum
+          </h1>
+
+          <p className="mb-0">
+            Gestión de personajes para sistemas de rol
+          </p>
+        </header>
+
+        <CharacterFilters
+          search={search}
+          setSearch={setSearch}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+        />
+
+        <CharacterForm
+          newCharacter={newCharacter}
+          setNewCharacter={setNewCharacter}
+          saveCharacter={saveCharacter}
+          editingId={editingId}
+          cancelUpdateCharacter={cancelUpdateCharacter}
+          errors={errors}
+          newAdaptation={newAdaptation}
+          setNewAdaptation={setNewAdaptation}
+          editingAdaptationId={editingAdaptationId}
+          saveAdaptation={saveAdaptation}
+          updateAdaptation={updateAdaptation}
+          cancelUpdateAdaptation={cancelUpdateAdaptation}
+          deleteAdaptation={deleteAdaptation}
+          changeAdaptationSystem={changeAdaptationSystem}
+        />
+
+        <CharacterList
+          characters={sortedCharacters}
+          updateCharacter={updateCharacter}
+          deleteCharacter={deleteCharacter}
+        />
+      </main>
     </div>
   )
 }

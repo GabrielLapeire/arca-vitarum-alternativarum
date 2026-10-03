@@ -6,7 +6,6 @@ function CharacterList({
   updateCharacter,
   deleteCharacter
 }) {
-
   if (characters.length === 0) {
     return (
       <div className="alert alert-secondary text-center">
@@ -16,26 +15,32 @@ function CharacterList({
   }
 
   return (
-    <div className="row g-4">
-      <div className="col-12">
-        <h5 className="mb-0">
-          Se encontraron {characters.length} personajes
+    <section>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h5 className="rpg-section-title mb-0">
+          Personajes
         </h5>
+
+        <span className="badge text-bg-secondary">
+          {characters.length}
+        </span>
       </div>
 
-      {characters.map((character) => (
-        <div
-          className="col-12 col-md-6 col-xl-4"
-          key={character.id}
-        >
-          <CharacterCard
-            character={character}
-            updateCharacter={updateCharacter}
-            deleteCharacter={deleteCharacter}
-          />
-        </div>
-      ))}
-    </div>
+      <div className="row g-4">
+        {characters.map(character => (
+          <div
+            className="col-12 col-md-6 col-xl-4"
+            key={character.id}
+          >
+            <CharacterCard
+              character={character}
+              updateCharacter={updateCharacter}
+              deleteCharacter={deleteCharacter}
+            />
+          </div>
+        ))}
+      </div>
+    </section>
   )
 }
 

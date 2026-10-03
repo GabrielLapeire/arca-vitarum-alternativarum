@@ -1,24 +1,27 @@
 :root {
-  --rpg-bg: #211a2e;
-  --rpg-bg-secondary: #18263a;
+  --rpg-font-body: 'Inter', sans-serif;
+  --rpg-font-heading: 'Cinzel', serif;
 
-  --rpg-surface: #f5efe4;
-  --rpg-surface-secondary: #ebe3d5;
+  --rpg-bg: #211832;
+  --rpg-bg-secondary: #192840;
 
-  --rpg-text: #2f2935;
-  --rpg-text-muted: #6e6675;
+  --rpg-surface: #f6eee0;
+  --rpg-surface-secondary: #eee4d2;
 
-  --rpg-purple: #6f42c1;
-  --rpg-purple-dark: #4f2f8a;
+  --rpg-text: #2d2734;
+  --rpg-text-muted: #6b6170;
 
-  --rpg-gold: #c59a3a;
-  --rpg-gold-dark: #8f6d22;
+  --rpg-purple: #7848c8;
+  --rpg-purple-dark: #56329a;
 
-  --rpg-red: #8f3040;
-  --rpg-red-dark: #68232f;
+  --rpg-gold: #d6a63f;
+  --rpg-gold-dark: #ae812b;
 
-  --rpg-blue: #3f6ea8;
-  --rpg-blue-dark: #2d507a;
+  --rpg-red: #9d3549;
+  --rpg-red-dark: #762637;
+
+  --rpg-blue: #4b7fbd;
+  --rpg-blue-dark: #315b8c;
 }
 
 html,
@@ -29,23 +32,25 @@ body,
 
 body {
   margin: 0;
+  font-family: var(--rpg-font-body);
   color: var(--rpg-text);
   background:
-    radial-gradient(
-      circle at top left,
-      rgba(111, 66, 193, 0.22),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at top right,
-      rgba(63, 110, 168, 0.18),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
+    radial-gradient(circle at 10% 0%,
+      rgba(120, 72, 200, 0.32),
+      transparent 32%),
+    radial-gradient(circle at 90% 5%,
+      rgba(75, 127, 189, 0.24),
+      transparent 30%),
+    linear-gradient(135deg,
       var(--rpg-bg),
-      var(--rpg-bg-secondary)
-    );
+      var(--rpg-bg-secondary));
+}
+
+h1,
+h2,
+h3,
+.rpg-section-title {
+  font-family: var(--rpg-font-heading);
 }
 
 .rpg-app {
@@ -57,6 +62,7 @@ body {
 }
 
 .rpg-header h1 {
+  font-family: var(--rpg-font-heading);
   color: var(--rpg-gold);
 }
 
@@ -83,9 +89,23 @@ body {
   color: var(--rpg-purple-dark);
 }
 
+.rpg-card .btn {
+  font-weight: 500;
+}
+
 .rpg-section-title {
-  color: var(--rpg-purple-dark);
+  color: var(--rpg-gold);
   font-weight: 600;
+}
+
+.rpg-form-actions {
+  background-color: var(--rpg-surface);
+  border-top: 1px solid rgba(197, 154, 58, 0.35);
+}
+
+.rpg-view-badge {
+  background-color: var(--rpg-purple);
+  color: #fff;
 }
 
 .btn-primary {
@@ -96,18 +116,19 @@ body {
 }
 
 .btn-warning {
-  --bs-btn-color: #2f2935;
-  --bs-btn-bg: var(--rpg-gold);
-  --bs-btn-border-color: var(--rpg-gold);
-  --bs-btn-hover-bg: var(--rpg-gold-dark);
-  --bs-btn-hover-border-color: var(--rpg-gold-dark);
+  --bs-btn-color: #2d2734;
+  --bs-btn-bg: #dcae3f;
+  --bs-btn-border-color: #dcae3f;
+  --bs-btn-hover-bg: #b98624;
+  --bs-btn-hover-border-color: #b98624;
 }
 
 .btn-danger {
-  --bs-btn-bg: var(--rpg-red);
-  --bs-btn-border-color: var(--rpg-red);
-  --bs-btn-hover-bg: var(--rpg-red-dark);
-  --bs-btn-hover-border-color: var(--rpg-red-dark);
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #a52f45;
+  --bs-btn-border-color: #a52f45;
+  --bs-btn-hover-bg: #7d2435;
+  --bs-btn-hover-border-color: #7d2435;
 }
 
 .btn-outline-primary {

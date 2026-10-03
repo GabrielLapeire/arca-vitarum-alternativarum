@@ -10,12 +10,18 @@ function CharacterCard({
   const [selectedAdaptation, setSelectedAdaptation] = useState(null)
   return (
     <>
-      <div className="card shadow h-100">
-        <div className="card-body d-flex flex-column">
+      <div className="card rpg-card h-100">
+        <div className="card-body d-flex flex-column p-4">
 
-          <h5 className="card-title">
+          <h5 className="card-title mb-1">
             {character.name}
           </h5>
+
+          <div className="text-muted small mb-3">
+            {character.adaptations.length === 1
+              ? '1 adaptación'
+              : `${character.adaptations.length} adaptaciones`}
+          </div>
 
           <div className="card-text flex-grow-1">
 
@@ -42,8 +48,8 @@ function CharacterCard({
                     }
                   </span>
 
-                  <span className="badge text-bg-secondary">
-                    Ver resumen
+                  <span className="badge rpg-view-badge">
+                    Ver
                   </span>
                 </button>
               ))}
