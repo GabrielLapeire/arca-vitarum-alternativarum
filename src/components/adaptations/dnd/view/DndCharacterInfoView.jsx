@@ -1,54 +1,60 @@
 /* HISTORIA Y PERSONALIDAD */
 import { formatValue } from '../dndUtils'
+
 function DndCharacterInfoView({
   data
 }) {
   return (
-    <div className="card mb-3">
+    <div className="card rpg-card mb-4">
       <div className="card-header">
-        <strong>
-          Historia y personalidad
-        </strong>
+        Historia y personalidad
       </div>
 
-      <div className="card-body">
+      <div className="card-body p-4">
         <div className="row g-3">
 
           <div className="col-md-6">
-            <strong>
-              Apariencia
-            </strong>
+            <div className="rpg-dnd-text-block">
+              <span className="rpg-dnd-value-label">
+                Apariencia
+              </span>
 
-            <p className="mt-2 mb-0">
-              {formatValue(
-                data.appearance
-              )}
-            </p>
+              <p className="mb-0">
+                {formatValue(
+                  data.appearance
+                )}
+              </p>
+            </div>
           </div>
 
           <div className="col-md-6">
-            <strong>
-              Personalidad
-            </strong>
+            <div className="rpg-dnd-text-block">
+              <span className="rpg-dnd-value-label">
+                Personalidad
+              </span>
 
-            <p className="mt-2 mb-0">
-              {formatValue(
-                data.personality
-              )}
-            </p>
+              <p className="mb-0">
+                {formatValue(
+                  data.personality
+                )}
+              </p>
+            </div>
           </div>
 
           <div className="col-12">
-            <strong>
-              Historia / trasfondo narrativo
-            </strong>
+            <div className="rpg-dnd-text-block">
+              <span className="rpg-dnd-value-label">
+                Historia / trasfondo narrativo
+              </span>
 
-            <p className="mt-2 mb-0">
-              {formatValue(
-                data.backstory
-              )}
-            </p>
+              <p className="mb-0">
+                {formatValue(
+                  data.backstory
+                )}
+              </p>
+            </div>
           </div>
+
         </div>
       </div>
     </div>

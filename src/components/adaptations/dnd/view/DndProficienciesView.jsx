@@ -5,6 +5,7 @@ import {
   getSkillModifier,
   formatModifier
 } from '../dndUtils'
+
 function DndProficienciesView({
   abilities,
   savingThrows,
@@ -12,37 +13,34 @@ function DndProficienciesView({
   proficiencyBonus
 }) {
   return (
-    <div className="card mb-3">
+    <div className="card rpg-card mb-4">
       <div className="card-header">
-        <strong>
-          Competencias y tiradas de salvación
-        </strong>
+        Competencias y tiradas de salvación
       </div>
 
-      <div className="card-body">
+      <div className="card-body p-4">
         <div className="mb-4">
-          <strong>
+          <span className="rpg-dnd-value-label">
             Bonificador por competencia
-          </strong>
+          </span>
 
-          <span className="ms-2 badge text-bg-primary">
-            {formatModifier(
-              proficiencyBonus
-            )}
+          <span className="badge rpg-dnd-badge">
+            {formatModifier(proficiencyBonus)}
           </span>
         </div>
 
-        <div className="row g-2">
-          <div className="col-md-6">
-            <h6>
+        <div className="row g-4">
+
+          <div className="col-lg-6">
+            <h6 className="rpg-dnd-detail-title mb-3">
               Tiradas de salvación
             </h6>
 
-            <div className="list-group">
+            <div className="d-flex flex-column gap-2">
               {ABILITIES.map(ability => (
                 <div
                   key={ability.id}
-                  className="list-group-item d-flex justify-content-between"
+                  className="rpg-dnd-list-item d-flex justify-content-between align-items-center"
                 >
                   <span>
                     {ability.name}
@@ -68,20 +66,19 @@ function DndProficienciesView({
                   </strong>
                 </div>
               ))}
-
             </div>
           </div>
 
-          <div className="col-md-6">
-            <h6>
+          <div className="col-lg-6">
+            <h6 className="rpg-dnd-detail-title mb-3">
               Habilidades
             </h6>
 
-            <div className="list-group">
+            <div className="d-flex flex-column gap-2">
               {SKILLS.map(skill => (
                 <div
                   key={skill.id}
-                  className="list-group-item d-flex justify-content-between"
+                  className="rpg-dnd-list-item d-flex justify-content-between align-items-center"
                 >
                   <span>
                     {skill.name}
@@ -109,9 +106,10 @@ function DndProficienciesView({
               ))}
             </div>
           </div>
+
         </div>
       </div>
-    </div >
+    </div>
   )
 }
 

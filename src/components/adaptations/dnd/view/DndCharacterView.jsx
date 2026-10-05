@@ -121,18 +121,20 @@ function DndCharacterView({
             data={data}
           />
 
-          {/* RECURSOS */}
-
-          <div className="card mb-3">
+          <div className="card rpg-card mb-4">
             <div className="card-header">
-              <strong>Recursos</strong>
+              Recursos
             </div>
 
-            <div className="card-body">
-              <strong>Inspiración heroica</strong>
+            <div className="card-body p-4">
+              <span className="rpg-dnd-value-label">
+                Inspiración heroica
+              </span>
 
-              <div>
-                {data.heroicInspiration ? 'Sí' : 'No'}
+              <div className="rpg-dnd-value">
+                {data.heroicInspiration
+                  ? 'Sí'
+                  : 'No'}
               </div>
             </div>
           </div>
@@ -168,14 +170,12 @@ function DndCharacterView({
             data={data}
           />
 
-          {/* NOTAS */}
-
-          <div className="card">
+          <div className="card rpg-card">
             <div className="card-header">
-              <strong>Notas</strong>
+              Notas
             </div>
 
-            <div className="card-body">
+            <div className="card-body p-4">
               <p className="mb-0">
                 {formatValue(data.notes)}
               </p>

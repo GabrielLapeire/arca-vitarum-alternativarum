@@ -171,3 +171,96 @@ h3,
 .rpg-accent {
   color: var(--rpg-gold);
 }
+
+.rpg-card .card-header {
+  background-color: var(--rpg-surface-secondary);
+  color: var(--rpg-purple-dark);
+  border-bottom: 1px solid rgba(214, 166, 63, 0.35);
+  font-family: var(--rpg-font-heading);
+}
+
+.rpg-dnd-stat {
+  height: 100%;
+  padding: 1rem 0.75rem;
+  text-align: center;
+  background-color: var(--rpg-surface-secondary);
+  border: 1px solid rgba(120, 72, 200, 0.18);
+  border-radius: 0.5rem;
+}
+
+.rpg-dnd-stat-name {
+  color: var(--rpg-purple-dark);
+  font-family: var(--rpg-font-heading);
+  font-size: 0.95rem;
+}
+
+.rpg-dnd-stat-score {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: 0.35rem;
+}
+
+.rpg-dnd-stat-modifier {
+  margin-top: 0.35rem;
+}
+
+.rpg-dnd-value-label {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--rpg-text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.rpg-dnd-value {
+  font-weight: 500;
+}
+
+.rpg-dnd-text-block {
+  height: 100%;
+  padding: 1rem;
+  background-color: var(--rpg-surface-secondary);
+  border: 1px solid rgba(120, 72, 200, 0.14);
+  border-radius: 0.5rem;
+}
+
+.rpg-dnd-modifier {
+  display: inline-block;
+  min-width: 2.5rem;
+  padding: 0.2rem 0.45rem;
+  background-color: var(--rpg-purple);
+  color: #fff;
+  border: 1px solid var(--rpg-purple-dark);
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.rpg-dnd-detail {
+  height: 100%;
+  padding: 1rem;
+  background-color: var(--rpg-surface-secondary);
+  border: 1px solid rgba(120, 72, 200, 0.14);
+  border-radius: 0.5rem;
+}
+
+.rpg-dnd-detail-title {
+  color: var(--rpg-purple-dark);
+  font-weight: 600;
+}
+
+.rpg-dnd-list-item {
+  background-color: var(--rpg-surface-secondary);
+  border: 1px solid rgba(120, 72, 200, 0.14);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+.rpg-dnd-badge {
+  background-color: var(--rpg-purple);
+  color: #fff;
+}
