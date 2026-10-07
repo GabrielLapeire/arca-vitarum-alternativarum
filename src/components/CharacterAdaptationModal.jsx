@@ -21,9 +21,9 @@ function CharacterAdaptationModal({
         aria-modal="true"
       >
         <div className="modal-dialog modal-xl modal-dialog-scrollable">
-          <div className="modal-content">
+          <div className="modal-content rpg-modal">
 
-            <div className="modal-header">
+            <div className="modal-header rpg-modal-header">
               <div>
                 <h5 className="modal-title">
                   {isDnd
@@ -32,7 +32,7 @@ function CharacterAdaptationModal({
                 </h5>
 
                 {adaptation.version && (
-                  <small className="text-muted">
+                  <small>
                     Versión {adaptation.version}
                   </small>
                 )}
@@ -40,13 +40,13 @@ function CharacterAdaptationModal({
 
               <button
                 type="button"
-                className="btn-close"
+                className="btn-close btn-close-white"
                 aria-label="Cerrar"
                 onClick={onClose}
               />
             </div>
 
-            <div className="modal-body">
+            <div className="modal-body rpg-modal-body">
               {isDnd ? (
                 <DndCharacterView
                   characterName={characterName}
@@ -54,13 +54,13 @@ function CharacterAdaptationModal({
                 />
               ) : (
                 <div className="alert alert-secondary mb-0">
-                  No hay una vista detallada disponible para este
-                  sistema todavía.
+                  No hay una vista detallada disponible
+                  para este sistema todavía.
                 </div>
               )}
             </div>
 
-            <div className="modal-footer">
+            <div className="modal-footer rpg-modal-footer">
               <button
                 type="button"
                 className="btn btn-secondary"
@@ -69,12 +69,13 @@ function CharacterAdaptationModal({
                 Cerrar
               </button>
             </div>
+
           </div>
         </div>
       </div>
 
       <div
-        className="modal-backdrop fade show"
+        className="modal-backdrop fade show rpg-modal-backdrop"
         onClick={onClose}
       />
     </>

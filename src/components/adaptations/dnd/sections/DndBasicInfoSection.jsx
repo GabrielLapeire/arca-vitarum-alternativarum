@@ -4,12 +4,12 @@ function DndBasicInfoSection({
   updateField
 }) {
   return (
-    <div className="card mb-4">
+    <div className="card rpg-card mb-4">
       <div className="card-header">
-        <strong>Información básica</strong>
+        Información básica
       </div>
 
-      <div className="card-body">
+      <div className="card-body p-4">
         <div className="row g-3">
 
           <div className="col-md-6">
@@ -22,7 +22,7 @@ function DndBasicInfoSection({
               className="form-control"
               placeholder="Ej.: Guerrero"
               value={data.className || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'className',
                   e.target.value
@@ -40,7 +40,7 @@ function DndBasicInfoSection({
               type="text"
               className="form-control"
               value={data.subclass || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'subclass',
                   e.target.value
@@ -49,7 +49,7 @@ function DndBasicInfoSection({
             />
           </div>
 
-          <div className="col-md-6">
+          <div className="col-6 col-md-3">
             <label className="form-label">
               Nivel
             </label>
@@ -60,7 +60,7 @@ function DndBasicInfoSection({
               max="20"
               className="form-control"
               value={data.level || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'level',
                   e.target.value
@@ -69,7 +69,7 @@ function DndBasicInfoSection({
             />
           </div>
 
-          <div className="col-md-6">
+          <div className="col-6 col-md-3">
             <label className="form-label">
               Experiencia
             </label>
@@ -79,7 +79,7 @@ function DndBasicInfoSection({
               min="0"
               className="form-control"
               value={data.experience || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'experience',
                   e.target.value
@@ -88,7 +88,7 @@ function DndBasicInfoSection({
             />
           </div>
 
-          <div className="col-md-4">
+          <div className="col-6 col-md-3">
             <label className="form-label">
               Trasfondo
             </label>
@@ -97,7 +97,7 @@ function DndBasicInfoSection({
               type="text"
               className="form-control"
               value={data.background || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'background',
                   e.target.value
@@ -106,7 +106,7 @@ function DndBasicInfoSection({
             />
           </div>
 
-          <div className="col-md-4">
+          <div className="col-6 col-md-3">
             <label className="form-label">
               Especie
             </label>
@@ -115,7 +115,7 @@ function DndBasicInfoSection({
               type="text"
               className="form-control"
               value={data.species || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'species',
                   e.target.value
@@ -134,7 +134,7 @@ function DndBasicInfoSection({
               className="form-control"
               placeholder="Ej.: Neutral bueno"
               value={data.alignment || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'alignment',
                   e.target.value
@@ -153,7 +153,7 @@ function DndBasicInfoSection({
               className="form-control"
               placeholder="Ej.: Común, Elfo, Dracónico"
               value={data.languages || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'languages',
                   e.target.value
@@ -161,6 +161,7 @@ function DndBasicInfoSection({
               }
             />
           </div>
+
         </div>
       </div>
     </div>

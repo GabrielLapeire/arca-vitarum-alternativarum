@@ -264,3 +264,112 @@ h3,
   background-color: var(--rpg-purple);
   color: #fff;
 }
+
+.rpg-dnd-spell-card {
+  height: 100%;
+}
+
+.rpg-dnd-spell-name {
+  color: var(--rpg-purple-dark);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.rpg-dnd-spell-details {
+  margin-top: 0.75rem;
+}
+
+.rpg-dnd-spell-details summary {
+  color: var(--rpg-purple-dark);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.rpg-dnd-badge-info {
+  background-color: var(--rpg-blue);
+  color: #fff;
+}
+
+.rpg-dnd-badge-gold {
+  background-color: var(--rpg-gold);
+  color: var(--rpg-text);
+}
+
+.rpg-dnd-badge-muted {
+  background-color: var(--rpg-surface-secondary);
+  color: var(--rpg-purple-dark);
+  border: 1px solid rgba(120, 72, 200, 0.15);
+}
+
+.rpg-dnd-navigation {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(214, 166, 63, 0.35);
+}
+
+.rpg-modal {
+  border: 1px solid rgba(214, 166, 63, 0.45);
+  box-shadow:
+    0 1rem 3rem rgba(0, 0, 0, 0.35);
+}
+
+.rpg-modal-header {
+  background:
+    linear-gradient(
+      135deg,
+      var(--rpg-purple-dark),
+      var(--rpg-bg-secondary)
+    );
+  color: #fff;
+  border-bottom: 1px solid var(--rpg-gold);
+}
+
+.rpg-modal-header .modal-title {
+  font-family: var(--rpg-font-heading);
+  color: var(--rpg-gold);
+}
+
+.rpg-modal-header small {
+  color: #e2d9ea;
+}
+
+.rpg-modal-body {
+  background-color: var(--rpg-surface-secondary);
+}
+
+.rpg-modal-footer {
+  background-color: var(--rpg-surface);
+  border-top: 1px solid rgba(214, 166, 63, 0.35);
+}
+
+.rpg-modal-backdrop {
+  background-color: #0e0b16;
+  opacity: 0.75;
+}
+
+.rpg-dnd-form-header {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(214, 166, 63, 0.35);
+}
+
+.rpg-dnd-form-title {
+  color: var(--rpg-purple-dark);
+  font-family: var(--rpg-font-heading);
+}
+
+.rpg-dnd-system-badge {
+  background-color: var(--rpg-purple);
+  color: #fff;
+  border: 1px solid var(--rpg-purple-dark);
+}
+
+.rpg-dnd-stat .input-group-text {
+  padding: 0.35rem 0.5rem;
+  background-color: transparent;
+}
+
+.rpg-dnd-stat .form-control {
+  min-width: 0;
+}

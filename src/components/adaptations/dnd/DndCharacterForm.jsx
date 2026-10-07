@@ -389,11 +389,11 @@ function DndCharacterForm({
   }
 
   return (
-    <div className="card border-primary mt-4">
-      <div className="card-body">
-        <div className="d-flex justify-content-between align-items-center mb-4">
+    <div className="card rpg-card mt-4">
+      <div className="card-body p-4">
+        <div className="rpg-dnd-form-header d-flex justify-content-between align-items-center mb-4">
           <div>
-            <h4 className="card-title mb-1">
+            <h4 className="rpg-dnd-form-title mb-1">
               D&D 2024
             </h4>
 
@@ -402,7 +402,7 @@ function DndCharacterForm({
             </p>
           </div>
 
-          <span className="badge text-bg-primary">
+          <span className="badge rpg-dnd-system-badge">
             D&D 2024
           </span>
         </div>

@@ -1,29 +1,37 @@
 /* CARACTERÍSTICAS */
 import { ABILITIES } from '../dndConstants'
-import { getAbilityModifier, formatModifier } from '../dndUtils'
+import {
+  getAbilityModifier,
+  formatModifier
+} from '../dndUtils'
+
 function DndAbilitiesSection({
   abilities,
   updateAbility
 }) {
   return (
-    <div className="card mb-4">
+    <div className="card rpg-card mb-4">
       <div className="card-header">
-        <strong>Características</strong>
+        Características
       </div>
 
-      <div className="card-body">
+      <div className="card-body p-4">
         <div className="row g-3">
+
           {ABILITIES.map(ability => {
-            const modifier = getAbilityModifier(
-              abilities[ability.id]
-            )
+            const modifier =
+              getAbilityModifier(
+                abilities[ability.id]
+              )
+
             return (
               <div
-                className="col-md-4"
+                className="col-6 col-md-4"
                 key={ability.id}
               >
-                <div className="border rounded p-3 h-100">
-                  <label className="form-label fw-bold">
+                <div className="rpg-dnd-stat">
+
+                  <label className="rpg-dnd-stat-name d-block mb-2">
                     {ability.name}
                   </label>
 
@@ -34,7 +42,7 @@ function DndAbilitiesSection({
                       max="30"
                       className="form-control"
                       value={abilities[ability.id]}
-                      onChange={(e) =>
+                      onChange={e =>
                         updateAbility(
                           ability.id,
                           e.target.value
@@ -42,18 +50,22 @@ function DndAbilitiesSection({
                       }
                     />
 
-                    <span className="input-group-text">
-                      {formatModifier(modifier)}
+                    <span className="input-group-text bg-transparent border-start-0">
+                      <span className="rpg-dnd-modifier">
+                        {formatModifier(modifier)}
+                      </span>
                     </span>
                   </div>
 
-                  <small className="text-muted">
+                  <div className="text-muted small mt-1">
                     Modificador
-                  </small>
+                  </div>
+
                 </div>
               </div>
             )
           })}
+
         </div>
       </div>
     </div>

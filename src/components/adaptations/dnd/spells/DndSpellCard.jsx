@@ -17,9 +17,9 @@ function DndSpellCard({
 }) {
   if (!catalogSpell) {
     return (
-      <div className="card">
+      <div className="card rpg-card h-100">
         <div className="card-body py-3">
-          <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex justify-content-between align-items-center gap-2">
             <strong>{spell.spellKey}</strong>
 
             {editable && (
@@ -57,11 +57,14 @@ function DndSpellCard({
     ).join(', ')
 
   return (
-    <div className="card h-100">
+    <div className="card rpg-card rpg-dnd-spell-card">
       <div className="card-body py-3">
+
         <div className="d-flex justify-content-between align-items-start gap-2">
           <div>
-            <strong>{catalogSpell.name}</strong>
+            <div className="rpg-dnd-spell-name">
+              {catalogSpell.name}
+            </div>
 
             <div className="small text-muted">
               {catalogSpell.level === 0
@@ -87,7 +90,7 @@ function DndSpellCard({
           )}
         </div>
 
-        <div className="small mt-3">
+        <div className="rpg-dnd-spell-details small">
           <div>
             <strong>Tiempo:</strong>{' '}
             {getDndCastingTimeName(
@@ -166,26 +169,29 @@ function DndSpellCard({
             </>
           ) : (
             <>
-              {spell.alwaysPrepared ? (
-                <span className="badge text-bg-info">
+              {spell.alwaysPrepared && (
+                <span className="badge rpg-dnd-badge-info">
                   Siempre preparado
                 </span>
-              ) : spell.prepared ? (
-                <span className="badge text-bg-success">
-                  Preparado
-                </span>
-              ) : null}
+              )}
+
+              {!spell.alwaysPrepared &&
+                spell.prepared && (
+                  <span className="badge rpg-dnd-badge">
+                    Preparado
+                  </span>
+                )}
             </>
           )}
 
           {catalogSpell.concentration && (
-            <span className="badge text-bg-warning">
+            <span className="badge rpg-dnd-badge-gold">
               Concentración
             </span>
           )}
 
           {catalogSpell.ritual && (
-            <span className="badge text-bg-secondary">
+            <span className="badge rpg-dnd-badge-muted">
               Ritual
             </span>
           )}
@@ -200,7 +206,7 @@ function DndSpellCard({
           damageTypes ||
           catalogSpell.area?.type ||
           catalogSpell.target?.type) && (
-            <details className="mt-3">
+            <details className="rpg-dnd-spell-details">
               <summary>
                 Ver detalles
               </summary>
@@ -208,7 +214,9 @@ function DndSpellCard({
               <div className="small mt-2">
                 {catalogSpell.description && (
                   <div className="mb-2">
-                    <strong>Descripción</strong>
+                    <strong>
+                      Descripción
+                    </strong>
 
                     <div className="mt-1">
                       {catalogSpell.description}
@@ -219,7 +227,9 @@ function DndSpellCard({
                 {catalogSpell.components
                   ?.materialDescription && (
                     <div className="mb-2">
-                      <strong>Material:</strong>{' '}
+                      <strong>
+                        Material:
+                      </strong>{' '}
                       {
                         catalogSpell.components
                           .materialDescription
@@ -270,7 +280,10 @@ function DndSpellCard({
 
                 {catalogSpell.target?.type && (
                   <div className="mb-2">
-                    <strong>Objetivo:</strong>{' '}
+                    <strong>
+                      Objetivo:
+                    </strong>{' '}
+
                     {getDndTargetTypeName(
                       catalogSpell.target.type
                     )}
@@ -326,6 +339,7 @@ function DndSpellCard({
             </div>
           </div>
         )}
+
       </div>
     </div>
   )

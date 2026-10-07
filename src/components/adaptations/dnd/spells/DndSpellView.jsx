@@ -54,9 +54,12 @@ function DndSpellView({
     ) || '—'
 
   return (
-    <div className="card mb-3">
-      <div className="card-body">
-        <h4>Magia</h4>
+    <div className="card rpg-card mb-4">
+      <div className="card-header">
+        Magia
+      </div>
+
+      <div className="card-body p-4">
 
         {spellsLoading && (
           <div className="alert alert-info">
@@ -70,114 +73,128 @@ function DndSpellView({
           </div>
         )}
 
-        <div className="mt-4">
-          <h5>Lanzamiento de conjuros</h5>
+        <div className="mb-4">
+          <h6 className="rpg-dnd-detail-title mb-3">
+            Lanzamiento de conjuros
+          </h6>
 
           <div className="row g-3">
-            <div className="col-md-3">
-              <div className="small text-muted">
-                Aptitud
-              </div>
+            <div className="col-6 col-md-3">
+              <div className="rpg-dnd-detail">
+                <span className="rpg-dnd-value-label">
+                  Aptitud
+                </span>
 
-              <strong>
-                {spellcastingAbility}
-              </strong>
+                <div className="rpg-dnd-value">
+                  {spellcastingAbility}
+                </div>
+              </div>
             </div>
 
-            <div className="col-md-3">
-              <div className="small text-muted">
-                Modificador
-              </div>
+            <div className="col-6 col-md-3">
+              <div className="rpg-dnd-detail">
+                <span className="rpg-dnd-value-label">
+                  Modificador
+                </span>
 
-              <strong>
-                {formatValue(spellcasting.modifier)}
-              </strong>
+                <div className="rpg-dnd-value fs-5">
+                  {formatValue(
+                    spellcasting.modifier
+                  )}
+                </div>
+              </div>
             </div>
 
-            <div className="col-md-3">
-              <div className="small text-muted">
-                CD de salvación
-              </div>
+            <div className="col-6 col-md-3">
+              <div className="rpg-dnd-detail">
+                <span className="rpg-dnd-value-label">
+                  CD de salvación
+                </span>
 
-              <strong>
-                {formatValue(spellcasting.saveDC)}
-              </strong>
+                <div className="rpg-dnd-value fs-5">
+                  {formatValue(
+                    spellcasting.saveDC
+                  )}
+                </div>
+              </div>
             </div>
 
-            <div className="col-md-3">
-              <div className="small text-muted">
-                Bonificador de ataque
-              </div>
+            <div className="col-6 col-md-3">
+              <div className="rpg-dnd-detail">
+                <span className="rpg-dnd-value-label">
+                  Bonificador de ataque
+                </span>
 
-              <strong>
-                {formatValue(spellcasting.attackBonus)}
-              </strong>
+                <div className="rpg-dnd-value fs-5">
+                  {formatValue(
+                    spellcasting.attackBonus
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-4">
-          <h5>Espacios de conjuro</h5>
+        <div className="mb-4">
+          <h6 className="rpg-dnd-detail-title mb-3">
+            Espacios de conjuro
+          </h6>
 
           <div className="row g-2">
-            <div className="col-4">
-              <strong>Nivel</strong>
-            </div>
+            {Array.from(
+              { length: 9 },
+              (_, index) => index + 1
+            ).map(level => {
+              const slot =
+                data.spellSlots?.[level] || {
+                  total: '',
+                  expended: ''
+                }
 
-            <div className="col-4">
-              <strong>Total</strong>
-            </div>
+              return (
+                <div
+                  key={level}
+                  className="col-6 col-md-4"
+                >
+                  <div className="rpg-dnd-detail">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <span className="rpg-dnd-value-label mb-0">
+                        Nivel {level}
+                      </span>
 
-            <div className="col-4">
-              <strong>Gastados</strong>
-            </div>
+                      <span className="small text-muted">
+                        {formatValue(
+                          slot.expended
+                        )}
+                        {' / '}
+                        {formatValue(
+                          slot.total
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
           </div>
-
-          {Array.from(
-            { length: 9 },
-            (_, index) => index + 1
-          ).map(level => {
-            const slot =
-              data.spellSlots?.[level] || {
-                total: '',
-                expended: ''
-              }
-
-            return (
-              <div
-                key={level}
-                className="row g-2 mt-1"
-              >
-                <div className="col-4 d-flex align-items-center">
-                  Nivel {level}
-                </div>
-
-                <div className="col-4">
-                  {formatValue(slot.total)}
-                </div>
-
-                <div className="col-4">
-                  {formatValue(slot.expended)}
-                </div>
-              </div>
-            )
-          })}
         </div>
 
-        <div className="mt-4">
-          <h5>
+        <div>
+          <h6 className="rpg-dnd-detail-title mb-3">
             Hechizos del personaje
-          </h5>
+          </h6>
 
           {characterSpells.length === 0 && (
-            <p className="text-muted">
+            <p className="text-muted mb-0">
               No hay hechizos registrados.
             </p>
           )}
 
           {preparedSpells.length > 0 && (
-            <div className="mt-3">
-              <h6>Preparados</h6>
+            <div className="mb-4">
+              <h6 className="small fw-semibold mb-3">
+                Preparados
+              </h6>
 
               <div className="row g-3">
                 {preparedSpells.map(
@@ -196,9 +213,7 @@ function DndSpellView({
                       >
                         <DndSpellCard
                           spell={spell}
-                          catalogSpell={
-                            catalogSpell
-                          }
+                          catalogSpell={catalogSpell}
                           editable={false}
                         />
                       </div>
@@ -210,8 +225,10 @@ function DndSpellView({
           )}
 
           {unpreparedSpells.length > 0 && (
-            <div className="mt-4">
-              <h6>No preparados</h6>
+            <div>
+              <h6 className="small fw-semibold mb-3">
+                No preparados
+              </h6>
 
               <div className="row g-3">
                 {unpreparedSpells.map(
@@ -230,9 +247,7 @@ function DndSpellView({
                       >
                         <DndSpellCard
                           spell={spell}
-                          catalogSpell={
-                            catalogSpell
-                          }
+                          catalogSpell={catalogSpell}
                           editable={false}
                         />
                       </div>
@@ -243,6 +258,7 @@ function DndSpellView({
             </div>
           )}
         </div>
+
       </div>
     </div>
   )
