@@ -4,13 +4,13 @@ function DndCharacterInfoSection({
   updateField
 }) {
   return (
-    <div className="card mb-4">
+    <div className="card rpg-card mb-4">
       <div className="card-header">
-        <strong>Historia y personalidad</strong>
+        Historia y personalidad
       </div>
 
-      <div className="card-body">
-        <div className="row g-3">
+      <div className="card-body p-4">
+        <div className="row g-4">
           <div className="col-md-6">
             <label className="form-label">
               Apariencia
@@ -20,7 +20,7 @@ function DndCharacterInfoSection({
               className="form-control"
               rows="5"
               value={data.appearance || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'appearance',
                   e.target.value
@@ -38,7 +38,7 @@ function DndCharacterInfoSection({
               className="form-control"
               rows="5"
               value={data.personality || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'personality',
                   e.target.value
@@ -56,7 +56,7 @@ function DndCharacterInfoSection({
               className="form-control"
               rows="5"
               value={data.backstory || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'backstory',
                   e.target.value

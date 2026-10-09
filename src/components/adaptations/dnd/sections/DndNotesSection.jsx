@@ -4,17 +4,26 @@ function DndNotesSection({
   updateField
 }) {
   return (
-    <div className="card">
+    <div className="card rpg-card mb-4">
       <div className="card-header">
-        <strong>Notas</strong>
+        Notas
       </div>
 
-      <div className="card-body">
+      <div className="card-body p-4">
+        <label
+          className="form-label"
+          htmlFor="dndCharacterNotes"
+        >
+          Notas adicionales del personaje
+        </label>
+
         <textarea
+          id="dndCharacterNotes"
           className="form-control"
           rows="5"
+          placeholder="Anotá detalles que quieras recordar durante la partida..."
           value={notes || ''}
-          onChange={(e) =>
+          onChange={e =>
             updateField(
               'notes',
               e.target.value

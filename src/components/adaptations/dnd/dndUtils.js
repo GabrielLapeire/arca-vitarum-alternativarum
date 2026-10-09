@@ -35,7 +35,7 @@ export function formatModifier(modifier) {
     modifier === null ||
     modifier === undefined
   ) {
-    return ''
+    return '—'
   }
 
   return modifier >= 0

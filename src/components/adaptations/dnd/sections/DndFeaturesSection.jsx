@@ -1,5 +1,6 @@
 /* RASGOS Y COMPETENCIAS */
 import DndFeatureList from './DndFeatureList'
+
 function DndFeaturesSection({
   data,
   updateField,
@@ -8,13 +9,12 @@ function DndFeaturesSection({
   deleteListItem
 }) {
   return (
-    <div className="card mb-4">
+    <div className="card rpg-card mb-4">
       <div className="card-header">
-        <strong>Rasgos y competencias</strong>
+        Rasgos y competencias
       </div>
 
-      <div className="card-body">
-
+      <div className="card-body p-4">
         <DndFeatureList
           title="Rasgos de clase"
           addLabel="Agregar rasgo"
@@ -48,9 +48,14 @@ function DndFeaturesSection({
           deleteListItem={deleteListItem}
         />
 
-        {/* COMPETENCIAS */}
+        <hr className="my-4" />
+
+        <h6 className="rpg-dnd-detail-title mb-3">
+          Competencias
+        </h6>
+
         <div className="row g-3">
-          <div className="col-md-4">
+          <div className="col-12 col-lg-4">
             <label className="form-label">
               Entrenamiento con armaduras
             </label>
@@ -59,7 +64,7 @@ function DndFeaturesSection({
               className="form-control"
               rows="3"
               value={data.armorTraining || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'armorTraining',
                   e.target.value
@@ -68,7 +73,7 @@ function DndFeaturesSection({
             />
           </div>
 
-          <div className="col-md-4">
+          <div className="col-12 col-lg-4">
             <label className="form-label">
               Competencias con armas
             </label>
@@ -77,7 +82,7 @@ function DndFeaturesSection({
               className="form-control"
               rows="3"
               value={data.weaponProficiencies || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'weaponProficiencies',
                   e.target.value
@@ -86,7 +91,7 @@ function DndFeaturesSection({
             />
           </div>
 
-          <div className="col-md-4">
+          <div className="col-12 col-lg-4">
             <label className="form-label">
               Competencias con herramientas
             </label>
@@ -95,7 +100,7 @@ function DndFeaturesSection({
               className="form-control"
               rows="3"
               value={data.toolProficiencies || ''}
-              onChange={(e) =>
+              onChange={e =>
                 updateField(
                   'toolProficiencies',
                   e.target.value

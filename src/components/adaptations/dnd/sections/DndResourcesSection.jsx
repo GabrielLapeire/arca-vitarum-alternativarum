@@ -4,19 +4,22 @@ function DndResourcesSection({
   updateField
 }) {
   return (
-    <div className="card mb-4">
+    <div className="card rpg-card mb-4">
       <div className="card-header">
-        <strong>Recursos</strong>
+        Recursos
       </div>
 
-      <div className="card-body">
-        <div className="form-check">
+      <div className="card-body p-4">
+        <label
+          className="rpg-dnd-list-item d-flex align-items-center gap-3 mb-0"
+          htmlFor="heroicInspiration"
+        >
           <input
             type="checkbox"
-            className="form-check-input"
+            className="form-check-input mt-0"
             id="heroicInspiration"
             checked={Boolean(heroicInspiration)}
-            onChange={(e) =>
+            onChange={e =>
               updateField(
                 'heroicInspiration',
                 e.target.checked
@@ -24,13 +27,16 @@ function DndResourcesSection({
             }
           />
 
-          <label
-            className="form-check-label"
-            htmlFor="heroicInspiration"
-          >
+          <span className="flex-grow-1">
             Inspiración heroica
-          </label>
-        </div>
+          </span>
+
+          {heroicInspiration && (
+            <span className="badge rpg-dnd-badge">
+              Disponible
+            </span>
+          )}
+        </label>
       </div>
     </div>
   )

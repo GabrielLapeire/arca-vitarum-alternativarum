@@ -1,5 +1,9 @@
 /* COMBATE */
-import { getAbilityModifier, formatModifier } from '../dndUtils'
+import {
+  getAbilityModifier,
+  formatModifier
+} from '../dndUtils'
+
 function DndCombatSection({
   combat,
   abilities,
@@ -12,15 +16,23 @@ function DndCombatSection({
   addAttack,
   deleteAttack
 }) {
+  const dexterityModifier =
+    getAbilityModifier(abilities.dexterity)
+
+  const initiativePlaceholder =
+    dexterityModifier === ''
+      ? ''
+      : formatModifier(dexterityModifier)
+
   return (
-    <div className="card mb-4">
+    <div className="card rpg-card mb-4">
       <div className="card-header">
-        <strong>Combate</strong>
+        Combate
       </div>
 
-      <div className="card-body">
+      <div className="card-body p-4">
         <div className="row g-3">
-          <div className="col-md-3">
+          <div className="col-12 col-sm-6 col-xl-3">
             <label className="form-label">
               Clase de armadura
             </label>
@@ -29,7 +41,7 @@ function DndCombatSection({
               type="number"
               className="form-control"
               value={combat.armorClass}
-              onChange={(e) =>
+              onChange={e =>
                 updateCombat(
                   'armorClass',
                   e.target.value
@@ -38,7 +50,7 @@ function DndCombatSection({
             />
           </div>
 
-          <div className="col-md-3">
+          <div className="col-12 col-sm-6 col-xl-3">
             <label className="form-label">
               Escudo
             </label>
@@ -48,7 +60,7 @@ function DndCombatSection({
               min="0"
               className="form-control"
               value={combat.shield}
-              onChange={(e) =>
+              onChange={e =>
                 updateCombat(
                   'shield',
                   e.target.value
@@ -57,7 +69,7 @@ function DndCombatSection({
             />
           </div>
 
-          <div className="col-md-3">
+          <div className="col-12 col-sm-6 col-xl-3">
             <label className="form-label">
               PG actuales
             </label>
@@ -66,7 +78,7 @@ function DndCombatSection({
               type="number"
               className="form-control"
               value={combat.currentHitPoints}
-              onChange={(e) =>
+              onChange={e =>
                 updateCombat(
                   'currentHitPoints',
                   e.target.value
@@ -75,7 +87,7 @@ function DndCombatSection({
             />
           </div>
 
-          <div className="col-md-3">
+          <div className="col-12 col-sm-6 col-xl-3">
             <label className="form-label">
               PG máximos
             </label>
@@ -84,7 +96,7 @@ function DndCombatSection({
               type="number"
               className="form-control"
               value={combat.maxHitPoints}
-              onChange={(e) =>
+              onChange={e =>
                 updateCombat(
                   'maxHitPoints',
                   e.target.value
@@ -93,7 +105,7 @@ function DndCombatSection({
             />
           </div>
 
-          <div className="col-md-3">
+          <div className="col-12 col-sm-6 col-xl-3">
             <label className="form-label">
               PG temporales
             </label>
@@ -102,7 +114,7 @@ function DndCombatSection({
               type="number"
               className="form-control"
               value={combat.temporaryHitPoints}
-              onChange={(e) =>
+              onChange={e =>
                 updateCombat(
                   'temporaryHitPoints',
                   e.target.value
@@ -111,7 +123,7 @@ function DndCombatSection({
             />
           </div>
 
-          <div className="col-md-3">
+          <div className="col-12 col-sm-6 col-xl-3">
             <label className="form-label">
               Iniciativa
             </label>
@@ -120,18 +132,8 @@ function DndCombatSection({
               type="text"
               className="form-control"
               value={combat.initiative}
-              placeholder={
-                getAbilityModifier(
-                  abilities.dexterity
-                ) === ''
-                  ? ''
-                  : formatModifier(
-                    getAbilityModifier(
-                      abilities.dexterity
-                    )
-                  )
-              }
-              onChange={(e) =>
+              placeholder={initiativePlaceholder}
+              onChange={e =>
                 updateCombat(
                   'initiative',
                   e.target.value
@@ -144,7 +146,7 @@ function DndCombatSection({
             </small>
           </div>
 
-          <div className="col-md-3">
+          <div className="col-12 col-sm-6 col-xl-3">
             <label className="form-label">
               Velocidad
             </label>
@@ -158,7 +160,7 @@ function DndCombatSection({
                   ? 'Ej.: 30 pies'
                   : `${calculatedSpeed} pies`
               }
-              onChange={(e) =>
+              onChange={e =>
                 updateCombat(
                   'speed',
                   e.target.value
@@ -171,7 +173,7 @@ function DndCombatSection({
             </small>
           </div>
 
-          <div className="col-md-3">
+          <div className="col-12 col-sm-6 col-xl-3">
             <label className="form-label">
               Tamaño
             </label>
@@ -185,7 +187,7 @@ function DndCombatSection({
                   ? 'Ej.: Mediano'
                   : calculatedSize
               }
-              onChange={(e) =>
+              onChange={e =>
                 updateCombat(
                   'size',
                   e.target.value
@@ -198,7 +200,7 @@ function DndCombatSection({
             </small>
           </div>
 
-          <div className="col-md-3">
+          <div className="col-12 col-sm-6 col-xl-3">
             <label className="form-label">
               Percepción pasiva
             </label>
@@ -212,7 +214,7 @@ function DndCombatSection({
                   ? ''
                   : String(passivePerception)
               }
-              onChange={(e) =>
+              onChange={e =>
                 updateCombat(
                   'passivePerception',
                   e.target.value
@@ -225,7 +227,7 @@ function DndCombatSection({
             </small>
           </div>
 
-          <div className="col-md-6">
+          <div className="col-12 col-md-6">
             <label className="form-label">
               Dados de golpe
             </label>
@@ -235,7 +237,7 @@ function DndCombatSection({
               className="form-control"
               placeholder="Ej.: 1d10"
               value={combat.hitDice}
-              onChange={(e) =>
+              onChange={e =>
                 updateCombat(
                   'hitDice',
                   e.target.value
@@ -244,7 +246,7 @@ function DndCombatSection({
             />
           </div>
 
-          <div className="col-md-6">
+          <div className="col-12 col-md-6">
             <label className="form-label">
               Dados de golpe gastados
             </label>
@@ -254,7 +256,7 @@ function DndCombatSection({
               min="0"
               className="form-control"
               value={combat.hitDiceSpent}
-              onChange={(e) =>
+              onChange={e =>
                 updateCombat(
                   'hitDiceSpent',
                   e.target.value
@@ -264,96 +266,102 @@ function DndCombatSection({
           </div>
         </div>
 
-        <hr />
+        <div className="rpg-dnd-detail mt-4">
+          <h6 className="rpg-dnd-detail-title mb-3">
+            Salvaciones contra muerte
+          </h6>
 
-        <div className="row">
-          <div className="col-md-6">
-            <h6>
-              Salvaciones contra muerte
-            </h6>
+          <div className="row g-3">
+            <div className="col-6 col-sm-4">
+              <label className="form-label">
+                Éxitos
+              </label>
 
-            <div className="d-flex gap-4">
-              <div>
-                <label className="form-label">
-                  Éxitos
-                </label>
+              <input
+                type="number"
+                min="0"
+                max="3"
+                className="form-control"
+                value={combat.deathSavesSuccesses}
+                onChange={e =>
+                  updateCombat(
+                    'deathSavesSuccesses',
+                    e.target.value
+                  )
+                }
+              />
+            </div>
 
-                <input
-                  type="number"
-                  min="0"
-                  max="3"
-                  className="form-control"
-                  value={
-                    combat.deathSavesSuccesses
-                  }
-                  onChange={(e) =>
-                    updateCombat(
-                      'deathSavesSuccesses',
-                      e.target.value
-                    )
-                  }
-                />
-              </div>
+            <div className="col-6 col-sm-4">
+              <label className="form-label">
+                Fallos
+              </label>
 
-              <div>
-                <label className="form-label">
-                  Fallos
-                </label>
-
-                <input
-                  type="number"
-                  min="0"
-                  max="3"
-                  className="form-control"
-                  value={
-                    combat.deathSavesFailures
-                  }
-                  onChange={(e) =>
-                    updateCombat(
-                      'deathSavesFailures',
-                      e.target.value
-                    )
-                  }
-                />
-              </div>
+              <input
+                type="number"
+                min="0"
+                max="3"
+                className="form-control"
+                value={combat.deathSavesFailures}
+                onChange={e =>
+                  updateCombat(
+                    'deathSavesFailures',
+                    e.target.value
+                  )
+                }
+              />
             </div>
           </div>
         </div>
 
-        <hr className="my-4" />
-
-        {/* ATAQUES */}
-
-        <div>
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <h6 className="mb-0">
+        <div className="mt-4 pt-4 border-top">
+          <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+            <h6 className="rpg-dnd-detail-title mb-0">
               Ataques
             </h6>
 
             <button
               type="button"
-              className="btn btn-sm btn-outline-primary"
+              className="btn btn-sm btn-primary"
               onClick={addAttack}
             >
-              Agregar ataque
+              + Agregar ataque
             </button>
           </div>
 
-          {(!attacks ||
-            attacks.length === 0) && (
-              <p className="text-muted mb-0">
-                No hay ataques cargados.
-              </p>
-            )}
+          {(!attacks || attacks.length === 0) && (
+            <div className="rpg-dnd-detail text-muted">
+              No hay ataques cargados.
+              Podés agregar armas o trucos de daño.
+            </div>
+          )}
 
           <div className="d-flex flex-column gap-3">
             {(attacks || []).map(attack => (
               <div
                 key={attack.id}
-                className="border rounded p-3"
+                className="rpg-dnd-detail"
               >
-                <div className="row g-2 align-items-end">
-                  <div className="col-md-4">
+                <div className="d-flex justify-content-between align-items-center gap-2 mb-3">
+                  <strong className="rpg-dnd-detail-title">
+                    {attack.name || 'Nuevo ataque'}
+                  </strong>
+
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline-danger"
+                    aria-label="Eliminar ataque"
+                    title="Eliminar ataque"
+                    onClick={() =>
+                      deleteAttack(attack.id)
+                    }
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <div className="row g-3">
+                  <div className="col-12 col-lg-4">
                     <label className="form-label">
                       Nombre
                     </label>
@@ -363,7 +371,7 @@ function DndCombatSection({
                       className="form-control"
                       placeholder="Ej.: Espada larga"
                       value={attack.name}
-                      onChange={(e) =>
+                      onChange={e =>
                         updateAttack(
                           attack.id,
                           { name: e.target.value }
@@ -372,7 +380,7 @@ function DndCombatSection({
                     />
                   </div>
 
-                  <div className="col-md-3">
+                  <div className="col-12 col-md-6 col-lg-3">
                     <label className="form-label">
                       Bonificador de ataque / CD
                     </label>
@@ -382,7 +390,7 @@ function DndCombatSection({
                       className="form-control"
                       placeholder="Ej.: +5"
                       value={attack.attackBonus}
-                      onChange={(e) =>
+                      onChange={e =>
                         updateAttack(
                           attack.id,
                           { attackBonus: e.target.value }
@@ -391,7 +399,7 @@ function DndCombatSection({
                     />
                   </div>
 
-                  <div className="col-md-4">
+                  <div className="col-12 col-md-6 col-lg-5">
                     <label className="form-label">
                       Daño y tipo
                     </label>
@@ -401,7 +409,7 @@ function DndCombatSection({
                       className="form-control"
                       placeholder="Ej.: 1d8 + 3 cortante"
                       value={attack.damage}
-                      onChange={(e) =>
+                      onChange={e =>
                         updateAttack(
                           attack.id,
                           { damage: e.target.value }
@@ -410,19 +418,7 @@ function DndCombatSection({
                     />
                   </div>
 
-                  <div className="col-md-1">
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() =>
-                        deleteAttack(attack.id)
-                      }
-                    >
-                      ×
-                    </button>
-                  </div>
-
-                  <div className="col-md-11">
+                  <div className="col-12">
                     <label className="form-label">
                       Notas
                     </label>
@@ -432,7 +428,7 @@ function DndCombatSection({
                       className="form-control"
                       placeholder="Ej.: Alcance 6/18 m"
                       value={attack.notes || ''}
-                      onChange={(e) =>
+                      onChange={e =>
                         updateAttack(
                           attack.id,
                           { notes: e.target.value }

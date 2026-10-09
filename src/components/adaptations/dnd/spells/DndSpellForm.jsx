@@ -4,6 +4,9 @@ import {
   searchDndSpells,
   sortDndCharacterSpells
 } from '../dndSpellUtils'
+import {
+  getDndSpellSchoolName
+} from '../dndTranslations'
 import DndSpellCard from './DndSpellCard'
 
 function DndSpellForm({
@@ -63,8 +66,7 @@ function DndSpellForm({
     const catalogSpell =
       spellCatalog.find(
         catalogItem =>
-          catalogItem.key ===
-          spell.spellKey
+          catalogItem.key === spell.spellKey
       )
 
     return (
@@ -83,20 +85,26 @@ function DndSpellForm({
     )
   }
 
+  const spellcasting =
+    data?.spellcasting || {}
+
   return (
-    <div className="card mb-3">
-      <div className="card-body">
-        <h4>Magia</h4>
+    <div className="card rpg-card mb-4">
+      <div className="card-header">
+        Magia
+      </div>
 
-        <p>
-          Hechizos disponibles en el catálogo:{' '}
-          {spellCatalog.length}
-        </p>
+      <div className="card-body p-4">
 
-        <p>
-          Hechizos del personaje:{' '}
-          {characterSpells.length}
-        </p>
+        <div className="d-flex flex-wrap gap-2 mb-4">
+          <span className="badge rpg-dnd-badge-muted">
+            Catálogo: {spellCatalog.length} hechizos
+          </span>
+
+          <span className="badge rpg-dnd-badge">
+            Personaje: {characterSpells.length}
+          </span>
+        </div>
 
         {spellsLoading && (
           <div className="alert alert-info">
@@ -110,200 +118,216 @@ function DndSpellForm({
           </div>
         )}
 
-        <div className="mt-4">
-          <h5>Lanzamiento de conjuros</h5>
+        {/* LANZAMIENTO DE CONJUROS */}
+
+        <section className="mb-4">
+          <h6 className="rpg-dnd-detail-title mb-3">
+            Lanzamiento de conjuros
+          </h6>
 
           <div className="row g-3">
-            <div className="col-md-3">
-              <label className="form-label">
-                Aptitud para lanzar conjuros
-              </label>
+            <div className="col-12 col-sm-6 col-xl-3">
+              <div className="rpg-dnd-detail h-100">
+                <label className="form-label">
+                  Aptitud para lanzar conjuros
+                </label>
 
-              <select
-                className="form-select"
-                value={
-                  data?.spellcasting?.ability ||
-                  ''
-                }
-                onChange={e =>
-                  updateSpellcasting(
-                    'ability',
-                    e.target.value
-                  )
-                }
-              >
-                <option value="">
-                  Seleccionar
-                </option>
+                <select
+                  className="form-select"
+                  value={spellcasting.ability || ''}
+                  onChange={e =>
+                    updateSpellcasting(
+                      'ability',
+                      e.target.value
+                    )
+                  }
+                >
+                  <option value="">
+                    Seleccionar
+                  </option>
 
-                <option value="strength">
-                  Fuerza
-                </option>
+                  <option value="strength">
+                    Fuerza
+                  </option>
 
-                <option value="dexterity">
-                  Destreza
-                </option>
+                  <option value="dexterity">
+                    Destreza
+                  </option>
 
-                <option value="constitution">
-                  Constitución
-                </option>
+                  <option value="constitution">
+                    Constitución
+                  </option>
 
-                <option value="intelligence">
-                  Inteligencia
-                </option>
+                  <option value="intelligence">
+                    Inteligencia
+                  </option>
 
-                <option value="wisdom">
-                  Sabiduría
-                </option>
+                  <option value="wisdom">
+                    Sabiduría
+                  </option>
 
-                <option value="charisma">
-                  Carisma
-                </option>
-              </select>
-            </div>
-
-            <div className="col-md-3">
-              <label className="form-label">
-                Modificador
-              </label>
-
-              <input
-                type="number"
-                className="form-control"
-                value={
-                  data?.spellcasting
-                    ?.modifier || ''
-                }
-                onChange={e =>
-                  updateSpellcasting(
-                    'modifier',
-                    e.target.value
-                  )
-                }
-              />
-            </div>
-
-            <div className="col-md-3">
-              <label className="form-label">
-                CD de salvación
-              </label>
-
-              <input
-                type="number"
-                className="form-control"
-                value={
-                  data?.spellcasting?.saveDC ||
-                  ''
-                }
-                onChange={e =>
-                  updateSpellcasting(
-                    'saveDC',
-                    e.target.value
-                  )
-                }
-              />
-            </div>
-
-            <div className="col-md-3">
-              <label className="form-label">
-                Bonificador de ataque
-              </label>
-
-              <input
-                type="number"
-                className="form-control"
-                value={
-                  data?.spellcasting
-                    ?.attackBonus || ''
-                }
-                onChange={e =>
-                  updateSpellcasting(
-                    'attackBonus',
-                    e.target.value
-                  )
-                }
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-4">
-          <h5>Espacios de conjuro</h5>
-
-          <div className="row g-2">
-            <div className="col-4">
-              <strong>Nivel</strong>
-            </div>
-
-            <div className="col-4">
-              <strong>Total</strong>
-            </div>
-
-            <div className="col-4">
-              <strong>Gastados</strong>
-            </div>
-          </div>
-
-          {Array.from(
-            { length: 9 },
-            (_, index) => index + 1
-          ).map(level => {
-            const slot =
-              data?.spellSlots?.[level] || {
-                total: '',
-                expended: ''
-              }
-
-            return (
-              <div
-                key={level}
-                className="row g-2 mt-1"
-              >
-                <div className="col-4 d-flex align-items-center">
-                  Nivel {level}
-                </div>
-
-                <div className="col-4">
-                  <input
-                    type="number"
-                    min="0"
-                    className="form-control"
-                    value={slot.total}
-                    onChange={e =>
-                      updateSpellSlot(
-                        level,
-                        'total',
-                        e.target.value
-                      )
-                    }
-                  />
-                </div>
-
-                <div className="col-4">
-                  <input
-                    type="number"
-                    min="0"
-                    className="form-control"
-                    value={slot.expended}
-                    onChange={e =>
-                      updateSpellSlot(
-                        level,
-                        'expended',
-                        e.target.value
-                      )
-                    }
-                  />
-                </div>
+                  <option value="charisma">
+                    Carisma
+                  </option>
+                </select>
               </div>
-            )
-          })}
-        </div>
+            </div>
 
-        <div className="mt-4">
-          <h5>Agregar hechizos</h5>
+            <div className="col-12 col-sm-6 col-xl-3">
+              <div className="rpg-dnd-detail h-100">
+                <label className="form-label">
+                  Modificador
+                </label>
+
+                <input
+                  type="number"
+                  className="form-control"
+                  value={spellcasting.modifier || ''}
+                  onChange={e =>
+                    updateSpellcasting(
+                      'modifier',
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="col-12 col-sm-6 col-xl-3">
+              <div className="rpg-dnd-detail h-100">
+                <label className="form-label">
+                  CD de salvación
+                </label>
+
+                <input
+                  type="number"
+                  className="form-control"
+                  value={spellcasting.saveDC || ''}
+                  onChange={e =>
+                    updateSpellcasting(
+                      'saveDC',
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="col-12 col-sm-6 col-xl-3">
+              <div className="rpg-dnd-detail h-100">
+                <label className="form-label">
+                  Bonificador de ataque
+                </label>
+
+                <input
+                  type="number"
+                  className="form-control"
+                  value={spellcasting.attackBonus || ''}
+                  onChange={e =>
+                    updateSpellcasting(
+                      'attackBonus',
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ESPACIOS DE CONJURO */}
+
+        <section className="mb-4">
+          <h6 className="rpg-dnd-detail-title mb-3">
+            Espacios de conjuro
+          </h6>
 
           <div className="row g-3">
-            <div className="col-md-8">
+            {Array.from(
+              { length: 9 },
+              (_, index) => index + 1
+            ).map(level => {
+              const slot =
+                data?.spellSlots?.[level] || {
+                  total: '',
+                  expended: ''
+                }
+
+              return (
+                <div
+                  key={level}
+                  className="col-12 col-sm-6 col-xl-4"
+                >
+                  <div className="rpg-dnd-detail h-100">
+                    <div className="rpg-dnd-detail-title mb-3">
+                      Nivel {level}
+                    </div>
+
+                    <div className="row g-2">
+                      <div className="col-6">
+                        <label
+                          className="form-label small"
+                          htmlFor={`spell-slot-${level}-total`}
+                        >
+                          Total
+                        </label>
+
+                        <input
+                          id={`spell-slot-${level}-total`}
+                          type="number"
+                          min="0"
+                          className="form-control"
+                          value={slot.total}
+                          onChange={e =>
+                            updateSpellSlot(
+                              level,
+                              'total',
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div className="col-6">
+                        <label
+                          className="form-label small"
+                          htmlFor={`spell-slot-${level}-expended`}
+                        >
+                          Gastados
+                        </label>
+
+                        <input
+                          id={`spell-slot-${level}-expended`}
+                          type="number"
+                          min="0"
+                          className="form-control"
+                          value={slot.expended}
+                          onChange={e =>
+                            updateSpellSlot(
+                              level,
+                              'expended',
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </section>
+
+        {/* BUSCAR Y AGREGAR HECHIZOS */}
+
+        <section className="mb-4">
+          <h6 className="rpg-dnd-detail-title mb-3">
+            Agregar hechizos
+          </h6>
+
+          <div className="row g-3">
+            <div className="col-12 col-md-8">
               <label className="form-label">
                 Buscar hechizo
               </label>
@@ -319,7 +343,7 @@ function DndSpellForm({
               />
             </div>
 
-            <div className="col-md-4">
+            <div className="col-12 col-md-4">
               <label className="form-label">
                 Nivel
               </label>
@@ -328,9 +352,7 @@ function DndSpellForm({
                 className="form-select"
                 value={levelFilter}
                 onChange={e =>
-                  setLevelFilter(
-                    e.target.value
-                  )
+                  setLevelFilter(e.target.value)
                 }
               >
                 <option value="">
@@ -379,96 +401,117 @@ function DndSpellForm({
               </select>
             </div>
           </div>
-        </div>
 
-        {(search.trim() !== '' ||
-          levelFilter !== '') && (
-            <div className="mt-4">
-              <h6>Resultados</h6>
+          {(search.trim() !== '' ||
+            levelFilter !== '') && (
+              <div className="mt-3">
+                <h6 className="rpg-dnd-detail-title mb-3">
+                  Resultados ({filteredSpells.length})
+                </h6>
 
-              {filteredSpells.length === 0 && (
-                <p className="text-muted">
-                  No se encontraron hechizos.
-                </p>
-              )}
-
-              {filteredSpells.map(spell => {
-                const alreadyAdded =
-                  characterSpells.some(
-                    characterSpell =>
-                      characterSpell.spellKey ===
-                      spell.key
-                  )
-
-                return (
-                  <div
-                    key={spell.key}
-                    className="d-flex justify-content-between align-items-center border rounded p-2 mb-2"
-                  >
-                    <div>
-                      <strong>
-                        {spell.name}
-                      </strong>
-
-                      <div className="small text-muted">
-                        {spell.level === 0
-                          ? 'Truco'
-                          : `Nivel ${spell.level}`}
-                        {' · '}
-                        {spell.school?.name ||
-                          'Escuela desconocida'}
-                      </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-primary"
-                      onClick={() =>
-                        addSpell(spell.key)
-                      }
-                      disabled={alreadyAdded}
-                    >
-                      {alreadyAdded
-                        ? 'Agregado'
-                        : 'Agregar'}
-                    </button>
+                {filteredSpells.length === 0 && (
+                  <div className="rpg-dnd-detail text-muted">
+                    No se encontraron hechizos.
                   </div>
-                )
-              })}
+                )}
+
+                <div className="d-flex flex-column gap-2">
+                  {filteredSpells.map(spell => {
+                    const alreadyAdded =
+                      characterSpells.some(
+                        characterSpell =>
+                          characterSpell.spellKey ===
+                          spell.key
+                      )
+
+                    return (
+                      <div
+                        key={spell.key}
+                        className="rpg-dnd-list-item d-flex flex-wrap justify-content-between align-items-center gap-3"
+                      >
+                        <div className="flex-grow-1">
+                          <strong>
+                            {spell.name}
+                          </strong>
+
+                          <div className="small text-muted">
+                            {spell.level === 0
+                              ? 'Truco'
+                              : `Nivel ${spell.level}`}
+                            {' · '}
+                            {getDndSpellSchoolName(
+                              spell.school?.key
+                            ) || 'Escuela desconocida'}
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          className={
+                            alreadyAdded
+                              ? 'btn btn-sm btn-outline-secondary'
+                              : 'btn btn-sm btn-primary'
+                          }
+                          onClick={() =>
+                            addSpell(spell.key)
+                          }
+                          disabled={alreadyAdded}
+                        >
+                          {alreadyAdded
+                            ? 'Agregado'
+                            : 'Agregar'}
+                        </button>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+        </section>
+
+        {/* HECHIZOS DEL PERSONAJE */}
+
+        <section>
+          <h6 className="rpg-dnd-detail-title mb-3">
+            Hechizos del personaje
+          </h6>
+
+          {characterSpells.length === 0 && (
+            <div className="rpg-dnd-detail text-muted">
+              Todavía no hay hechizos registrados.
+              Usá el buscador para agregar los que necesites.
             </div>
           )}
 
-        {characterSpells.length > 0 && (
-          <div className="mt-4">
-            <h5>Hechizos del personaje</h5>
+          {preparedSpells.length > 0 && (
+            <div className="mb-4">
+              <h6 className="small fw-semibold mb-3">
+                Preparados ({preparedSpells.length})
+              </h6>
 
-            {preparedSpells.length > 0 && (
-              <div className="mt-3">
-                <h6>Preparados</h6>
-
-                <div className="row g-3">
-                  {preparedSpells.map(
-                    renderCharacterSpell
-                  )}
-                </div>
+              <div className="row g-3">
+                {preparedSpells.map(
+                  renderCharacterSpell
+                )}
               </div>
-            )}
+            </div>
+          )}
 
-            {unpreparedSpells.length > 0 && (
-              <div className="mt-4">
-                <h6>
-                  No preparados
-                </h6>
+          {unpreparedSpells.length > 0 && (
+            <div>
+              <h6 className="small fw-semibold mb-3">
+                No preparados ({unpreparedSpells.length})
+              </h6>
 
-                <div className="row g-3">
-                  {unpreparedSpells.map(
-                    renderCharacterSpell
-                  )}
-                </div>
+              <div className="row g-3">
+                {unpreparedSpells.map(
+                  renderCharacterSpell
+                )}
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
+        </section>
+
       </div>
     </div>
   )
