@@ -31,7 +31,7 @@ function DndAbilitiesSection({
               >
                 <div className="rpg-dnd-stat">
 
-                  <label className="rpg-dnd-stat-name d-block mb-2">
+                  <label className="rpg-dnd-stat-name d-block mb-2 text-nowrap">
                     {ability.name}
                   </label>
 
@@ -57,7 +57,7 @@ function DndAbilitiesSection({
                     </span>
                   </div>
 
-                  <div className="text-muted small mt-1">
+                  <div className="text-muted small mt-1 w-100 text-center text-nowrap">
                     Modificador
                   </div>
 

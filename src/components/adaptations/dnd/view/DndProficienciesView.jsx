@@ -42,20 +42,20 @@ function DndProficienciesView({
                 key={ability.id}
                 className="col-6 col-md-6"
               >
-                <div className="rpg-dnd-list-item d-flex justify-content-between align-items-center">
-                  <span>
-                    {ability.name}
+                <div
+                  className="rpg-dnd-list-item d-flex align-items-start gap-2"
+                >
+                  <div className="flex-grow-1">
+                    <div>{ability.name}</div>
 
-                    {savingThrows?.[
-                      ability.id
-                    ] && (
-                        <small className="text-muted ms-2">
-                          Competente
-                        </small>
-                      )}
-                  </span>
+                    {savingThrows?.[ability.id] && (
+                      <small className="text-muted d-block mt-1">
+                        Competente
+                      </small>
+                    )}
+                  </div>
 
-                  <strong>
+                  <strong className="flex-shrink-0">
                     {formatModifier(
                       getSavingThrowModifier(
                         ability.id,
@@ -82,20 +82,20 @@ function DndProficienciesView({
                 key={skill.id}
                 className="col-6 col-md-6"
               >
-                <div className="rpg-dnd-list-item d-flex justify-content-between align-items-center">
-                  <span>
-                    {skill.name}
+                <div
+                  className="rpg-dnd-list-item d-flex align-items-start gap-2"
+                >
+                  <div className="flex-grow-1">
+                    <div>{skill.name}</div>
 
-                    {skills?.[
-                      skill.id
-                    ] && (
-                        <small className="text-muted ms-2">
-                          Competente
-                        </small>
-                      )}
-                  </span>
+                    {skills?.[skill.id] && (
+                      <small className="text-muted d-block mt-1">
+                        Competente
+                      </small>
+                    )}
+                  </div>
 
-                  <strong>
+                  <strong className="flex-shrink-0">
                     {formatModifier(
                       getSkillModifier(
                         skill,

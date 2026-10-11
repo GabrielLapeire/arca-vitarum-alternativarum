@@ -34,7 +34,7 @@ function DndBasicInfoView({
             </div>
           </div>
 
-          <div className="col-6 col-md-3">
+          <div className="col-6 col-lg-3">
             <span className="rpg-dnd-value-label">
               Nivel
             </span>
@@ -44,7 +44,7 @@ function DndBasicInfoView({
             </div>
           </div>
 
-          <div className="col-6 col-md-3">
+          <div className="col-6 col-lg-3">
             <span className="rpg-dnd-value-label">
               Experiencia
             </span>
@@ -54,7 +54,7 @@ function DndBasicInfoView({
             </div>
           </div>
 
-          <div className="col-6 col-md-3">
+          <div className="col-6 col-lg-3">
             <span className="rpg-dnd-value-label">
               Subclase
             </span>
@@ -64,7 +64,7 @@ function DndBasicInfoView({
             </div>
           </div>
 
-          <div className="col-6 col-md-3">
+          <div className="col-6 col-lg-3">
             <span className="rpg-dnd-value-label">
               Especie
             </span>

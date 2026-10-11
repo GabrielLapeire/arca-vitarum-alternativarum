@@ -15,13 +15,8 @@
   --rpg-purple-dark: #56329a;
 
   --rpg-gold: #d6a63f;
-  --rpg-gold-dark: #ae812b;
-
   --rpg-red: #9d3549;
-  --rpg-red-dark: #762637;
-
   --rpg-blue: #4b7fbd;
-  --rpg-blue-dark: #315b8c;
 }
 
 html,
@@ -372,4 +367,40 @@ h3,
 
 .rpg-dnd-stat .form-control {
   min-width: 0;
+}
+
+/* Ajustes adaptables para las características de D&D */
+.rpg-dnd-stat-name {
+  white-space: nowrap;
+}
+
+.rpg-dnd-stat .input-group > .form-control {
+  min-width: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.rpg-dnd-stat .input-group > .input-group-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: var(--bs-border-radius);
+  border-bottom-right-radius: var(--bs-border-radius);
+}
+
+@media (max-width: 575.98px) {
+  .rpg-dnd-stat {
+    padding: 0.85rem 0.5rem;
+  }
+
+  .rpg-dnd-stat-name {
+    font-size: 0.8rem;
+    letter-spacing: 0;
+  }
+
+  .rpg-dnd-stat .input-group-text {
+    padding: 0.25rem 0.35rem;
+  }
 }

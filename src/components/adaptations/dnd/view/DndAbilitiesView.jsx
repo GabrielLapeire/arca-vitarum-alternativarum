@@ -27,7 +27,7 @@ function DndAbilitiesView({
 
             return (
               <div
-                className="col-6 col-md-4 col-lg-2"
+                className="col-6 col-lg-4 col-xxl-2"
                 key={ability.id}
               >
                 <div className="rpg-dnd-stat">

@@ -79,7 +79,7 @@ function DndSpellView({
           </h6>
 
           <div className="row g-3">
-            <div className="col-6 col-md-3">
+            <div className="col-6 col-xl-3">
               <div className="rpg-dnd-detail">
                 <span className="rpg-dnd-value-label">
                   Aptitud
@@ -91,7 +91,7 @@ function DndSpellView({
               </div>
             </div>
 
-            <div className="col-6 col-md-3">
+            <div className="col-6 col-xl-3">
               <div className="rpg-dnd-detail">
                 <span className="rpg-dnd-value-label">
                   Modificador
@@ -105,7 +105,7 @@ function DndSpellView({
               </div>
             </div>
 
-            <div className="col-6 col-md-3">
+            <div className="col-6 col-xl-3">
               <div className="rpg-dnd-detail">
                 <span className="rpg-dnd-value-label">
                   CD de salvación
@@ -119,7 +119,7 @@ function DndSpellView({
               </div>
             </div>
 
-            <div className="col-6 col-md-3">
+            <div className="col-6 col-xl-3">
               <div className="rpg-dnd-detail">
                 <span className="rpg-dnd-value-label">
                   Bonificador de ataque
