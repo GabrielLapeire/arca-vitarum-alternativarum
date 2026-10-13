@@ -189,7 +189,7 @@ function DndCombatView({
         <div className="card-body p-4">
           {data.attacks?.length > 0 ? (
             <div className="table-responsive">
-              <table className="table table-sm align-middle mb-0">
+              <table className="table table-sm align-middle mb-0 rpg-dnd-table">
                 <thead>
                   <tr>
                     <th>Nombre</th>

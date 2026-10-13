@@ -11,7 +11,7 @@ function DndFeatureList({
 }) {
   return (
     <div className="mb-4">
-      <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+      <div className="d-flex flex-column flex-md-row justify-content-md-between align-items-start align-items-md-center gap-2 mb-3">
         <h6 className="rpg-dnd-detail-title mb-0">
           {title}
         </h6>

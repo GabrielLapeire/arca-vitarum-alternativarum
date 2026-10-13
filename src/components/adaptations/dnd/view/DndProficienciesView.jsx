@@ -43,7 +43,7 @@ function DndProficienciesView({
                 className="col-6 col-md-6"
               >
                 <div
-                  className="rpg-dnd-list-item d-flex align-items-start gap-2"
+                  className="rpg-dnd-list-item rpg-dnd-proficiency-item d-flex align-items-start gap-2"
                 >
                   <div className="flex-grow-1">
                     <div>{ability.name}</div>
@@ -83,7 +83,7 @@ function DndProficienciesView({
                 className="col-6 col-md-6"
               >
                 <div
-                  className="rpg-dnd-list-item d-flex align-items-start gap-2"
+                  className="rpg-dnd-list-item rpg-dnd-proficiency-item d-flex align-items-start gap-2"
                 >
                   <div className="flex-grow-1">
                     <div>{skill.name}</div>

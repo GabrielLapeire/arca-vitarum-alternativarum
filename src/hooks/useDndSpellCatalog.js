@@ -1,4 +1,4 @@
-/* Yo manejo los hechizos de D&D de la apie Open5e */
+/* Yo manejo los hechizos de D&D de la api Open5e */
 import { useEffect, useRef, useState } from 'react'
 import { useLocalStorage } from './useLocalStorage'
 import { getDndSpells } from '../api/dndApi'
@@ -46,7 +46,6 @@ export function useDndSpellCatalog() {
 
   useEffect(() => {
     if (isCacheValid(cache)) {
-      setLoading(false)
       return
     }
 
@@ -55,13 +54,13 @@ export function useDndSpellCatalog() {
     }
 
     fetchingRef.current = true
-    setLoading(true)
-    setError(null)
 
     getDndSpells()
       .then(rawSpells => {
         const spells =
           normalizeDndSpells(rawSpells)
+
+        setError(null)
 
         setCache({
           fetchedAt: new Date().toISOString(),

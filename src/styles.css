@@ -187,6 +187,7 @@ h3,
   color: var(--rpg-purple-dark);
   font-family: var(--rpg-font-heading);
   font-size: 0.95rem;
+  white-space: nowrap;
 }
 
 .rpg-dnd-stat-score {
@@ -365,15 +366,6 @@ h3,
   background-color: transparent;
 }
 
-.rpg-dnd-stat .form-control {
-  min-width: 0;
-}
-
-/* Ajustes adaptables para las características de D&D */
-.rpg-dnd-stat-name {
-  white-space: nowrap;
-}
-
 .rpg-dnd-stat .input-group > .form-control {
   min-width: 0;
   border-top-right-radius: 0;
@@ -403,4 +395,49 @@ h3,
   .rpg-dnd-stat .input-group-text {
     padding: 0.25rem 0.35rem;
   }
+
+  .rpg-dnd-list-item.d-flex {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .rpg-dnd-proficiency-item {
+    flex-wrap: wrap;
+  }
+
+  .rpg-dnd-proficiency-item > .flex-grow-1 {
+    flex: 1 0 100% !important;
+  }
+
+  .rpg-dnd-proficiency-item > .flex-grow-1 > div {
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .rpg-dnd-proficiency-item > strong {
+    margin-left: auto;
+  }
+}
+
+.rpg-dnd-list-item > .flex-grow-1 {
+  min-width: 0;
+}
+
+.rpg-dnd-list-item > strong {
+  flex-shrink: 0;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.rpg-dnd-table {
+  --bs-table-bg: var(--rpg-surface);
+  --bs-table-color: var(--rpg-text);
+  --bs-table-border-color: rgba(120, 72, 200, 0.18);
+}
+
+.rpg-dnd-table thead th {
+  background-color: var(--rpg-surface-secondary);
+  color: var(--rpg-purple-dark);
+  border-bottom-color: rgba(214, 166, 63, 0.45);
+  white-space: nowrap;
 }
