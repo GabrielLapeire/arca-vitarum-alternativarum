@@ -14,12 +14,15 @@ function CharacterForm({
   saveAdaptation,
   updateAdaptation,
   cancelUpdateAdaptation,
-  deleteAdaptation,
+  onRequestDeleteAdaptation,
   changeAdaptationSystem
 }) {
   const isAdaptationActive =
     editingAdaptationId !== null ||
     newAdaptation.system !== ''
+
+  const isSupportedSystem =
+    newAdaptation.system === 'dnd'
 
   function updateAdaptationData(updater) {
     setNewAdaptation(previousAdaptation => ({
@@ -156,9 +159,7 @@ function CharacterForm({
                           <button
                             type="button"
                             onClick={() =>
-                              deleteAdaptation(
-                                adaptation.id
-                              )
+                              onRequestDeleteAdaptation(adaptation)
                             }
                             className="btn btn-sm btn-danger"
                           >
@@ -181,6 +182,36 @@ function CharacterForm({
           />
         )}
 
+        {newAdaptation.system !== '' &&
+          !isSupportedSystem && (
+            <div className="card rpg-card mt-4">
+              <div className="card-body p-4">
+                <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                  <h4 className="rpg-dnd-form-title mb-0">
+                    {newAdaptation.system === 'daggerheart'
+                      ? 'DaggerHeart'
+                      : newAdaptation.system}
+                  </h4>
+
+                  <span className="badge rpg-dnd-badge-muted">
+                    En desarrollo
+                  </span>
+                </div>
+
+                <p className="mb-2">
+                  La ficha de este sistema todavía no está
+                  implementada.
+                </p>
+
+                <p className="text-muted mb-0">
+                  Por ahora, podés crear y editar adaptaciones
+                  de D&D 2024. Elegí D&D en el selector superior
+                  o cancelá la adaptación para continuar.
+                </p>
+              </div>
+            </div>
+          )}
+
         <div className="sticky-bottom rpg-form-actions mt-4 pt-3 pb-2">
           <div className="d-flex justify-content-end gap-2">
             {isAdaptationActive ? (
@@ -199,10 +230,13 @@ function CharacterForm({
                   type="button"
                   onClick={saveAdaptation}
                   className="btn btn-primary"
+                  disabled={!isSupportedSystem}
                 >
-                  {editingAdaptationId !== null
-                    ? "Actualizar adaptación"
-                    : "Agregar adaptación"}
+                  {!isSupportedSystem
+                    ? "Sistema no disponible"
+                    : editingAdaptationId !== null
+                      ? "Actualizar adaptación"
+                      : "Agregar adaptación"}
                 </button>
               </>
             ) : (

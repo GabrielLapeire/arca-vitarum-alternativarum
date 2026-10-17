@@ -5,9 +5,11 @@ import CharacterAdaptationModal from './CharacterAdaptationModal'
 function CharacterCard({
   character,
   updateCharacter,
-  deleteCharacter
+  onRequestDeleteCharacter
 }) {
-  const [selectedAdaptation, setSelectedAdaptation] = useState(null)
+  const [selectedAdaptation, setSelectedAdaptation] =
+    useState(null)
+
   return (
     <>
       <div className="card rpg-card h-100">
@@ -24,11 +26,10 @@ function CharacterCard({
           </div>
 
           <div className="card-text flex-grow-1">
-
             <strong>Adaptaciones:</strong>
 
             <div className="list-group mt-2">
-              {character.adaptations.map((adaptation) => (
+              {character.adaptations.map(adaptation => (
                 <button
                   type="button"
                   key={adaptation.id}
@@ -54,12 +55,12 @@ function CharacterCard({
                 </button>
               ))}
             </div>
-
           </div>
 
           <div className="d-flex gap-2 mt-3">
 
             <button
+              type="button"
               onClick={() =>
                 updateCharacter(character.id)
               }
@@ -69,8 +70,9 @@ function CharacterCard({
             </button>
 
             <button
+              type="button"
               onClick={() =>
-                deleteCharacter(character.id)
+                onRequestDeleteCharacter(character)
               }
               className="btn btn-danger"
             >

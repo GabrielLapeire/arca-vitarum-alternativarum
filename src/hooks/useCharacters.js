@@ -125,6 +125,9 @@ export function useCharacters() {
 
     if (newAdaptation.system === '') {
       newErrors.system = "Debes seleccionar un sistema"
+    } else if (newAdaptation.system !== 'dnd') {
+      newErrors.system =
+        "Este sistema todavía no está implementado"
     }
 
     if (Object.keys(newErrors).length > 0) {
