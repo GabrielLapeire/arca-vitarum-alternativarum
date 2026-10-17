@@ -6,16 +6,17 @@ function CharacterForm({
   setNewCharacter,
   saveCharacter,
   editingId,
-  cancelUpdateCharacter,
   errors,
   newAdaptation,
   setNewAdaptation,
   editingAdaptationId,
   saveAdaptation,
   updateAdaptation,
-  cancelUpdateAdaptation,
+  hasUnsavedCharacterChanges,
+  onRequestCancelCharacter,
+  onRequestCancelAdaptation,
   onRequestDeleteAdaptation,
-  changeAdaptationSystem
+  onRequestChangeAdaptationSystem
 }) {
   const isAdaptationActive =
     editingAdaptationId !== null ||
@@ -75,7 +76,7 @@ function CharacterForm({
               className="form-select"
               value={newAdaptation.system}
               onChange={(e) =>
-                changeAdaptationSystem(e.target.value)
+                onRequestChangeAdaptationSystem(e.target.value)
               }
             >
               <option value="">
@@ -213,17 +214,18 @@ function CharacterForm({
           )}
 
         <div className="sticky-bottom rpg-form-actions mt-4 pt-3 pb-2">
-          <div className="d-flex justify-content-end gap-2">
+          <div className="d-flex flex-wrap justify-content-end gap-2">
+
             {isAdaptationActive ? (
               <>
                 <button
                   type="button"
-                  onClick={cancelUpdateAdaptation}
+                  onClick={onRequestCancelAdaptation}
                   className="btn btn-secondary"
                 >
                   {editingAdaptationId !== null
-                    ? "Cancelar edición"
-                    : "Cancelar adaptación"}
+                    ? 'Cancelar edición'
+                    : 'Cancelar adaptación'}
                 </button>
 
                 <button
@@ -233,35 +235,37 @@ function CharacterForm({
                   disabled={!isSupportedSystem}
                 >
                   {!isSupportedSystem
-                    ? "Sistema no disponible"
+                    ? 'Sistema no disponible'
                     : editingAdaptationId !== null
-                      ? "Actualizar adaptación"
-                      : "Agregar adaptación"}
+                      ? 'Actualizar adaptación'
+                      : 'Agregar adaptación'}
                 </button>
               </>
             ) : (
-              <>
+              <button
+                type="button"
+                onClick={saveCharacter}
+                className="btn btn-primary"
+              >
+                {editingId !== null
+                  ? 'Actualizar personaje'
+                  : 'Guardar personaje'}
+              </button>
+            )}
+
+            {(editingId !== null ||
+              hasUnsavedCharacterChanges) && (
                 <button
                   type="button"
-                  onClick={saveCharacter}
-                  className="btn btn-primary"
+                  onClick={onRequestCancelCharacter}
+                  className="btn btn-secondary"
                 >
-                  {editingId
-                    ? "Actualizar personaje"
-                    : "Guardar personaje"}
+                  {editingId !== null
+                    ? 'Cancelar edición del personaje'
+                    : 'Descartar personaje'}
                 </button>
+              )}
 
-                {editingId !== null && (
-                  <button
-                    type="button"
-                    onClick={cancelUpdateCharacter}
-                    className="btn btn-secondary"
-                  >
-                    Cancelar
-                  </button>
-                )}
-              </>
-            )}
           </div>
         </div>
       </div>

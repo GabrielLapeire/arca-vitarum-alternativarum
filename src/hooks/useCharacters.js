@@ -16,6 +16,30 @@ const emptyAdaptation = {
   data: {}
 }
 
+function getNewAdaptationBaseline(system) {
+  if (system === 'dnd') {
+    return {
+      ...emptyAdaptation,
+      system: 'dnd',
+      version: '2024',
+      data: createEmptyDndData()
+    }
+  }
+
+  if (system) {
+    return {
+      ...emptyAdaptation,
+      system
+    }
+  }
+
+  return emptyAdaptation
+}
+
+function haveSameData(first, second) {
+  return JSON.stringify(first) === JSON.stringify(second)
+}
+
 export function useCharacters() {
   const [characters, setCharacters] = useLocalStorage(
     "characters",
@@ -26,6 +50,32 @@ export function useCharacters() {
   const [newAdaptation, setNewAdaptation] = useState(emptyAdaptation)
   const [editingAdaptationId, setEditingAdaptationId] = useState(null)
   const [errors, setErrors] = useState({})
+
+  // Comparo el formulario con los datos originales.
+  const originalCharacter = editingId !== null
+    ? characters.find(
+      character => character.id === editingId
+    )
+    : emptyCharacter
+
+  const hasUnsavedCharacterChanges =
+    originalCharacter !== undefined &&
+    !haveSameData(newCharacter, originalCharacter)
+
+  const originalAdaptation = editingAdaptationId !== null
+    ? newCharacter.adaptations.find(
+      adaptation =>
+        adaptation.id === editingAdaptationId
+    )
+    : getNewAdaptationBaseline(newAdaptation.system)
+
+  const hasUnsavedAdaptationChanges =
+    originalAdaptation !== undefined &&
+    !haveSameData(newAdaptation, originalAdaptation)
+
+  const hasUnsavedChanges =
+    hasUnsavedCharacterChanges ||
+    hasUnsavedAdaptationChanges
 
   function saveCharacter() {
     const newErrors = {}
@@ -246,6 +296,10 @@ export function useCharacters() {
     deleteAdaptation,
 
     setNewCharacter,
-    setNewAdaptation
+    setNewAdaptation,
+
+    hasUnsavedChanges,
+    hasUnsavedCharacterChanges,
+    hasUnsavedAdaptationChanges
   }
 }

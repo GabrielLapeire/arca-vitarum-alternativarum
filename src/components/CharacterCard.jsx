@@ -4,7 +4,7 @@ import CharacterAdaptationModal from './CharacterAdaptationModal'
 
 function CharacterCard({
   character,
-  updateCharacter,
+  onRequestUpdateCharacter,
   onRequestDeleteCharacter
 }) {
   const [selectedAdaptation, setSelectedAdaptation] =
@@ -62,7 +62,7 @@ function CharacterCard({
             <button
               type="button"
               onClick={() =>
-                updateCharacter(character.id)
+                onRequestUpdateCharacter(character.id)
               }
               className="btn btn-warning"
             >

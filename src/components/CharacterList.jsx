@@ -3,7 +3,7 @@ import CharacterCard from './CharacterCard'
 
 function CharacterList({
   characters,
-  updateCharacter,
+  onRequestUpdateCharacter,
   onRequestDeleteCharacter
 }) {
   if (characters.length === 0) {
@@ -34,7 +34,7 @@ function CharacterList({
           >
             <CharacterCard
               character={character}
-              updateCharacter={updateCharacter}
+              onRequestUpdateCharacter={onRequestUpdateCharacter}
               onRequestDeleteCharacter={onRequestDeleteCharacter}
             />
           </div>

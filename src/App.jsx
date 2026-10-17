@@ -1,5 +1,5 @@
 /* Tengo personajes y quiero mostrarlos según determinados filtros. */
-import { useState, useMemo } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import CharacterFilters from './components/CharacterFilters'
 import CharacterForm from './components/CharacterForm'
 import CharacterList from './components/CharacterList'
@@ -16,6 +16,9 @@ function App() {
     newCharacter,
     editingId,
     errors,
+    hasUnsavedChanges,
+    hasUnsavedCharacterChanges,
+    hasUnsavedAdaptationChanges,
 
     newAdaptation,
     editingAdaptationId,
@@ -35,6 +38,29 @@ function App() {
     setNewAdaptation
   } = useCharacters()
 
+  useEffect(() => {
+    if (!hasUnsavedChanges) {
+      return
+    }
+
+    function handleBeforeUnload(event) {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+
+    window.addEventListener(
+      'beforeunload',
+      handleBeforeUnload
+    )
+
+    return () => {
+      window.removeEventListener(
+        'beforeunload',
+        handleBeforeUnload
+      )
+    }
+  }, [hasUnsavedChanges])
+
   const [search, setSearch] = useState('')
   const [sortBy, setSortBy] = useState('nameAsc')
   const [confirmation, setConfirmation] = useState(null)
@@ -51,7 +77,7 @@ function App() {
 
   function requestDeleteCharacter(character) {
     setConfirmation({
-      type: 'character',
+      type: 'deleteCharacter',
       id: character.id,
       title: 'Eliminar personaje',
       message:
@@ -69,13 +95,13 @@ function App() {
         : adaptation.system
 
     const adaptationName =
-      `${systemName}` +
+      systemName +
       (adaptation.version
         ? ` - ${adaptation.version}`
         : '')
 
     setConfirmation({
-      type: 'adaptation',
+      type: 'deleteAdaptation',
       id: adaptation.id,
       title: 'Eliminar adaptación',
       message:
@@ -85,17 +111,118 @@ function App() {
     })
   }
 
-  function confirmDeletion() {
+  function requestCancelCharacter() {
+    if (!hasUnsavedChanges) {
+      cancelUpdateCharacter()
+      return
+    }
+
+    setConfirmation({
+      type: 'discardCharacter',
+      title: 'Descartar cambios del personaje',
+      message:
+        'Hay cambios sin guardar en el personaje o en su ' +
+        'adaptación actual. Si continuás, se descartarán. ' +
+        '¿Querés continuar?',
+      confirmLabel: 'Descartar cambios'
+    })
+  }
+
+  function requestCancelAdaptation() {
+    if (!hasUnsavedAdaptationChanges) {
+      cancelUpdateAdaptation()
+      return
+    }
+
+    setConfirmation({
+      type: 'discardAdaptation',
+      title: 'Descartar cambios de la adaptación',
+      message:
+        'Hay cambios sin guardar en esta adaptación. ' +
+        'Si continuás, se descartarán. ¿Querés continuar?',
+      confirmLabel: 'Descartar cambios'
+    })
+  }
+
+  function requestChangeAdaptationSystem(system) {
+    if (system === '') {
+      requestCancelAdaptation()
+      return
+    }
+
+    if (system === newAdaptation.system) {
+      return
+    }
+
+    const requiresConfirmation =
+      hasUnsavedAdaptationChanges ||
+      editingAdaptationId !== null
+
+    if (!requiresConfirmation) {
+      changeAdaptationSystem(system)
+      return
+    }
+
+    setConfirmation({
+      type: 'changeSystem',
+      system,
+      title: 'Cambiar de sistema',
+      message:
+        'Cambiar el sistema reiniciará los datos del ' +
+        'formulario de adaptación actual. ¿Querés continuar?',
+      confirmLabel: 'Cambiar sistema'
+    })
+  }
+
+  function requestUpdateCharacter(id) {
+    if (!hasUnsavedChanges) {
+      updateCharacter(id)
+      return
+    }
+
+    setConfirmation({
+      type: 'updateCharacter',
+      id,
+      title: 'Descartar cambios',
+      message:
+        'Hay cambios sin guardar. Si abrís otro personaje, ' +
+        'se descartarán. ¿Querés continuar?',
+      confirmLabel: 'Descartar y abrir'
+    })
+  }
+
+  function confirmAction() {
     if (!confirmation) {
       return
     }
 
-    if (confirmation.type === 'character') {
-      deleteCharacter(confirmation.id)
-    }
+    switch (confirmation.type) {
+      case 'deleteCharacter':
+        deleteCharacter(confirmation.id)
+        break
 
-    if (confirmation.type === 'adaptation') {
-      deleteAdaptation(confirmation.id)
+      case 'deleteAdaptation':
+        deleteAdaptation(confirmation.id)
+        break
+
+      case 'discardCharacter':
+        cancelUpdateCharacter()
+        break
+
+      case 'discardAdaptation':
+        cancelUpdateAdaptation()
+        break
+
+      case 'changeSystem':
+        changeAdaptationSystem(confirmation.system)
+        break
+
+      case 'updateCharacter':
+        updateCharacter(confirmation.id)
+        break
+
+      default:
+        break
     }
 
     setConfirmation(null)
@@ -131,21 +258,22 @@ function App() {
           setNewCharacter={setNewCharacter}
           saveCharacter={saveCharacter}
           editingId={editingId}
-          cancelUpdateCharacter={cancelUpdateCharacter}
           errors={errors}
           newAdaptation={newAdaptation}
           setNewAdaptation={setNewAdaptation}
           editingAdaptationId={editingAdaptationId}
           saveAdaptation={saveAdaptation}
           updateAdaptation={updateAdaptation}
-          cancelUpdateAdaptation={cancelUpdateAdaptation}
+          hasUnsavedCharacterChanges={hasUnsavedCharacterChanges}
           onRequestDeleteAdaptation={requestDeleteAdaptation}
-          changeAdaptationSystem={changeAdaptationSystem}
+          onRequestCancelCharacter={requestCancelCharacter}
+          onRequestCancelAdaptation={requestCancelAdaptation}
+          onRequestChangeAdaptationSystem={requestChangeAdaptationSystem}
         />
 
         <CharacterList
           characters={sortedCharacters}
-          updateCharacter={updateCharacter}
+          onRequestUpdateCharacter={requestUpdateCharacter}
           onRequestDeleteCharacter={requestDeleteCharacter}
         />
       </main>
@@ -153,7 +281,7 @@ function App() {
       <ConfirmationModal
         confirmation={confirmation}
         onCancel={cancelConfirmation}
-        onConfirm={confirmDeletion}
+        onConfirm={confirmAction}
       />
     </div>
   )
