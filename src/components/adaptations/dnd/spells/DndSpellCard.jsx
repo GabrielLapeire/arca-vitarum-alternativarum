@@ -7,6 +7,7 @@ import {
   getDndTargetTypeName,
   getDndCastingTimeName
 } from '../dndTranslations'
+import ReactMarkdown from 'react-markdown'
 
 function DndSpellCard({
   spell,
@@ -218,8 +219,10 @@ function DndSpellCard({
                       Descripción
                     </strong>
 
-                    <div className="mt-1">
-                      {catalogSpell.description}
+                    <div className="mt-1 rpg-dnd-markdown">
+                      <ReactMarkdown>
+                        {catalogSpell.description}
+                      </ReactMarkdown>
                     </div>
                   </div>
                 )}
@@ -299,8 +302,10 @@ function DndSpellCard({
                       A niveles superiores:
                     </strong>
 
-                    <div className="mt-1">
-                      {catalogSpell.higherLevel}
+                    <div className="mt-1 rpg-dnd-markdown">
+                      <ReactMarkdown>
+                        {catalogSpell.higherLevel}
+                      </ReactMarkdown>
                     </div>
                   </div>
                 )}

@@ -441,3 +441,21 @@ h3,
   border-bottom-color: rgba(214, 166, 63, 0.45);
   white-space: nowrap;
 }
+
+.rpg-dnd-markdown p {
+  margin-bottom: 0.5rem;
+}
+
+.rpg-dnd-markdown > :first-child {
+  margin-top: 0;
+}
+
+.rpg-dnd-markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.rpg-dnd-markdown ul,
+.rpg-dnd-markdown ol {
+  padding-left: 1.25rem;
+  margin-bottom: 0.5rem;
+}
