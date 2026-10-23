@@ -9,6 +9,27 @@ function DndAbilitiesSection({
   abilities,
   updateAbility
 }) {
+  function handleAbilityChange(abilityId, value) {
+    if (value === '') {
+      updateAbility(abilityId, '')
+      return
+    }
+
+    // Solo acepto dígitos.
+    if (!/^\d+$/.test(value)) {
+      return
+    }
+
+    const score = Number(value)
+
+    // Las características de D&D van de 1 a 30.
+    if (score < 1 || score > 30) {
+      return
+    }
+
+    updateAbility(abilityId, value)
+  }
+
   return (
     <div className="card rpg-card mb-4">
       <div className="card-header">
@@ -40,10 +61,11 @@ function DndAbilitiesSection({
                       type="number"
                       min="1"
                       max="30"
+                      step="1"
                       className="form-control"
                       value={abilities[ability.id]}
                       onChange={e =>
-                        updateAbility(
+                        handleAbilityChange(
                           ability.id,
                           e.target.value
                         )
