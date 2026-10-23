@@ -70,6 +70,91 @@ export function downloadCharacterExport(characters) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
 
+/* Valido números sin impedir que una ficha quede incompleta. */
+function validateIntegerValue(
+  value,
+  fieldLabel,
+  {
+    min = Number.MIN_SAFE_INTEGER,
+    max = Number.MAX_SAFE_INTEGER,
+    signed = false
+  } = {}
+) {
+  if (
+    value === undefined ||
+    value === null ||
+    value === ''
+  ) {
+    return
+  }
+
+  let numericValue
+
+  if (typeof value === 'number') {
+    numericValue = value
+  } else if (typeof value === 'string') {
+    const trimmedValue = value.trim()
+
+    if (trimmedValue === '') {
+      return
+    }
+
+    const pattern = signed
+      ? /^[+-]?\d+$/
+      : /^\d+$/
+
+    if (!pattern.test(trimmedValue)) {
+      throw new Error(
+        `${fieldLabel}: debe ser un número entero válido.`
+      )
+    }
+
+    numericValue = Number(trimmedValue)
+  } else {
+    throw new Error(
+      `${fieldLabel}: debe ser un número entero válido.`
+    )
+  }
+
+  if (
+    !Number.isSafeInteger(numericValue) ||
+    numericValue < min ||
+    numericValue > max
+  ) {
+    const expected =
+      min === Number.MIN_SAFE_INTEGER &&
+        max === Number.MAX_SAFE_INTEGER
+        ? 'un número entero válido'
+        : min === Number.MIN_SAFE_INTEGER
+          ? `un entero menor o igual que ${max}`
+          : max === Number.MAX_SAFE_INTEGER
+            ? `un entero mayor o igual que ${min}`
+            : `un entero entre ${min} y ${max}`
+
+    throw new Error(
+      `${fieldLabel}: debe ser ${expected}.`
+    )
+  }
+}
+
+function validateIntegerField(
+  record,
+  field,
+  fieldLabel,
+  location,
+  options
+) {
+  if (!Object.prototype.hasOwnProperty.call(record, field)) {
+    return
+  }
+
+  validateIntegerValue(
+    record[field],
+    `${location} — ${fieldLabel}`,
+    options
+  )
+}
+
 function validateDndData(data, characterNumber, adaptationNumber) {
   const location =
     `Personaje ${characterNumber}, adaptación ${adaptationNumber}`
@@ -117,6 +202,140 @@ function validateDndData(data, characterNumber, adaptationNumber) {
     }
   }
 
+  // Nivel y experiencia.
+  validateIntegerField(
+    data,
+    'level',
+    'nivel',
+    location,
+    { min: 1, max: 20 }
+  )
+
+  validateIntegerField(
+    data,
+    'experience',
+    'experiencia',
+    location,
+    { min: 0 }
+  )
+
+  // Características.
+  if (isRecord(data.abilities)) {
+    for (const [ability, score] of Object.entries(data.abilities)) {
+      validateIntegerValue(
+        score,
+        `${location} — característica "${ability}"`,
+        { min: 1, max: 30 }
+      )
+    }
+  }
+
+  // Datos de combate.
+  const combat = data.combat
+
+  if (isRecord(combat)) {
+    const nonNegativeFields = [
+      ['armorClass', 'clase de armadura'],
+      ['shield', 'escudo'],
+      ['currentHitPoints', 'puntos de golpe actuales'],
+      ['maxHitPoints', 'puntos de golpe máximos'],
+      ['temporaryHitPoints', 'puntos de golpe temporales'],
+      ['hitDiceSpent', 'dados de golpe gastados'],
+      ['passivePerception', 'percepción pasiva']
+    ]
+
+    for (const [field, label] of nonNegativeFields) {
+      validateIntegerField(
+        combat,
+        field,
+        label,
+        location,
+        { min: 0 }
+      )
+    }
+
+    validateIntegerField(
+      combat,
+      'initiative',
+      'iniciativa',
+      location,
+      { signed: true }
+    )
+
+    validateIntegerField(
+      combat,
+      'deathSavesSuccesses',
+      'éxitos de salvaciones contra muerte',
+      location,
+      { min: 0, max: 3 }
+    )
+
+    validateIntegerField(
+      combat,
+      'deathSavesFailures',
+      'fallos de salvaciones contra muerte',
+      location,
+      { min: 0, max: 3 }
+    )
+  }
+
+  // Lanzamiento de conjuros.
+  const spellcasting = data.spellcasting
+
+  if (isRecord(spellcasting)) {
+    validateIntegerField(
+      spellcasting,
+      'modifier',
+      'modificador de lanzamiento',
+      location,
+      { signed: true }
+    )
+
+    validateIntegerField(
+      spellcasting,
+      'saveDC',
+      'CD de salvación',
+      location,
+      { min: 0 }
+    )
+
+    validateIntegerField(
+      spellcasting,
+      'attackBonus',
+      'bonificador de ataque de conjuros',
+      location,
+      { signed: true }
+    )
+  }
+
+  // Espacios de conjuro.
+  if (isRecord(data.spellSlots)) {
+    for (const [level, slot] of Object.entries(data.spellSlots)) {
+      if (!isRecord(slot)) {
+        throw new Error(
+          `${location}: los espacios de conjuro del nivel ${level} no son válidos.`
+        )
+      }
+
+      validateIntegerField(
+        slot,
+        'total',
+        `espacios totales de nivel ${level}`,
+        location,
+        { min: 0 }
+      )
+
+      validateIntegerField(
+        slot,
+        'expended',
+        `espacios gastados de nivel ${level}`,
+        location,
+        { min: 0 }
+      )
+    }
+  }
+
+  // Hechizos registrados.
   if (Array.isArray(data.spells)) {
     for (const spell of data.spells) {
       if (typeof spell.spellKey !== 'string') {
@@ -127,9 +346,10 @@ function validateDndData(data, characterNumber, adaptationNumber) {
     }
   }
 
+  // Equipo, cantidades y monedas.
   const equipment = data.equipment
 
-  if (equipment) {
+  if (isRecord(equipment)) {
     if (
       equipment.items !== undefined &&
       (
@@ -140,6 +360,18 @@ function validateDndData(data, characterNumber, adaptationNumber) {
       throw new Error(
         `${location}: la lista de objetos no es válida.`
       )
+    }
+
+    if (Array.isArray(equipment.items)) {
+      equipment.items.forEach((item, index) => {
+        validateIntegerField(
+          item,
+          'quantity',
+          `cantidad del objeto ${index + 1}`,
+          location,
+          { min: 1 }
+        )
+      })
     }
 
     if (
@@ -158,6 +390,26 @@ function validateDndData(data, characterNumber, adaptationNumber) {
       throw new Error(
         `${location}: los datos de monedas no son válidos.`
       )
+    }
+
+    if (isRecord(equipment.currency)) {
+      const denominations = [
+        ['cp', 'cobre'],
+        ['sp', 'plata'],
+        ['ep', 'electro'],
+        ['gp', 'oro'],
+        ['pp', 'platino']
+      ]
+
+      for (const [field, label] of denominations) {
+        validateIntegerField(
+          equipment.currency,
+          field,
+          `monedas de ${label}`,
+          location,
+          { min: 0 }
+        )
+      }
     }
   }
 }

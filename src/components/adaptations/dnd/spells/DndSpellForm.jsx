@@ -8,6 +8,10 @@ import {
   getDndSpellSchoolName
 } from '../dndTranslations'
 import DndSpellCard from './DndSpellCard'
+import {
+  handleIntegerInput,
+  clearIncompleteInteger
+} from '../dndInputUtils'
 
 function DndSpellForm({
   data,
@@ -87,6 +91,30 @@ function DndSpellForm({
 
   const spellcasting =
     data?.spellcasting || {}
+
+  function updateSpellcastingInteger(
+    field,
+    event,
+    options
+  ) {
+    handleIntegerInput(
+      event,
+      value => updateSpellcasting(field, value),
+      options
+    )
+  }
+
+  function updateSpellSlotInteger(
+    level,
+    field,
+    event
+  ) {
+    handleIntegerInput(
+      event,
+      value => updateSpellSlot(level, field, value),
+      { min: 0 }
+    )
+  }
 
   return (
     <div className="card rpg-card mb-4">
@@ -180,13 +208,25 @@ function DndSpellForm({
                 </label>
 
                 <input
-                  type="number"
+                  type="text"
+                  inputMode="decimal"
                   className="form-control"
-                  value={spellcasting.modifier || ''}
+                  value={spellcasting.modifier ?? ''}
                   onChange={e =>
-                    updateSpellcasting(
+                    updateSpellcastingInteger(
                       'modifier',
-                      e.target.value
+                      e,
+                      {
+                        allowNegative: true,
+                        allowLeadingPlus: true,
+                        allowIncompleteSign: true
+                      }
+                    )
+                  }
+                  onBlur={e =>
+                    clearIncompleteInteger(
+                      e,
+                      value => updateSpellcasting('modifier', value)
                     )
                   }
                 />
@@ -201,12 +241,15 @@ function DndSpellForm({
 
                 <input
                   type="number"
+                  min="0"
+                  step="1"
                   className="form-control"
-                  value={spellcasting.saveDC || ''}
+                  value={spellcasting.saveDC ?? ''}
                   onChange={e =>
-                    updateSpellcasting(
+                    updateSpellcastingInteger(
                       'saveDC',
-                      e.target.value
+                      e,
+                      { min: 0 }
                     )
                   }
                 />
@@ -220,13 +263,25 @@ function DndSpellForm({
                 </label>
 
                 <input
-                  type="number"
+                  type="text"
+                  inputMode="decimal"
                   className="form-control"
-                  value={spellcasting.attackBonus || ''}
+                  value={spellcasting.attackBonus ?? ''}
                   onChange={e =>
-                    updateSpellcasting(
+                    updateSpellcastingInteger(
                       'attackBonus',
-                      e.target.value
+                      e,
+                      {
+                        allowNegative: true,
+                        allowLeadingPlus: true,
+                        allowIncompleteSign: true
+                      }
+                    )
+                  }
+                  onBlur={e =>
+                    clearIncompleteInteger(
+                      e,
+                      value => updateSpellcasting('attackBonus', value)
                     )
                   }
                 />
@@ -276,13 +331,14 @@ function DndSpellForm({
                           id={`spell-slot-${level}-total`}
                           type="number"
                           min="0"
+                          step="1"
                           className="form-control"
-                          value={slot.total}
+                          value={slot.total ?? ''}
                           onChange={e =>
-                            updateSpellSlot(
+                            updateSpellSlotInteger(
                               level,
                               'total',
-                              e.target.value
+                              e
                             )
                           }
                         />
@@ -300,13 +356,14 @@ function DndSpellForm({
                           id={`spell-slot-${level}-expended`}
                           type="number"
                           min="0"
+                          step="1"
                           className="form-control"
-                          value={slot.expended}
+                          value={slot.expended ?? ''}
                           onChange={e =>
-                            updateSpellSlot(
+                            updateSpellSlotInteger(
                               level,
                               'expended',
-                              e.target.value
+                              e
                             )
                           }
                         />

@@ -3,6 +3,10 @@ import {
   getAbilityModifier,
   formatModifier
 } from '../dndUtils'
+import {
+  handleIntegerInput,
+  clearIncompleteInteger
+} from '../dndInputUtils'
 import DeathSaveMarks from '../DeathSaveMarks'
 
 function DndCombatSection({
@@ -25,6 +29,14 @@ function DndCombatSection({
       ? ''
       : formatModifier(dexterityModifier)
 
+  function updateIntegerField(field, event, options) {
+    handleIntegerInput(
+      event,
+      value => updateCombat(field, value),
+      options
+    )
+  }
+
   return (
     <div className="card rpg-card mb-4">
       <div className="card-header">
@@ -40,12 +52,15 @@ function DndCombatSection({
 
             <input
               type="number"
+              min="0"
+              step="1"
               className="form-control"
               value={combat.armorClass}
               onChange={e =>
-                updateCombat(
+                updateIntegerField(
                   'armorClass',
-                  e.target.value
+                  e,
+                  { min: 0 }
                 )
               }
             />
@@ -59,12 +74,14 @@ function DndCombatSection({
             <input
               type="number"
               min="0"
+              step="1"
               className="form-control"
               value={combat.shield}
               onChange={e =>
-                updateCombat(
+                updateIntegerField(
                   'shield',
-                  e.target.value
+                  e,
+                  { min: 0 }
                 )
               }
             />
@@ -77,12 +94,15 @@ function DndCombatSection({
 
             <input
               type="number"
+              min="0"
+              step="1"
               className="form-control"
               value={combat.currentHitPoints}
               onChange={e =>
-                updateCombat(
+                updateIntegerField(
                   'currentHitPoints',
-                  e.target.value
+                  e,
+                  { min: 0 }
                 )
               }
             />
@@ -95,12 +115,15 @@ function DndCombatSection({
 
             <input
               type="number"
+              min="0"
+              step="1"
               className="form-control"
               value={combat.maxHitPoints}
               onChange={e =>
-                updateCombat(
+                updateIntegerField(
                   'maxHitPoints',
-                  e.target.value
+                  e,
+                  { min: 0 }
                 )
               }
             />
@@ -113,12 +136,15 @@ function DndCombatSection({
 
             <input
               type="number"
+              min="0"
+              step="1"
               className="form-control"
               value={combat.temporaryHitPoints}
               onChange={e =>
-                updateCombat(
+                updateIntegerField(
                   'temporaryHitPoints',
-                  e.target.value
+                  e,
+                  { min: 0 }
                 )
               }
             />
@@ -135,9 +161,20 @@ function DndCombatSection({
               value={combat.initiative}
               placeholder={initiativePlaceholder}
               onChange={e =>
-                updateCombat(
+                updateIntegerField(
                   'initiative',
-                  e.target.value
+                  e,
+                  {
+                    allowNegative: true,
+                    allowLeadingPlus: true,
+                    allowIncompleteSign: true
+                  }
+                )
+              }
+              onBlur={e =>
+                clearIncompleteInteger(
+                  e,
+                  value => updateCombat('initiative', value)
                 )
               }
             />
@@ -208,6 +245,8 @@ function DndCombatSection({
 
             <input
               type="text"
+              min="0"
+              step="1"
               className="form-control"
               value={combat.passivePerception || ''}
               placeholder={
@@ -216,9 +255,10 @@ function DndCombatSection({
                   : String(passivePerception)
               }
               onChange={e =>
-                updateCombat(
+                updateIntegerField(
                   'passivePerception',
-                  e.target.value
+                  e,
+                  { min: 0 }
                 )
               }
             />
@@ -255,12 +295,14 @@ function DndCombatSection({
             <input
               type="number"
               min="0"
+              step="1"
               className="form-control"
               value={combat.hitDiceSpent}
               onChange={e =>
-                updateCombat(
+                updateIntegerField(
                   'hitDiceSpent',
-                  e.target.value
+                  e,
+                  { min: 0 }
                 )
               }
             />

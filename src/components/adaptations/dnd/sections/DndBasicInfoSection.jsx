@@ -1,8 +1,18 @@
 /* INFORMACIÓN BÁSICA */
+import { handleIntegerInput } from '../dndInputUtils'
+
 function DndBasicInfoSection({
   data,
   updateField
 }) {
+  function updateIntegerField(field, event, options) {
+    handleIntegerInput(
+      event,
+      value => updateField(field, value),
+      options
+    )
+  }
+
   return (
     <div className="card rpg-card mb-4">
       <div className="card-header">
@@ -58,12 +68,14 @@ function DndBasicInfoSection({
               type="number"
               min="1"
               max="20"
+              step="1"
               className="form-control"
-              value={data.level || ''}
+              value={data.level ?? ''}
               onChange={e =>
-                updateField(
+                updateIntegerField(
                   'level',
-                  e.target.value
+                  e,
+                  { min: 1, max: 20 }
                 )
               }
             />
@@ -77,12 +89,14 @@ function DndBasicInfoSection({
             <input
               type="number"
               min="0"
+              step="1"
               className="form-control"
-              value={data.experience || ''}
+              value={data.experience ?? ''}
               onChange={e =>
-                updateField(
+                updateIntegerField(
                   'experience',
-                  e.target.value
+                  e,
+                  { min: 0 }
                 )
               }
             />

@@ -1,4 +1,6 @@
 /* EQUIPO */
+import { handleIntegerInput } from '../dndInputUtils'
+
 function DndEquipmentSection({
   equipment,
   addEquipmentItem,
@@ -10,6 +12,34 @@ function DndEquipmentSection({
   const attunedItems = equipment?.attunedItems || []
   const items = equipment?.items || []
   const currency = equipment?.currency || {}
+
+  function updateEquipmentInteger(
+    itemId,
+    field,
+    event,
+    options
+  ) {
+    handleIntegerInput(
+      event,
+      value =>
+        updateEquipmentItem(
+          itemId,
+          { [field]: value }
+        ),
+      options
+    )
+  }
+
+  function updateCurrencyInteger(
+    currencyType,
+    event
+  ) {
+    handleIntegerInput(
+      event,
+      value => updateCurrency(currencyType, value),
+      { min: 0 }
+    )
+  }
 
   return (
     <div className="card rpg-card mb-4">
@@ -81,12 +111,15 @@ function DndEquipmentSection({
                     <input
                       type="number"
                       min="1"
+                      step="1"
                       className="form-control"
-                      value={item.quantity}
+                      value={item.quantity ?? ''}
                       onChange={e =>
-                        updateEquipmentItem(
+                        updateEquipmentInteger(
                           item.id,
-                          { quantity: e.target.value }
+                          'quantity',
+                          e,
+                          { min: 1 }
                         )
                       }
                     />
@@ -202,13 +235,11 @@ function DndEquipmentSection({
               <input
                 type="number"
                 min="0"
+                step="1"
                 className="form-control"
                 value={currency[currencyType] ?? 0}
                 onChange={e =>
-                  updateCurrency(
-                    currencyType,
-                    e.target.value
-                  )
+                  updateCurrencyInteger(currencyType, e)
                 }
               />
             </div>
