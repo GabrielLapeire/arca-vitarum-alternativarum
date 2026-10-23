@@ -275,31 +275,51 @@ export function useCharacters() {
     setErrors({})
   }
 
+  function importCharacters(importedCharacters) {
+    const charactersToAdd = importedCharacters.map(character => ({
+      id: crypto.randomUUID(),
+      name: character.name,
+      adaptations: character.adaptations.map(adaptation => ({
+        id: crypto.randomUUID(),
+        system: adaptation.system,
+        version: adaptation.version,
+        data: adaptation.data
+      }))
+    }))
+
+    setCharacters(previousCharacters => [
+      ...previousCharacters,
+      ...charactersToAdd
+    ])
+
+    return charactersToAdd.length
+  }
+
   return {
     characters,
     newCharacter,
     editingId,
     errors,
-
     newAdaptation,
     editingAdaptationId,
+
+    hasUnsavedChanges,
+    hasUnsavedCharacterChanges,
+    hasUnsavedAdaptationChanges,
 
     saveCharacter,
     updateCharacter,
     cancelUpdateCharacter,
     deleteCharacter,
-    changeAdaptationSystem,
+    importCharacters,
 
     saveAdaptation,
     updateAdaptation,
     cancelUpdateAdaptation,
     deleteAdaptation,
+    changeAdaptationSystem,
 
     setNewCharacter,
-    setNewAdaptation,
-
-    hasUnsavedChanges,
-    hasUnsavedCharacterChanges,
-    hasUnsavedAdaptationChanges
+    setNewAdaptation
   }
 }

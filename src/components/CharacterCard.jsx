@@ -5,7 +5,8 @@ import CharacterAdaptationModal from './CharacterAdaptationModal'
 function CharacterCard({
   character,
   onRequestUpdateCharacter,
-  onRequestDeleteCharacter
+  onRequestDeleteCharacter,
+  onExportCharacter
 }) {
   const [selectedAdaptation, setSelectedAdaptation] =
     useState(null)
@@ -57,16 +58,24 @@ function CharacterCard({
             </div>
           </div>
 
-          <div className="d-flex gap-2 mt-3">
+          <div className="d-flex flex-wrap gap-2 mt-3">
 
             <button
               type="button"
               onClick={() =>
                 onRequestUpdateCharacter(character.id)
               }
-              className="btn btn-warning"
+              className="btn btn-warning flex-fill"
             >
               Editar
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onExportCharacter(character)}
+              className="btn btn-outline-primary flex-fill"
+            >
+              Exportar
             </button>
 
             <button
@@ -74,7 +83,7 @@ function CharacterCard({
               onClick={() =>
                 onRequestDeleteCharacter(character)
               }
-              className="btn btn-danger"
+              className="btn btn-danger flex-fill"
             >
               Eliminar
             </button>

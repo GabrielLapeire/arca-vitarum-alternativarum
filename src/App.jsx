@@ -9,6 +9,10 @@ import {
   filterCharacters,
   sortCharacters
 } from './utils/characterUtils'
+import {
+  downloadCharacterExport,
+  validateCharacterImportPayload
+} from './utils/characterExport'
 
 function App() {
   const {
@@ -16,17 +20,18 @@ function App() {
     newCharacter,
     editingId,
     errors,
+    newAdaptation,
+    editingAdaptationId,
+
     hasUnsavedChanges,
     hasUnsavedCharacterChanges,
     hasUnsavedAdaptationChanges,
-
-    newAdaptation,
-    editingAdaptationId,
 
     saveCharacter,
     updateCharacter,
     cancelUpdateCharacter,
     deleteCharacter,
+    importCharacters,
 
     saveAdaptation,
     updateAdaptation,
@@ -64,6 +69,7 @@ function App() {
   const [search, setSearch] = useState('')
   const [sortBy, setSortBy] = useState('nameAsc')
   const [confirmation, setConfirmation] = useState(null)
+  const [importNotice, setImportNotice] = useState(null)
 
   const filteredCharacters = useMemo(
     () => filterCharacters(characters, search),
@@ -191,6 +197,45 @@ function App() {
     })
   }
 
+  function exportAllCharacters() {
+    downloadCharacterExport(characters)
+  }
+
+  function exportSingleCharacter(character) {
+    downloadCharacterExport([character])
+  }
+
+  async function requestImportFile(file) {
+    setImportNotice(null)
+
+    try {
+      const fileContent = await file.text()
+      const parsedFile = JSON.parse(fileContent)
+
+      const importedData =
+        validateCharacterImportPayload(parsedFile)
+
+      setConfirmation({
+        type: 'importCharacters',
+        characters: importedData,
+        title: 'Importar personajes',
+        message:
+          `El archivo contiene ${importedData.length} ` +
+          `${importedData.length === 1 ? 'personaje' : 'personajes'}. ` +
+          'Se agregarán como copias nuevas. No se reemplazarán ' +
+          'los personajes que ya tenés guardados.',
+        confirmLabel: 'Importar personajes'
+      })
+    } catch (error) {
+      setImportNotice({
+        type: 'danger',
+        message: error instanceof Error
+          ? error.message
+          : 'No se pudo leer el archivo seleccionado.'
+      })
+    }
+  }
+
   function confirmAction() {
     if (!confirmation) {
       return
@@ -220,6 +265,21 @@ function App() {
       case 'updateCharacter':
         updateCharacter(confirmation.id)
         break
+
+      case 'importCharacters': {
+        const importedCount = importCharacters(
+          confirmation.characters
+        )
+
+        setImportNotice({
+          type: 'success',
+          message:
+            `Se importaron ${importedCount} ` +
+            `${importedCount === 1 ? 'personaje' : 'personajes'}. ` +
+            'Los personajes anteriores se conservaron.'
+        })
+        break
+      }
 
       default:
         break
@@ -275,6 +335,10 @@ function App() {
           characters={sortedCharacters}
           onRequestUpdateCharacter={requestUpdateCharacter}
           onRequestDeleteCharacter={requestDeleteCharacter}
+          onExportAllCharacters={exportAllCharacters}
+          onExportCharacter={exportSingleCharacter}
+          onImportFile={requestImportFile}
+          importNotice={importNotice}
         />
       </main>
 
