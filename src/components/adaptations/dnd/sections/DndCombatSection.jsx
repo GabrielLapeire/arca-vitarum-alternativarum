@@ -3,6 +3,7 @@ import {
   getAbilityModifier,
   formatModifier
 } from '../dndUtils'
+import DeathSaveMarks from '../DeathSaveMarks'
 
 function DndCombatSection({
   combat,
@@ -271,47 +272,16 @@ function DndCombatSection({
             Salvaciones contra muerte
           </h6>
 
-          <div className="row g-3">
-            <div className="col-6 col-sm-4">
-              <label className="form-label">
-                Éxitos
-              </label>
+          <DeathSaveMarks
+            successes={combat.deathSavesSuccesses}
+            failures={combat.deathSavesFailures}
+            editable
+            onChange={updateCombat}
+          />
 
-              <input
-                type="number"
-                min="0"
-                max="3"
-                className="form-control"
-                value={combat.deathSavesSuccesses}
-                onChange={e =>
-                  updateCombat(
-                    'deathSavesSuccesses',
-                    e.target.value
-                  )
-                }
-              />
-            </div>
-
-            <div className="col-6 col-sm-4">
-              <label className="form-label">
-                Fallos
-              </label>
-
-              <input
-                type="number"
-                min="0"
-                max="3"
-                className="form-control"
-                value={combat.deathSavesFailures}
-                onChange={e =>
-                  updateCombat(
-                    'deathSavesFailures',
-                    e.target.value
-                  )
-                }
-              />
-            </div>
-          </div>
+          <small className="text-muted d-block mt-3">
+            Seleccioná las marcas para registrar las salvaciones.
+          </small>
         </div>
 
         <div className="mt-4 pt-4 border-top">

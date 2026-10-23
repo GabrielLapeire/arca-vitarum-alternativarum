@@ -1,5 +1,6 @@
 /* COMBATE Y ATAQUES */
 import { formatValue } from '../dndUtils'
+import DeathSaveMarks from '../DeathSaveMarks'
 
 function DndCombatView({
   data,
@@ -161,21 +162,10 @@ function DndCombatView({
             </span>
 
             <div className="mt-2">
-              Éxitos:{' '}
-              <span className="rpg-dnd-modifier">
-                {formatValue(
-                  data.combat?.deathSavesSuccesses
-                )}
-              </span>
-
-              {' '}
-
-              Fallos:{' '}
-              <span className="badge rpg-dnd-badge">
-                {formatValue(
-                  data.combat?.deathSavesFailures
-                )}
-              </span>
+              <DeathSaveMarks
+                successes={data.combat?.deathSavesSuccesses}
+                failures={data.combat?.deathSavesFailures}
+              />
             </div>
           </div>
         </div>
