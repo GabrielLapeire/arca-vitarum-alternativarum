@@ -27,6 +27,7 @@ function DndSpellCard({
               <button
                 type="button"
                 className="btn btn-sm btn-danger"
+                aria-label={`Eliminar hechizo ${spell.spellKey}`}
                 onClick={() =>
                   deleteSpell(spell.spellKey)
                 }
@@ -82,6 +83,7 @@ function DndSpellCard({
             <button
               type="button"
               className="btn btn-sm btn-danger"
+              aria-label={`Eliminar hechizo ${catalogSpell.name}`}
               onClick={() =>
                 deleteSpell(spell.spellKey)
               }
@@ -315,11 +317,15 @@ function DndSpellCard({
 
         {editable && (
           <div className="mt-3">
-            <label className="form-label mb-1">
+            <label
+              className="form-label mb-1"
+              htmlFor={`dnd-spell-notes-${spell.spellKey}`}
+            >
               Notas
             </label>
 
             <textarea
+              id={`dnd-spell-notes-${spell.spellKey}`}
               className="form-control"
               rows="2"
               value={spell.notes}

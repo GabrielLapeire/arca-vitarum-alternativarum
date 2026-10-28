@@ -76,7 +76,23 @@ function DndEquipmentSection({
 
         <div className="d-flex flex-column gap-3">
           {items.map(item => {
-            const isAttuned = attunedItems.includes(item.id)
+            const isAttuned =
+              attunedItems.includes(item.id)
+
+            const nameId =
+              `equipment-name-${item.id}`
+
+            const quantityId =
+              `equipment-quantity-${item.id}`
+
+            const descriptionId =
+              `equipment-description-${item.id}`
+
+            const equippedId =
+              `equipped-${item.id}`
+
+            const attunedId =
+              `attuned-${item.id}`
 
             return (
               <div
@@ -84,12 +100,16 @@ function DndEquipmentSection({
                 className="rpg-dnd-detail"
               >
                 <div className="row g-3 align-items-end">
-                  <div className="col-12 col-lg-4">
-                    <label className="form-label">
+                  <div className="col-12 col-lg-3">
+                    <label
+                      htmlFor={nameId}
+                      className="form-label"
+                    >
                       Nombre
                     </label>
 
                     <input
+                      id={nameId}
                       type="text"
                       className="form-control"
                       placeholder="Ej.: Espada larga"
@@ -104,11 +124,15 @@ function DndEquipmentSection({
                   </div>
 
                   <div className="col-6 col-md-3 col-lg-2">
-                    <label className="form-label">
+                    <label
+                      htmlFor={quantityId}
+                      className="form-label"
+                    >
                       Cantidad
                     </label>
 
                     <input
+                      id={quantityId}
                       type="number"
                       min="1"
                       step="1"
@@ -129,7 +153,7 @@ function DndEquipmentSection({
                     <div className="form-check mb-2">
                       <input
                         type="checkbox"
-                        id={`equipped-${item.id}`}
+                        id={equippedId}
                         className="form-check-input"
                         checked={Boolean(item.equipped)}
                         onChange={e =>
@@ -142,7 +166,7 @@ function DndEquipmentSection({
 
                       <label
                         className="form-check-label"
-                        htmlFor={`equipped-${item.id}`}
+                        htmlFor={equippedId}
                       >
                         Equipado
                       </label>
@@ -151,7 +175,7 @@ function DndEquipmentSection({
                     <div className="form-check">
                       <input
                         type="checkbox"
-                        id={`attuned-${item.id}`}
+                        id={attunedId}
                         className="form-check-input"
                         checked={isAttuned}
                         disabled={
@@ -165,7 +189,7 @@ function DndEquipmentSection({
 
                       <label
                         className="form-check-label"
-                        htmlFor={`attuned-${item.id}`}
+                        htmlFor={attunedId}
                       >
                         Sintonizado
                       </label>
@@ -173,11 +197,15 @@ function DndEquipmentSection({
                   </div>
 
                   <div className="col-12 col-lg-3">
-                    <label className="form-label">
+                    <label
+                      htmlFor={descriptionId}
+                      className="form-label"
+                    >
                       Descripción
                     </label>
 
                     <input
+                      id={descriptionId}
                       type="text"
                       className="form-control"
                       placeholder="Detalles"
@@ -191,11 +219,13 @@ function DndEquipmentSection({
                     />
                   </div>
 
-                  <div className="col-12 col-lg-1">
+                  <div className="col-12 col-lg-2 d-flex justify-content-end">
                     <button
                       type="button"
-                      className="btn btn-outline-danger"
-                      aria-label={`Eliminar ${item.name || 'objeto'}`}
+                      className="btn btn-sm btn-outline-danger text-nowrap"
+                      aria-label={
+                        `Eliminar ${item.name || 'objeto'}`
+                      }
                       title="Eliminar objeto"
                       onClick={() =>
                         deleteEquipmentItem(item.id)
@@ -223,27 +253,39 @@ function DndEquipmentSection({
             ['ep', 'Electro'],
             ['gp', 'Oro'],
             ['pp', 'Platino']
-          ].map(([currencyType, label]) => (
-            <div
-              className="col-6 col-md"
-              key={currencyType}
-            >
-              <label className="form-label">
-                {label}
-              </label>
+          ].map(([currencyType, label]) => {
+            const inputId =
+              `dnd-currency-${currencyType}`
 
-              <input
-                type="number"
-                min="0"
-                step="1"
-                className="form-control"
-                value={currency[currencyType] ?? 0}
-                onChange={e =>
-                  updateCurrencyInteger(currencyType, e)
-                }
-              />
-            </div>
-          ))}
+            return (
+              <div
+                className="col-6 col-md"
+                key={currencyType}
+              >
+                <label
+                  htmlFor={inputId}
+                  className="form-label"
+                >
+                  {label}
+                </label>
+
+                <input
+                  id={inputId}
+                  type="number"
+                  min="0"
+                  step="1"
+                  className="form-control"
+                  value={currency[currencyType] ?? 0}
+                  onChange={e =>
+                    updateCurrencyInteger(
+                      currencyType,
+                      e
+                    )
+                  }
+                />
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>

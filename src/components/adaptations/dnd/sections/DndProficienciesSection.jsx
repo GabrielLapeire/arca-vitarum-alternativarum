@@ -26,9 +26,9 @@ function DndProficienciesSection({
       <div className="card-body p-4">
 
         <div className="mb-4">
-          <label className="form-label d-block">
+          <div className="form-label d-block">
             Bonificador por competencia
-          </label>
+          </div>
 
           <span className="badge rpg-dnd-badge">
             {formatModifier(proficiencyBonus)}

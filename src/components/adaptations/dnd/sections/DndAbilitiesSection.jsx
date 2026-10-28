@@ -38,12 +38,12 @@ function DndAbilitiesSection({
 
       <div className="card-body p-4">
         <div className="row g-3">
-
           {ABILITIES.map(ability => {
-            const modifier =
-              getAbilityModifier(
-                abilities[ability.id]
-              )
+            const inputId = `dnd-ability-${ability.id}`
+
+            const modifier = getAbilityModifier(
+              abilities[ability.id]
+            )
 
             return (
               <div
@@ -51,13 +51,17 @@ function DndAbilitiesSection({
                 key={ability.id}
               >
                 <div className="rpg-dnd-stat">
-
-                  <label className="rpg-dnd-stat-name d-block mb-2 text-nowrap">
+                  <label
+                    htmlFor={inputId}
+                    className="rpg-dnd-stat-name d-block mb-2 text-nowrap"
+                  >
                     {ability.name}
                   </label>
 
                   <div className="input-group">
                     <input
+                      id={inputId}
+                      name={`ability-${ability.id}`}
                       type="number"
                       min="1"
                       max="30"
@@ -82,12 +86,10 @@ function DndAbilitiesSection({
                   <div className="text-muted small mt-1 w-100 text-center text-nowrap">
                     Modificador
                   </div>
-
                 </div>
               </div>
             )
           })}
-
         </div>
       </div>
     </div>

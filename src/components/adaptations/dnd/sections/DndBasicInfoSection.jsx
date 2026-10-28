@@ -21,14 +21,19 @@ function DndBasicInfoSection({
 
       <div className="card-body p-4">
         <div className="row g-3">
-
           <div className="col-md-6">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-class-name"
+              className="form-label"
+            >
               Clase
             </label>
 
             <input
+              id="dnd-class-name"
+              name="className"
               type="text"
+              autoComplete="off"
               className="form-control"
               placeholder="Ej.: Guerrero"
               value={data.className || ''}
@@ -42,12 +47,18 @@ function DndBasicInfoSection({
           </div>
 
           <div className="col-md-6">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-subclass"
+              className="form-label"
+            >
               Subclase
             </label>
 
             <input
+              id="dnd-subclass"
+              name="subclass"
               type="text"
+              autoComplete="off"
               className="form-control"
               value={data.subclass || ''}
               onChange={e =>
@@ -60,11 +71,16 @@ function DndBasicInfoSection({
           </div>
 
           <div className="col-6 col-md-3">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-level"
+              className="form-label"
+            >
               Nivel
             </label>
 
             <input
+              id="dnd-level"
+              name="level"
               type="number"
               min="1"
               max="20"
@@ -82,11 +98,16 @@ function DndBasicInfoSection({
           </div>
 
           <div className="col-6 col-md-3">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-experience"
+              className="form-label"
+            >
               Experiencia
             </label>
 
             <input
+              id="dnd-experience"
+              name="experience"
               type="number"
               min="0"
               step="1"
@@ -103,11 +124,16 @@ function DndBasicInfoSection({
           </div>
 
           <div className="col-6 col-md-3">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-background"
+              className="form-label"
+            >
               Trasfondo
             </label>
 
             <input
+              id="dnd-background"
+              name="background"
               type="text"
               className="form-control"
               value={data.background || ''}
@@ -121,11 +147,16 @@ function DndBasicInfoSection({
           </div>
 
           <div className="col-6 col-md-3">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-species"
+              className="form-label"
+            >
               Especie
             </label>
 
             <input
+              id="dnd-species"
+              name="species"
               type="text"
               className="form-control"
               value={data.species || ''}
@@ -139,11 +170,16 @@ function DndBasicInfoSection({
           </div>
 
           <div className="col-md-4">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-alignment"
+              className="form-label"
+            >
               Alineamiento
             </label>
 
             <input
+              id="dnd-alignment"
+              name="alignment"
               type="text"
               className="form-control"
               placeholder="Ej.: Neutral bueno"
@@ -158,11 +194,16 @@ function DndBasicInfoSection({
           </div>
 
           <div className="col-12">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-languages"
+              className="form-label"
+            >
               Idiomas
             </label>
 
             <input
+              id="dnd-languages"
+              name="languages"
               type="text"
               className="form-control"
               placeholder="Ej.: Común, Elfo, Dracónico"
@@ -175,7 +216,6 @@ function DndBasicInfoSection({
               }
             />
           </div>
-
         </div>
       </div>
     </div>

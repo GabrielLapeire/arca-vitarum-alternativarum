@@ -156,11 +156,15 @@ function DndSpellForm({
           <div className="row g-3">
             <div className="col-12 col-sm-6 col-xl-3">
               <div className="rpg-dnd-detail h-100">
-                <label className="form-label">
+                <label
+                  className="form-label"
+                  htmlFor="dnd-spellcasting-ability"
+                >
                   Aptitud para lanzar conjuros
                 </label>
 
                 <select
+                  id="dnd-spellcasting-ability"
                   className="form-select"
                   value={spellcasting.ability || ''}
                   onChange={e =>
@@ -203,11 +207,15 @@ function DndSpellForm({
 
             <div className="col-12 col-sm-6 col-xl-3">
               <div className="rpg-dnd-detail h-100">
-                <label className="form-label">
+                <label
+                  className="form-label"
+                  htmlFor="dnd-spellcasting-modifier"
+                >
                   Modificador
                 </label>
 
                 <input
+                  id="dnd-spellcasting-modifier"
                   type="text"
                   inputMode="decimal"
                   className="form-control"
@@ -235,11 +243,15 @@ function DndSpellForm({
 
             <div className="col-12 col-sm-6 col-xl-3">
               <div className="rpg-dnd-detail h-100">
-                <label className="form-label">
+                <label
+                  className="form-label"
+                  htmlFor="dnd-spellcasting-save-dc"
+                >
                   CD de salvación
                 </label>
 
                 <input
+                  id="dnd-spellcasting-save-dc"
                   type="number"
                   min="0"
                   step="1"
@@ -258,11 +270,15 @@ function DndSpellForm({
 
             <div className="col-12 col-sm-6 col-xl-3">
               <div className="rpg-dnd-detail h-100">
-                <label className="form-label">
+                <label
+                  className="form-label"
+                  htmlFor="dnd-spellcasting-attack-bonus"
+                >
                   Bonificador de ataque
                 </label>
 
                 <input
+                  id="dnd-spellcasting-attack-bonus"
                   type="text"
                   inputMode="decimal"
                   className="form-control"
@@ -385,11 +401,15 @@ function DndSpellForm({
 
           <div className="row g-3">
             <div className="col-12 col-md-8">
-              <label className="form-label">
+              <label
+                className="form-label"
+                htmlFor="dnd-spell-search"
+              >
                 Buscar hechizo
               </label>
 
               <input
+                id="dnd-spell-search"
                 type="text"
                 className="form-control"
                 value={search}
@@ -401,11 +421,15 @@ function DndSpellForm({
             </div>
 
             <div className="col-12 col-md-4">
-              <label className="form-label">
+              <label
+                className="form-label"
+                htmlFor="dnd-spell-level-filter"
+              >
                 Nivel
               </label>
 
               <select
+                id="dnd-spell-level-filter"
                 className="form-select"
                 value={levelFilter}
                 onChange={e =>

@@ -46,11 +46,15 @@ function DndCombatSection({
       <div className="card-body p-4">
         <div className="row g-3">
           <div className="col-12 col-sm-6 col-xl-3">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-armor-class"
+              className="form-label"
+            >
               Clase de armadura
             </label>
 
             <input
+              id="dnd-armor-class"
               type="number"
               min="0"
               step="1"
@@ -67,11 +71,15 @@ function DndCombatSection({
           </div>
 
           <div className="col-12 col-sm-6 col-xl-3">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-shield"
+              className="form-label"
+            >
               Escudo
             </label>
 
             <input
+              id="dnd-shield"
               type="number"
               min="0"
               step="1"
@@ -88,11 +96,15 @@ function DndCombatSection({
           </div>
 
           <div className="col-12 col-sm-6 col-xl-3">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-current-hit-points"
+              className="form-label"
+            >
               PG actuales
             </label>
 
             <input
+              id="dnd-current-hit-points"
               type="number"
               min="0"
               step="1"
@@ -109,11 +121,15 @@ function DndCombatSection({
           </div>
 
           <div className="col-12 col-sm-6 col-xl-3">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-max-hit-points"
+              className="form-label"
+            >
               PG máximos
             </label>
 
             <input
+              id="dnd-max-hit-points"
               type="number"
               min="0"
               step="1"
@@ -130,11 +146,15 @@ function DndCombatSection({
           </div>
 
           <div className="col-12 col-sm-6 col-xl-3">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-temporary-hit-points"
+              className="form-label"
+            >
               PG temporales
             </label>
 
             <input
+              id="dnd-temporary-hit-points"
               type="number"
               min="0"
               step="1"
@@ -151,11 +171,15 @@ function DndCombatSection({
           </div>
 
           <div className="col-12 col-sm-6 col-xl-3">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-initiative"
+              className="form-label"
+            >
               Iniciativa
             </label>
 
             <input
+              id="dnd-initiative"
               type="text"
               className="form-control"
               value={combat.initiative}
@@ -174,7 +198,11 @@ function DndCombatSection({
               onBlur={e =>
                 clearIncompleteInteger(
                   e,
-                  value => updateCombat('initiative', value)
+                  value =>
+                    updateCombat(
+                      'initiative',
+                      value
+                    )
                 )
               }
             />
@@ -185,11 +213,15 @@ function DndCombatSection({
           </div>
 
           <div className="col-12 col-sm-6 col-xl-3">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-speed"
+              className="form-label"
+            >
               Velocidad
             </label>
 
             <input
+              id="dnd-speed"
               type="text"
               className="form-control"
               value={combat.speed}
@@ -212,11 +244,15 @@ function DndCombatSection({
           </div>
 
           <div className="col-12 col-sm-6 col-xl-3">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-size"
+              className="form-label"
+            >
               Tamaño
             </label>
 
             <input
+              id="dnd-size"
               type="text"
               className="form-control"
               value={combat.size}
@@ -239,11 +275,15 @@ function DndCombatSection({
           </div>
 
           <div className="col-12 col-sm-6 col-xl-3">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-passive-perception"
+              className="form-label"
+            >
               Percepción pasiva
             </label>
 
             <input
+              id="dnd-passive-perception"
               type="text"
               min="0"
               step="1"
@@ -269,11 +309,15 @@ function DndCombatSection({
           </div>
 
           <div className="col-12 col-md-6">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-hit-dice"
+              className="form-label"
+            >
               Dados de golpe
             </label>
 
             <input
+              id="dnd-hit-dice"
               type="text"
               className="form-control"
               placeholder="Ej.: 1d10"
@@ -288,11 +332,15 @@ function DndCombatSection({
           </div>
 
           <div className="col-12 col-md-6">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-hit-dice-spent"
+              className="form-label"
+            >
               Dados de golpe gastados
             </label>
 
             <input
+              id="dnd-hit-dice-spent"
               type="number"
               min="0"
               step="1"
@@ -349,108 +397,138 @@ function DndCombatSection({
           )}
 
           <div className="d-flex flex-column gap-3">
-            {(attacks || []).map(attack => (
-              <div
-                key={attack.id}
-                className="rpg-dnd-detail"
-              >
-                <div className="d-flex justify-content-between align-items-center gap-2 mb-3">
-                  <strong className="rpg-dnd-detail-title">
-                    {attack.name || 'Nuevo ataque'}
-                  </strong>
+            {(attacks || []).map(attack => {
+              const attackNameId =
+                `dnd-attack-${attack.id}-name`
 
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-danger"
-                    aria-label="Eliminar ataque"
-                    title="Eliminar ataque"
-                    onClick={() =>
-                      deleteAttack(attack.id)
-                    }
-                  >
-                    ×
-                  </button>
+              const attackBonusId =
+                `dnd-attack-${attack.id}-bonus`
+
+              const attackDamageId =
+                `dnd-attack-${attack.id}-damage`
+
+              const attackNotesId =
+                `dnd-attack-${attack.id}-notes`
+
+              return (
+                <div
+                  key={attack.id}
+                  className="rpg-dnd-detail"
+                >
+                  <div className="d-flex justify-content-between align-items-center gap-2 mb-3">
+                    <strong className="rpg-dnd-detail-title">
+                      {attack.name || 'Nuevo ataque'}
+                    </strong>
+
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-danger"
+                      aria-label={
+                        `Eliminar ataque ${attack.name || 'sin nombre'}`
+                      }
+                      title="Eliminar ataque"
+                      onClick={() => deleteAttack(attack.id)}
+                    >
+                      ×
+                    </button>
+                  </div>
+
+                  <div className="row g-3">
+                    <div className="col-12 col-lg-4">
+                      <label
+                        htmlFor={attackNameId}
+                        className="form-label"
+                      >
+                        Nombre
+                      </label>
+
+                      <input
+                        id={attackNameId}
+                        type="text"
+                        className="form-control"
+                        placeholder="Ej.: Espada larga"
+                        value={attack.name}
+                        onChange={e =>
+                          updateAttack(
+                            attack.id,
+                            { name: e.target.value }
+                          )
+                        }
+                      />
+                    </div>
+
+                    <div className="col-12 col-md-6 col-lg-3">
+                      <label
+                        htmlFor={attackBonusId}
+                        className="form-label"
+                      >
+                        Bonificador de ataque / CD
+                      </label>
+
+                      <input
+                        id={attackBonusId}
+                        type="text"
+                        className="form-control"
+                        placeholder="Ej.: +5"
+                        value={attack.attackBonus}
+                        onChange={e =>
+                          updateAttack(
+                            attack.id,
+                            { attackBonus: e.target.value }
+                          )
+                        }
+                      />
+                    </div>
+
+                    <div className="col-12 col-md-6 col-lg-5">
+                      <label
+                        htmlFor={attackDamageId}
+                        className="form-label"
+                      >
+                        Daño y tipo
+                      </label>
+
+                      <input
+                        id={attackDamageId}
+                        type="text"
+                        className="form-control"
+                        placeholder="Ej.: 1d8 + 3 cortante"
+                        value={attack.damage}
+                        onChange={e =>
+                          updateAttack(
+                            attack.id,
+                            { damage: e.target.value }
+                          )
+                        }
+                      />
+                    </div>
+
+                    <div className="col-12">
+                      <label
+                        htmlFor={attackNotesId}
+                        className="form-label"
+                      >
+                        Notas
+                      </label>
+
+                      <input
+                        id={attackNotesId}
+                        type="text"
+                        className="form-control"
+                        placeholder="Ej.: Alcance 6/18 m"
+                        value={attack.notes || ''}
+                        onChange={e =>
+                          updateAttack(
+                            attack.id,
+                            { notes: e.target.value }
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
                 </div>
-
-                <div className="row g-3">
-                  <div className="col-12 col-lg-4">
-                    <label className="form-label">
-                      Nombre
-                    </label>
-
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Ej.: Espada larga"
-                      value={attack.name}
-                      onChange={e =>
-                        updateAttack(
-                          attack.id,
-                          { name: e.target.value }
-                        )
-                      }
-                    />
-                  </div>
-
-                  <div className="col-12 col-md-6 col-lg-3">
-                    <label className="form-label">
-                      Bonificador de ataque / CD
-                    </label>
-
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Ej.: +5"
-                      value={attack.attackBonus}
-                      onChange={e =>
-                        updateAttack(
-                          attack.id,
-                          { attackBonus: e.target.value }
-                        )
-                      }
-                    />
-                  </div>
-
-                  <div className="col-12 col-md-6 col-lg-5">
-                    <label className="form-label">
-                      Daño y tipo
-                    </label>
-
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Ej.: 1d8 + 3 cortante"
-                      value={attack.damage}
-                      onChange={e =>
-                        updateAttack(
-                          attack.id,
-                          { damage: e.target.value }
-                        )
-                      }
-                    />
-                  </div>
-
-                  <div className="col-12">
-                    <label className="form-label">
-                      Notas
-                    </label>
-
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Ej.: Alcance 6/18 m"
-                      value={attack.notes || ''}
-                      onChange={e =>
-                        updateAttack(
-                          attack.id,
-                          { notes: e.target.value }
-                        )
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </div>

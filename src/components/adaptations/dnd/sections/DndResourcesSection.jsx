@@ -12,12 +12,12 @@ function DndResourcesSection({
       <div className="card-body p-4">
         <label
           className="rpg-dnd-list-item d-flex align-items-center gap-3 mb-0"
-          htmlFor="heroicInspiration"
+          htmlFor="dnd-heroic-inspiration"
         >
           <input
             type="checkbox"
             className="form-check-input mt-0"
-            id="heroicInspiration"
+            id="dnd-heroic-inspiration"
             checked={Boolean(heroicInspiration)}
             onChange={e =>
               updateField(

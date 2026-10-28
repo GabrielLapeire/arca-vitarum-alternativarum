@@ -56,11 +56,15 @@ function DndFeaturesSection({
 
         <div className="row g-3">
           <div className="col-12 col-lg-4">
-            <label className="form-label">
+            <label
+              className="form-label"
+              htmlFor="dnd-armor-training"
+            >
               Entrenamiento con armaduras
             </label>
 
             <textarea
+              id="dnd-armor-training"
               className="form-control"
               rows="3"
               value={data.armorTraining || ''}
@@ -74,11 +78,15 @@ function DndFeaturesSection({
           </div>
 
           <div className="col-12 col-lg-4">
-            <label className="form-label">
+            <label
+              className="form-label"
+              htmlFor="dnd-weapon-proficiencies"
+            >
               Competencias con armas
             </label>
 
             <textarea
+              id="dnd-weapon-proficiencies"
               className="form-control"
               rows="3"
               value={data.weaponProficiencies || ''}
@@ -92,11 +100,15 @@ function DndFeaturesSection({
           </div>
 
           <div className="col-12 col-lg-4">
-            <label className="form-label">
+            <label
+              className="form-label"
+              htmlFor="dnd-tool-proficiencies"
+            >
               Competencias con herramientas
             </label>
 
             <textarea
+              id="dnd-tool-proficiencies"
               className="form-control"
               rows="3"
               value={data.toolProficiencies || ''}

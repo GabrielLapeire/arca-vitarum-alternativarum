@@ -19,11 +19,16 @@ function CharacterFilters({
 
         <div className="row g-3">
           <div className="col-12 col-md-8">
-            <label className="form-label">
+            <label
+              htmlFor="character-search"
+              className="form-label"
+            >
               Buscar
             </label>
 
             <input
+              id="character-search"
+              name="search"
               type="text"
               className="form-control"
               placeholder="Nombre del personaje..."
@@ -35,11 +40,16 @@ function CharacterFilters({
           </div>
 
           <div className="col-12 col-md-4">
-            <label className="form-label">
+            <label
+              htmlFor="character-sort"
+              className="form-label"
+            >
               Ordenar por
             </label>
 
             <select
+              id="character-sort"
+              name="sortBy"
               className="form-select"
               value={sortBy}
               onChange={e =>

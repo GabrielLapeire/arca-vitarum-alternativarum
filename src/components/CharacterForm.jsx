@@ -51,12 +51,28 @@ function CharacterForm({
 
         <div className="row g-3">
           <div className="col-md-6">
+            <label
+              htmlFor="character-name"
+              className="form-label"
+            >
+              Nombre del personaje
+            </label>
+
             <input
+              id="character-name"
+              name="name"
               type="text"
+              autoComplete='off'
               className="form-control"
-              placeholder="Nombre"
+              placeholder="Nombre del personaje..."
               value={newCharacter.name}
-              onChange={(e) =>
+              aria-invalid={Boolean(errors.name)}
+              aria-describedby={
+                errors.name
+                  ? 'character-name-error'
+                  : undefined
+              }
+              onChange={e =>
                 setNewCharacter({
                   ...newCharacter,
                   name: e.target.value
@@ -65,17 +81,40 @@ function CharacterForm({
             />
 
             {errors.name && (
-              <div className="text-danger">
+              <div
+                id="character-name-error"
+                className="text-danger"
+              >
                 {errors.name}
               </div>
             )}
           </div>
 
           <div className="col-md-6">
+            <label
+              htmlFor="adaptation-system"
+              className="form-label"
+            >
+              Sistema de juego
+            </label>
+
             <select
+              id="adaptation-system"
+              name="system"
               className="form-select"
               value={newAdaptation.system}
-              onChange={(e) =>
+              aria-invalid={Boolean(
+                errors.system || errors.adaptations
+              )}
+              aria-describedby={[
+                errors.system
+                  ? 'adaptation-system-error'
+                  : null,
+                errors.adaptations
+                  ? 'adaptations-error'
+                  : null
+              ].filter(Boolean).join(' ') || undefined}
+              onChange={e =>
                 onRequestChangeAdaptationSystem(e.target.value)
               }
             >
@@ -93,13 +132,19 @@ function CharacterForm({
             </select>
 
             {errors.system && (
-              <div className="text-danger">
+              <div
+                id="adaptation-system-error"
+                className="text-danger"
+              >
                 {errors.system}
               </div>
             )}
 
             {errors.adaptations && (
-              <div className="text-danger">
+              <div
+                id="adaptations-error"
+                className="text-danger"
+              >
                 {errors.adaptations}
               </div>
             )}
@@ -112,9 +157,18 @@ function CharacterForm({
 
             <ul className="list-group">
               {newCharacter.adaptations.map(
-                (adaptation) => {
+                adaptation => {
                   const isEditing =
                     editingAdaptationId === adaptation.id
+
+                  const adaptationName =
+                    `${adaptation.system === 'dnd'
+                      ? 'D&D'
+                      : adaptation.system
+                    }${adaptation.version
+                      ? ` ${adaptation.version}`
+                      : ''
+                    }`
 
                   return (
                     <li
@@ -148,11 +202,12 @@ function CharacterForm({
                           <button
                             type="button"
                             onClick={() =>
-                              updateAdaptation(
-                                adaptation.id
-                              )
+                              updateAdaptation(adaptation.id)
                             }
                             className="btn btn-sm btn-warning"
+                            aria-label={
+                              `Editar adaptación de ${adaptationName}`
+                            }
                           >
                             Editar
                           </button>
@@ -163,6 +218,9 @@ function CharacterForm({
                               onRequestDeleteAdaptation(adaptation)
                             }
                             className="btn btn-sm btn-danger"
+                            aria-label={
+                              `Eliminar adaptación de ${adaptationName}`
+                            }
                           >
                             Eliminar
                           </button>

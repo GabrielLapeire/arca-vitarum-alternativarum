@@ -12,11 +12,15 @@ function DndCharacterInfoSection({
       <div className="card-body p-4">
         <div className="row g-4">
           <div className="col-md-6">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-appearance"
+              className="form-label"
+            >
               Apariencia
             </label>
 
             <textarea
+              id="dnd-appearance"
               className="form-control"
               rows="5"
               value={data.appearance || ''}
@@ -30,11 +34,15 @@ function DndCharacterInfoSection({
           </div>
 
           <div className="col-md-6">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-personality"
+              className="form-label"
+            >
               Personalidad
             </label>
 
             <textarea
+              id="dnd-personality"
               className="form-control"
               rows="5"
               value={data.personality || ''}
@@ -48,11 +56,15 @@ function DndCharacterInfoSection({
           </div>
 
           <div className="col-12">
-            <label className="form-label">
+            <label
+              htmlFor="dnd-backstory"
+              className="form-label"
+            >
               Historia / trasfondo narrativo
             </label>
 
             <textarea
+              id="dnd-backstory"
               className="form-control"
               rows="5"
               value={data.backstory || ''}
