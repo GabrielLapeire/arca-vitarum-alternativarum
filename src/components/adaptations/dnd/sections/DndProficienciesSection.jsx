@@ -1,12 +1,16 @@
 /* COMPETENCIA Y SALVACIONES */
 import {
   ABILITIES,
-  SKILLS
+  SKILLS,
+  SKILL_PROFICIENCY_NONE,
+  SKILL_PROFICIENCY_PROFICIENT,
+  SKILL_PROFICIENCY_EXPERTISE
 } from '../dndConstants'
 import {
   formatModifier,
   getSavingThrowModifier,
-  getSkillModifier
+  getSkillModifier,
+  getSkillProficiencyLevel
 } from '../dndUtils'
 
 function DndProficienciesSection({
@@ -88,29 +92,15 @@ function DndProficienciesSection({
             Habilidades
           </h6>
 
-          <div className="row g-2">
+          <div className="rpg-dnd-skills-grid">
             {SKILLS.map(skill => (
               <div
                 key={skill.id}
-                className="col-12 col-md-6"
+                className="rpg-dnd-skill-column"
               >
-                <label className="rpg-dnd-list-item d-flex align-items-center gap-2 mb-0">
+                <div className="rpg-dnd-list-item rpg-dnd-skill-item d-flex align-items-center gap-2 mb-0">
 
-                  <input
-                    type="checkbox"
-                    className="form-check-input mt-0"
-                    checked={Boolean(
-                      skills[skill.id]
-                    )}
-                    onChange={e =>
-                      updateSkill(
-                        skill.id,
-                        e.target.checked
-                      )
-                    }
-                  />
-
-                  <span className="flex-grow-1">
+                  <span className="rpg-dnd-skill-name flex-grow-1">
                     {skill.name}
 
                     <small className="text-muted ms-1">
@@ -122,6 +112,30 @@ function DndProficienciesSection({
                     </small>
                   </span>
 
+                  <select
+                    className="form-select form-select-sm rpg-dnd-skill-select"
+                    aria-label={`Competencia en ${skill.name}`}
+                    value={getSkillProficiencyLevel(skills[skill.id])}
+                    onChange={e =>
+                      updateSkill(
+                        skill.id,
+                        Number(e.target.value)
+                      )
+                    }
+                  >
+                    <option value={SKILL_PROFICIENCY_NONE}>
+                      Sin competencia
+                    </option>
+
+                    <option value={SKILL_PROFICIENCY_PROFICIENT}>
+                      Competente
+                    </option>
+
+                    <option value={SKILL_PROFICIENCY_EXPERTISE}>
+                      Pericia
+                    </option>
+                  </select>
+
                   <strong>
                     {formatModifier(
                       getSkillModifier(
@@ -132,7 +146,7 @@ function DndProficienciesSection({
                       )
                     )}
                   </strong>
-                </label>
+                </div>
               </div>
             ))}
           </div>

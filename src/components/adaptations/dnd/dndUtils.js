@@ -1,4 +1,10 @@
 /* Yo hago cálculos sobre de D&D. */
+import {
+  SKILL_PROFICIENCY_NONE,
+  SKILL_PROFICIENCY_PROFICIENT,
+  SKILL_PROFICIENCY_EXPERTISE
+} from './dndConstants'
+
 export function formatValue(value) {
   if (
     value === '' ||
@@ -90,6 +96,22 @@ export function getSavingThrowModifier(
       : 0)
 }
 
+export function getSkillProficiencyLevel(value) {
+  if (value === true) {
+    return SKILL_PROFICIENCY_PROFICIENT
+  }
+
+  if (
+    value === SKILL_PROFICIENCY_NONE ||
+    value === SKILL_PROFICIENCY_PROFICIENT ||
+    value === SKILL_PROFICIENCY_EXPERTISE
+  ) {
+    return value
+  }
+
+  return SKILL_PROFICIENCY_NONE
+}
+
 export function getSkillModifier(
   skill,
   abilities,
@@ -105,9 +127,8 @@ export function getSkillModifier(
   }
 
   return modifier +
-    (skills?.[skill.id]
-      ? Number(proficiencyBonus || 0)
-      : 0)
+    Number(proficiencyBonus || 0) *
+    getSkillProficiencyLevel(skills?.[skill.id])
 }
 
 export function getPassivePerception(

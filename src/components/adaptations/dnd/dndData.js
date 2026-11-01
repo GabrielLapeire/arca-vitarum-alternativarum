@@ -1,7 +1,8 @@
 /* Yo creo la estructura de datos inicial de una ficha de D&D 2024. */
 import {
   ABILITIES,
-  SKILLS
+  SKILLS,
+  SKILL_PROFICIENCY_NONE
 } from './dndConstants'
 export function createEmptyDndData() {
   return {
@@ -32,7 +33,7 @@ export function createEmptyDndData() {
     skills: Object.fromEntries(
       SKILLS.map(skill => [
         skill.id,
-        false
+        SKILL_PROFICIENCY_NONE
       ])
     ),
 

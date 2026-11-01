@@ -9,6 +9,7 @@ import {
   formatModifier,
   getProficiencyBonus,
   getPassivePerception,
+  getSkillProficiencyLevel,
   formatValue,
   hasMagicData
 } from '../dndUtils'
@@ -59,10 +60,9 @@ function DndCharacterView({
     ...Object.fromEntries(
       SKILLS.map(skill => [
         skill.id,
-        false
+        getSkillProficiencyLevel(data.skills?.[skill.id])
       ])
-    ),
-    ...(data.skills || {})
+    )
   }
 
   const speciesData =

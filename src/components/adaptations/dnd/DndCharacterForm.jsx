@@ -6,7 +6,8 @@ import {
 } from './dndConstants'
 import {
   getProficiencyBonus,
-  getPassivePerception
+  getPassivePerception,
+  getSkillProficiencyLevel
 } from './dndUtils'
 import {
   getSpeciesData
@@ -53,12 +54,12 @@ function DndCharacterForm({
     ...(data.savingThrows || {})
   }
 
-  const skills = {
-    ...Object.fromEntries(
-      SKILLS.map(skill => [skill.id, false])
-    ),
-    ...(data.skills || {})
-  }
+  const skills = Object.fromEntries(
+    SKILLS.map(skill => [
+      skill.id,
+      getSkillProficiencyLevel(data.skills?.[skill.id])
+    ])
+  )
 
   const combat = {
     armorClass: '',
