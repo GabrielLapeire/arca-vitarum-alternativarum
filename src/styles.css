@@ -429,6 +429,66 @@ h3,
   text-align: right;
 }
 
+.rpg-dnd-skill-item > strong {
+  flex: 0 0 2.5rem;
+  width: 2.5rem;
+}
+
+.rpg-dnd-skills-grid,
+.rpg-dnd-skill-view-grid {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 0.5rem;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 26rem), 1fr)
+  );
+}
+
+.rpg-dnd-skill-column {
+  min-width: 0;
+}
+
+.rpg-dnd-skill-name {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.rpg-dnd-skill-select {
+  flex: 0 0 10rem;
+  width: 10rem;
+  min-width: 10rem;
+  max-width: 10rem;
+}
+
+@media (max-width: 575.98px) {
+  .rpg-dnd-skill-item {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .rpg-dnd-skill-name {
+    grid-column: 1 / -1;
+  }
+
+  .rpg-dnd-skill-select {
+    grid-column: 1;
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .rpg-dnd-skill-item > strong {
+    grid-column: 1;
+    justify-self: end;
+  }
+}
+
 .rpg-dnd-table {
   --bs-table-bg: var(--rpg-surface);
   --bs-table-color: var(--rpg-text);

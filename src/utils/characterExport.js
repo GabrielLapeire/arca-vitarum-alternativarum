@@ -1,4 +1,9 @@
 /* Exporto e importo personajes en un formato versionado. */
+import {
+  SKILL_PROFICIENCY_NONE,
+  SKILL_PROFICIENCY_PROFICIENT,
+  SKILL_PROFICIENCY_EXPERTISE
+} from '../components/adaptations/dnd/dndConstants'
 
 const EXPORT_FORMAT = 'arca-vitarum-character-export'
 const SCHEMA_VERSION = 1
@@ -177,6 +182,21 @@ function validateDndData(data, characterNumber, adaptationNumber) {
       throw new Error(
         `${location}: el campo "${field}" debe ser un objeto.`
       )
+    }
+  }
+
+  if (isRecord(data.skills)) {
+    for (const [skill, level] of Object.entries(data.skills)) {
+      if (
+        typeof level !== 'boolean' &&
+        level !== SKILL_PROFICIENCY_NONE &&
+        level !== SKILL_PROFICIENCY_PROFICIENT &&
+        level !== SKILL_PROFICIENCY_EXPERTISE
+      ) {
+        throw new Error(
+          `${location}: el nivel de competencia de "${skill}" no es válido.`
+        )
+      }
     }
   }
 

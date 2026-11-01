@@ -1,9 +1,15 @@
 /* COMPETENCIAS */
-import { ABILITIES, SKILLS } from '../dndConstants'
+import {
+  ABILITIES,
+  SKILLS,
+  SKILL_PROFICIENCY_PROFICIENT,
+  SKILL_PROFICIENCY_EXPERTISE
+} from '../dndConstants'
 import {
   getSavingThrowModifier,
   getSkillModifier,
-  formatModifier
+  formatModifier,
+  getSkillProficiencyLevel
 } from '../dndUtils'
 
 function DndProficienciesView({
@@ -76,11 +82,11 @@ function DndProficienciesView({
             Habilidades
           </h6>
 
-          <div className="row g-2">
+          <div className="rpg-dnd-skill-view-grid">
             {SKILLS.map(skill => (
               <div
                 key={skill.id}
-                className="col-6 col-md-6"
+                className="rpg-dnd-skill-column"
               >
                 <div
                   className="rpg-dnd-list-item rpg-dnd-proficiency-item d-flex align-items-start gap-2"
@@ -88,9 +94,19 @@ function DndProficienciesView({
                   <div className="flex-grow-1">
                     <div>{skill.name}</div>
 
-                    {skills?.[skill.id] && (
+                    {getSkillProficiencyLevel(
+                      skills?.[skill.id]
+                    ) === SKILL_PROFICIENCY_PROFICIENT && (
                       <small className="text-muted d-block mt-1">
                         Competente
+                      </small>
+                    )}
+
+                    {getSkillProficiencyLevel(
+                      skills?.[skill.id]
+                    ) === SKILL_PROFICIENCY_EXPERTISE && (
+                      <small className="text-muted d-block mt-1">
+                        Pericia
                       </small>
                     )}
                   </div>

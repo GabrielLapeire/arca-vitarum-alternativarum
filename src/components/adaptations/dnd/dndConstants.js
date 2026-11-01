@@ -1,4 +1,8 @@
 /* Yo guardo constantes de D&D. */
+export const SKILL_PROFICIENCY_NONE = 0
+export const SKILL_PROFICIENCY_PROFICIENT = 1
+export const SKILL_PROFICIENCY_EXPERTISE = 2
+
 export const ABILITIES = [
   {
     id: 'strength',
