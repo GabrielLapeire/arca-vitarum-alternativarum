@@ -460,6 +460,17 @@ h3,
   width: 10rem;
   min-width: 10rem;
   max-width: 10rem;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.rpg-dnd-skill-select.has-proficiency {
+  background-color: #f0eafa;
+  border-color: rgba(120, 72, 200, 0.45);
+  color: var(--rpg-purple-dark);
+  font-weight: 600;
 }
 
 @media (max-width: 575.98px) {
