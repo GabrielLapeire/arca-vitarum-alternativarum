@@ -244,6 +244,50 @@ h3,
   border-radius: 0.5rem;
 }
 
+.rpg-dnd-feature-header {
+  min-width: 0;
+  margin-bottom: 0.75rem;
+}
+
+.rpg-dnd-feature-heading {
+  min-width: 0;
+  color: var(--rpg-purple-dark);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.rpg-dnd-feature-toggle-icon {
+  display: inline-block;
+  width: 1.25rem;
+  color: var(--rpg-purple);
+}
+
+.rpg-dnd-feature-preview {
+  color: var(--rpg-text-muted);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.rpg-dnd-feature-content[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 575.98px) {
+  .rpg-dnd-feature-header {
+    flex-wrap: wrap;
+  }
+
+  .rpg-dnd-feature-heading {
+    order: 1;
+    flex: 0 0 100%;
+  }
+
+  .rpg-dnd-feature-toggle-button,
+  .rpg-dnd-feature-delete-button {
+    order: 0;
+  }
+}
+
 .rpg-dnd-detail-title {
   color: var(--rpg-purple-dark);
   font-weight: 600;
