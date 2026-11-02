@@ -113,7 +113,14 @@ function DndProficienciesSection({
                   </span>
 
                   <select
-                    className="form-select form-select-sm rpg-dnd-skill-select"
+                    id={`dnd-skill-proficiency-${skill.id}`}
+                    name={`skill-proficiency-${skill.id}`}
+                    className={`form-select form-select-sm rpg-dnd-skill-select ${
+                      getSkillProficiencyLevel(skills[skill.id]) >
+                      SKILL_PROFICIENCY_NONE
+                        ? 'has-proficiency'
+                        : ''
+                    }`}
                     aria-label={`Competencia en ${skill.name}`}
                     value={getSkillProficiencyLevel(skills[skill.id])}
                     onChange={e =>
